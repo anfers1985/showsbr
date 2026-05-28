@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ap-cultura-macapa-20260704",
+    "artista": "Festival de Cultura Amapaense",
+    "genero": "MPB",
+    "data_iso": "2026-07-04",
+    "horario": "18:00",
+    "local": "Fortaleza de São José de Macapá",
+    "endereco": "Complexo Beira-Rio, s/n",
+    "cidade": "Macapá",
+    "estado": "AP",
+    "descricao": "Festival cultural gratuito com artistas locais e apresentações folclóricas do Amapá.",
+    "organizador": "Governo do Estado do Amapá",
+    "cnpj": "08.764.631/0001-70",
+    "valores": null,
+    "gratuito": true,
+    "link_compra": null,
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "comunidade"
+  }
+]

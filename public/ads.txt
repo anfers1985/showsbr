@@ -1,0 +1,11 @@
+# ShowsBR — ads.txt
+# Atualizar com os dados reais do Adsterra após aprovação da conta.
+# Formato: <SSP domain>, <seller_id>, <relationship>, <certification_id>
+#
+# Após aprovação no Adsterra (adsterra.com), substituir a linha abaixo
+# pelo conteúdo exato fornecido pelo Adsterra no painel do publisher.
+#
+# Exemplo:
+# adsterra.com, 123456, DIRECT, abc123def456
+#
+# INSTRUÇÃO: copie o conteúdo do seu ads.txt do Adsterra e cole aqui.

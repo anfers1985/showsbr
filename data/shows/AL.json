@@ -1,0 +1,23 @@
+[
+  {
+    "id": "al-saojao-maceio-20260621",
+    "artista": "São João de Maceió 2026",
+    "genero": "Forró",
+    "data_iso": "2026-06-21",
+    "horario": "18:00",
+    "local": "Pajuçara — Orla",
+    "endereco": "Av. Dr. Antônio Gomes de Barros, s/n",
+    "cidade": "Maceió",
+    "estado": "AL",
+    "descricao": "Festa junina à beira-mar com forró e artistas nordestinos.",
+    "organizador": "Prefeitura Municipal de Maceió",
+    "cnpj": "12.198.693/0001-73",
+    "valores": "Área reservada R$ 100\nPista livre R$ 0",
+    "gratuito": false,
+    "link_compra": null,
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "comunidade"
+  }
+]

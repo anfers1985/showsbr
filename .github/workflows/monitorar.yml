@@ -1,0 +1,37 @@
+name: Agente Monitor de Shows
+
+on:
+  schedule:
+    - cron: '0 9 * * *'      # Todo dia às 9h UTC (6h BRT)
+  workflow_dispatch:
+
+jobs:
+  monitorar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests beautifulsoup4 gspread google-auth
+
+      - name: Executar agente monitor
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEETS_ID: ${{ secrets.SHEETS_ID }}
+          EMAIL_ADMIN: ${{ secrets.EMAIL_ADMIN }}
+        run: python scripts/monitorar.py
+
+      - name: Commit de atualizações de status
+        run: |
+          git config user.name 'ShowsBR Bot'
+          git config user.email 'bot@showsbr.com.br'
+          git add data/shows/
+          git diff --staged --quiet || git commit -m 'chore: atualiza status shows [skip ci]'
+          git push

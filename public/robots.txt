@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://showsbr.com.br/sitemap.xml
+
+# ShowsBR — Do interior às capitais, shows por todo o Brasil.
+# Contato: contato@showsbr.com.br

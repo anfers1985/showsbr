@@ -1,0 +1,23 @@
+[
+  {
+    "codigo": "SHOWS10",
+    "plataforma": "Sympla",
+    "descricao": "10% de desconto em qualquer ingresso",
+    "validade": "31/07/2026",
+    "link": "https://www.sympla.com.br"
+  },
+  {
+    "codigo": "EVENTIM15",
+    "plataforma": "Eventim",
+    "descricao": "15% de desconto em shows selecionados",
+    "validade": "30/06/2026",
+    "link": "https://www.eventim.com.br"
+  },
+  {
+    "codigo": "T360ROCK",
+    "plataforma": "Ticket360",
+    "descricao": "R$ 20 de desconto em shows de rock",
+    "validade": "31/08/2026",
+    "link": "https://www.ticket360.com.br"
+  }
+]

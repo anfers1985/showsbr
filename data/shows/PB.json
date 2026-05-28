@@ -1,0 +1,23 @@
+[
+  {
+    "id": "pb-saojao-cg-20260613",
+    "artista": "São João de Campina Grande 2026",
+    "genero": "Forró",
+    "data_iso": "2026-06-13",
+    "horario": "17:00",
+    "local": "Parque do Povo",
+    "endereco": "R. Cardoso Vieira, s/n",
+    "cidade": "Campina Grande",
+    "estado": "PB",
+    "descricao": "O maior São João do Mundo. Shows de Wesley Safadão, Solange Almeida, Zé Vaqueiro e muitos outros.",
+    "organizador": "Prefeitura Municipal de Campina Grande",
+    "cnpj": "08.938.581/0001-22",
+    "valores": "Área privativa R$ 250\nPista pública R$ 0",
+    "gratuito": false,
+    "link_compra": "https://www.sympla.com.br",
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "sympla.com.br"
+  }
+]

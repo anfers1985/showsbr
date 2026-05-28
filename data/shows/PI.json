@@ -1,0 +1,23 @@
+[
+  {
+    "id": "pi-saojao-teresina-20260624",
+    "artista": "São João de Teresina 2026",
+    "genero": "Forró",
+    "data_iso": "2026-06-24",
+    "horario": "18:00",
+    "local": "Parque da Cidadania",
+    "endereco": "Av. Marechal Castelo Branco, s/n",
+    "cidade": "Teresina",
+    "estado": "PI",
+    "descricao": "Maior festa junina do Piauí com Flávio José, Magníficos e Calcinha Preta.",
+    "organizador": "Prefeitura Municipal de Teresina",
+    "cnpj": "06.554.944/0001-20",
+    "valores": "Área Premium R$ 120\nPista R$ 40\nMeia R$ 20",
+    "gratuito": false,
+    "link_compra": "https://www.sympla.com.br",
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "sympla.com.br"
+  }
+]

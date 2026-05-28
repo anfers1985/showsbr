@@ -1,0 +1,27 @@
+name: Agente Coletor de Shows
+
+on:
+  schedule:
+    - cron: '0 11 * * 1-5'   # 8h BRT (UTC-3)
+    - cron: '0 15 * * 1-5'   # 12h BRT
+    - cron: '0 20 * * 1-5'   # 17h BRT
+  workflow_dispatch:           # Disparo manual pelo GitHub
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests beautifulsoup4 gspread google-auth
+
+      - name: Executar agente coletor
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEETS_ID: ${{ secrets.SHEETS_ID }}
+        run: python scripts/coletar.py

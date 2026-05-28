@@ -1,0 +1,23 @@
+[
+  {
+    "id": "rn-saojao-natal-20260624",
+    "artista": "São João de Natal 2026",
+    "genero": "Forró",
+    "data_iso": "2026-06-24",
+    "horario": "18:00",
+    "local": "Parque das Dunas — Arena",
+    "endereco": "Av. Alexandrino de Alencar, s/n",
+    "cidade": "Natal",
+    "estado": "RN",
+    "descricao": "Festival junino com Zé Vaqueiro, Mari Fernandez e grupos de quadrilha.",
+    "organizador": "Prefeitura Municipal de Natal",
+    "cnpj": "08.241.754/0001-43",
+    "valores": "Camarote R$ 160\nPista R$ 50\nMeia R$ 25",
+    "gratuito": false,
+    "link_compra": "https://www.sympla.com.br",
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "sympla.com.br"
+  }
+]

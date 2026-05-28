@@ -1,0 +1,36 @@
+name: Agente Publicador de Shows
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'   # A cada 2 horas, todos os dias
+  workflow_dispatch:
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write         # Necessário para fazer push no repositório
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install gspread google-auth
+
+      - name: Executar agente publicador
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+          SHEETS_ID: ${{ secrets.SHEETS_ID }}
+        run: python scripts/publicar.py
+
+      - name: Commit e push dos JSONs atualizados
+        run: |
+          git config user.name 'ShowsBR Bot'
+          git config user.email 'bot@showsbr.com.br'
+          git add data/shows/ data/cupons.json
+          git diff --staged --quiet || git commit -m 'chore: atualiza shows [skip ci]'
+          git push

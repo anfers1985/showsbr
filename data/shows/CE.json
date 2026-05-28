@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ce-saojao-fortaleza-20260624",
+    "artista": "São João de Fortaleza 2026",
+    "genero": "Forró",
+    "data_iso": "2026-06-24",
+    "horario": "19:00",
+    "local": "Centro de Eventos do Ceará",
+    "endereco": "Av. Washington Soares, 999",
+    "cidade": "Fortaleza",
+    "estado": "CE",
+    "descricao": "Forró pé de serra e pisadinha com Xand Avião, Dorgival Dantas e Felipe Amorim.",
+    "organizador": "Governo do Estado do Ceará",
+    "cnpj": "07.954.315/0001-07",
+    "valores": "Pista R$ 80\nMeia R$ 40\nSetor VIP R$ 250",
+    "gratuito": false,
+    "link_compra": "https://www.sympla.com.br",
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "sympla.com.br"
+  }
+]
