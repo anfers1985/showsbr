@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ma-bumba-sao-luis-20260630",
+    "artista": "Bumba Meu Boi — Festival Junino",
+    "genero": "MPB",
+    "data_iso": "2026-06-30",
+    "horario": "19:00",
+    "local": "Praça Deodoro",
+    "endereco": "Praça Deodoro, s/n — Centro",
+    "cidade": "São Luís",
+    "estado": "MA",
+    "descricao": "Festival Junino do Maranhão com grupos de bumba meu boi e shows de artistas locais.",
+    "organizador": "Governo do Estado do Maranhão",
+    "cnpj": "06.073.476/0001-04",
+    "valores": null,
+    "gratuito": true,
+    "link_compra": null,
+    "cupom": null,
+    "classificacao": "Livre",
+    "status": "Confirmado",
+    "fonte": "comunidade"
+  }
+]

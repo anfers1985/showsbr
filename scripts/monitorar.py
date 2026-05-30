@@ -29,7 +29,7 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive',
 ]
 
-DATA_DIR = Path('data/shows')
+DATA_DIR = Path('public/data/shows')
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; ShowsBR-Monitor/1.0; +https://showsbr.com.br)'}
 JANELA_DIAS = 14  # Verificar shows nos próximos 14 dias
 

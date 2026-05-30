@@ -1,7 +1,11 @@
 """
 ShowsBR — Agente Coletor de Shows
-Coleta shows de Sympla, Eventim e Ticket360 e escreve na aba Pendentes do Google Sheets.
-Roda via GitHub Actions: seg–sex às 8h, 12h e 17h (BRT).
+Coleta shows via scraping do site Sympla e escreve na aba Pendentes do Google Sheets.
+Roda via GitHub Actions seg–sex 8h, 12h, 17h BRT.
+
+Nota: Sympla e Eventim bloqueiam IPs de datacenters (GitHub Actions).
+A estratégia aqui é scraping do site público com headers realistas.
+Se continuar com timeout, o fluxo manual (cadastro direto na aba Aprovados) supre.
 """
 
 import os
@@ -9,6 +13,7 @@ import json
 import hashlib
 import logging
 import time
+import re
 from datetime import datetime, timedelta
 
 import requests
@@ -16,7 +21,6 @@ from bs4 import BeautifulSoup
 import gspread
 from google.oauth2.service_account import Credentials
 
-# ── LOGGING ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s [%(levelname)s] %(message)s',
@@ -24,67 +28,92 @@ logging.basicConfig(
 )
 log = logging.getLogger(__name__)
 
-# ── CONSTANTES ────────────────────────────────────────────────────────────────
 SCOPES = [
     'https://spreadsheets.google.com/feeds',
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive',
 ]
 
+# Headers realistas para evitar bloqueio
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (compatible; ShowsBR-Bot/1.0; +https://showsbr.com.br/sobre)',
-    'Accept-Language': 'pt-BR,pt;q=0.9',
+    'User-Agent': (
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'AppleWebKit/537.36 (KHTML, like Gecko) '
+        'Chrome/124.0.0.0 Safari/537.36'
+    ),
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
 }
 
-# Estados para coletar (expandir gradualmente)
-ESTADOS_ATIVOS = ['SC', 'SP', 'RJ', 'MG', 'RS', 'PR', 'BA', 'PE', 'GO', 'CE']
-
-# Período de coleta: próximos 90 dias
-DATA_INICIO = datetime.now().strftime('%Y-%m-%d')
 DATA_FIM = (datetime.now() + timedelta(days=90)).strftime('%Y-%m-%d')
+DATA_INICIO = datetime.now().strftime('%Y-%m-%d')
+
+# Estados ativos para coleta
+ESTADOS_ATIVOS = [
+    'SC', 'SP', 'RJ', 'MG', 'RS', 'PR',
+    'BA', 'PE', 'GO', 'CE', 'AM', 'PA',
+    'DF', 'ES', 'MT', 'MS', 'MA', 'PI',
+    'PB', 'RN', 'AL', 'SE', 'TO', 'RO', 'AC', 'AP', 'RR'
+]
+
+# Mapa UF → nome de cidade principal para Sympla
+SYMPLA_CIDADES = {
+    'AC': 'Rio+Branco', 'AL': 'Maceio', 'AM': 'Manaus', 'AP': 'Macapa',
+    'BA': 'Salvador', 'CE': 'Fortaleza', 'DF': 'Brasilia', 'ES': 'Vitoria',
+    'GO': 'Goiania', 'MA': 'Sao+Luis', 'MG': 'Belo+Horizonte', 'MS': 'Campo+Grande',
+    'MT': 'Cuiaba', 'PA': 'Belem', 'PB': 'Joao+Pessoa', 'PE': 'Recife',
+    'PI': 'Teresina', 'PR': 'Curitiba', 'RJ': 'Rio+de+Janeiro', 'RN': 'Natal',
+    'RO': 'Porto+Velho', 'RR': 'Boa+Vista', 'RS': 'Porto+Alegre', 'SC': 'Florianopolis',
+    'SE': 'Aracaju', 'SP': 'Sao+Paulo', 'TO': 'Palmas',
+}
+
+SESSION = requests.Session()
+SESSION.headers.update(HEADERS)
 
 
-# ── GOOGLE SHEETS ─────────────────────────────────────────────────────────────
 def conectar_sheets():
-    """Conecta ao Google Sheets usando a Service Account."""
     creds_json = os.environ.get('GOOGLE_CREDENTIALS')
     sheets_id = os.environ.get('SHEETS_ID')
-
     if not creds_json or not sheets_id:
-        raise ValueError('GOOGLE_CREDENTIALS e SHEETS_ID devem estar configurados como Secrets.')
-
+        raise ValueError('GOOGLE_CREDENTIALS e SHEETS_ID não configurados.')
     creds_dict = json.loads(creds_json)
     creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
     client = gspread.authorize(creds)
-    planilha = client.open_by_key(sheets_id)
-    return planilha
+    return client.open_by_key(sheets_id)
 
 
-def obter_ids_existentes(aba_pendentes, aba_aprovados, aba_publicados):
-    """Retorna set com todos os IDs já na planilha (para evitar duplicatas)."""
+def obter_ids_existentes(aba_pendentes, aba_aprovados):
+    """Lê IDs existentes das abas para evitar duplicatas. Usa get_all_values()."""
     ids = set()
-    for aba in [aba_pendentes, aba_aprovados, aba_publicados]:
+    for aba in [aba_pendentes, aba_aprovados]:
         try:
-            todos = aba.col_values(1)  # Coluna A = ID
-            ids.update(todos[1:])      # Pula o cabeçalho
-        except Exception:
-            pass
+            vals = aba.get_all_values()
+            for row in vals[1:]:   # pula cabeçalho
+                if row and row[0]:
+                    ids.add(row[0])
+        except Exception as e:
+            log.warning(f'Erro ao ler IDs da aba: {e}')
     return ids
 
 
+def gerar_id(artista, data_iso, cidade):
+    chave = f'{artista.lower().strip()}-{data_iso}-{cidade.lower().strip()}'
+    return hashlib.md5(chave.encode()).hexdigest()[:12]
+
+
 def escrever_pendentes(aba, shows):
-    """Escreve os shows novos na aba Pendentes."""
     if not shows:
         log.info('Nenhum show novo para escrever.')
         return
-
     agora = datetime.now().strftime('%d/%m/%Y %H:%M')
     linhas = []
     for s in shows:
         linhas.append([
             s.get('id', ''),
             s.get('artista', ''),
-            s.get('artista', ''),              # Coluna C = artista/evento
+            s.get('artista', ''),
             s.get('descricao', ''),
             s.get('genero', ''),
             s.get('data', ''),
@@ -94,77 +123,112 @@ def escrever_pendentes(aba, shows):
             s.get('cidade', ''),
             s.get('estado', ''),
             s.get('organizador', ''),
-            s.get('cnpj', ''),
+            '',                          # CNPJ — preencher manualmente na revisão
             s.get('valores', ''),
-            s.get('gratuito', 'NÃO'),
+            'NÃO',
             s.get('link_compra', ''),
-            s.get('cupom', ''),
+            '',                          # cupom
             s.get('fonte', ''),
             agora,
         ])
-
     aba.append_rows(linhas, value_input_option='RAW')
     log.info(f'{len(linhas)} shows escritos na aba Pendentes.')
 
 
-# ── GERAÇÃO DE ID ─────────────────────────────────────────────────────────────
-def gerar_id(artista, data, cidade):
-    """Gera ID único determinístico: hash de artista+data+cidade."""
-    chave = f'{artista.lower().strip()}-{data}-{cidade.lower().strip()}'
-    return hashlib.md5(chave.encode()).hexdigest()[:12]
-
-
-# ── COLETA: SYMPLA ────────────────────────────────────────────────────────────
-def coletar_sympla(estado):
+def coletar_sympla_busca(estado):
     """
-    Coleta eventos do Sympla por estado.
-    Usa a API pública de listagem (endpoint JSON).
+    Scraping da página de busca pública do Sympla por estado.
+    Endpoint: https://www.sympla.com.br/eventos?s=&state=SC
     """
     shows = []
-    url = (
-        f'https://www.sympla.com.br/api/v3/events'
-        f'?states={estado}'
-        f'&page=1&page_size=50'
-        f'&start_date={DATA_INICIO}&end_date={DATA_FIM}'
-    )
+    cidade = SYMPLA_CIDADES.get(estado, '')
+    # Busca por estado na página pública
+    url = f'https://www.sympla.com.br/eventos?s=&state={estado}'
 
     try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
+        resp = SESSION.get(url, timeout=20)
+        log.info(f'Sympla/{estado}: HTTP {resp.status_code} — {len(resp.text)} chars')
+
         if resp.status_code != 200:
-            log.warning(f'Sympla/{estado}: HTTP {resp.status_code}')
+            log.warning(f'Sympla/{estado}: resposta não-200, pulando.')
             return shows
 
-        data = resp.json()
-        eventos = data.get('data', [])
-        log.info(f'Sympla/{estado}: {len(eventos)} eventos encontrados')
+        soup = BeautifulSoup(resp.text, 'html.parser')
 
-        for ev in eventos:
-            artista = ev.get('name', '').strip()
-            cidade = (ev.get('address', {}) or {}).get('city', '').strip()
-            data_str = ev.get('start_date', '')[:10]  # YYYY-MM-DD
+        # Sympla renderiza os cards de evento com data-testid ou classes específicas
+        # Tentamos múltiplos seletores para robustez
+        cards = (
+            soup.select('[data-testid="event-card"]') or
+            soup.select('.EventCard') or
+            soup.select('article.event') or
+            soup.select('.sympla-event-card') or
+            []
+        )
 
-            if not artista or not cidade or not data_str:
+        # Fallback: buscar links com /evento/ na URL
+        if not cards:
+            links = soup.find_all('a', href=re.compile(r'/evento/'))
+            log.info(f'Sympla/{estado}: {len(links)} links /evento/ encontrados (fallback)')
+            for link in links[:20]:
+                href = link.get('href', '')
+                nome = link.get_text(strip=True)
+                if not nome or len(nome) < 3:
+                    continue
+                full_url = href if href.startswith('http') else f'https://www.sympla.com.br{href}'
+                show_id = gerar_id(nome, DATA_INICIO, estado)
+                shows.append({
+                    'id': show_id,
+                    'artista': nome,
+                    'genero': '',
+                    'data': '',
+                    'horario': '',
+                    'local': '',
+                    'endereco': '',
+                    'cidade': cidade.replace('+', ' '),
+                    'estado': estado,
+                    'organizador': '',
+                    'valores': '',
+                    'link_compra': full_url,
+                    'fonte': f'sympla.com.br/eventos?state={estado}',
+                })
+            return shows
+
+        log.info(f'Sympla/{estado}: {len(cards)} cards encontrados')
+        for card in cards[:20]:
+            nome_el = card.select_one('h2, h3, [class*="name"], [class*="title"]')
+            data_el = card.select_one('time, [class*="date"]')
+            local_el = card.select_one('[class*="location"], [class*="venue"]')
+            link_el = card.select_one('a[href]')
+
+            artista = nome_el.get_text(strip=True) if nome_el else ''
+            data_str = data_el.get_text(strip=True) if data_el else ''
+            local = local_el.get_text(strip=True) if local_el else ''
+            link = link_el['href'] if link_el else ''
+            if link and not link.startswith('http'):
+                link = 'https://www.sympla.com.br' + link
+
+            if not artista:
                 continue
 
+            show_id = gerar_id(artista, DATA_INICIO, estado)
             shows.append({
-                'id': gerar_id(artista, data_str, cidade),
+                'id': show_id,
                 'artista': artista,
-                'genero': ev.get('category', {}).get('name', '') if isinstance(ev.get('category'), dict) else '',
-                'data': datetime.strptime(data_str, '%Y-%m-%d').strftime('%d/%m/%Y'),
-                'horario': ev.get('start_date', '')[11:16] if len(ev.get('start_date', '')) > 10 else '',
-                'local': (ev.get('address', {}) or {}).get('name', ''),
-                'endereco': (ev.get('address', {}) or {}).get('formatted_address', ''),
-                'cidade': cidade,
+                'genero': '',
+                'data': data_str,
+                'horario': '',
+                'local': local,
+                'endereco': '',
+                'cidade': cidade.replace('+', ' '),
                 'estado': estado,
-                'organizador': ev.get('organizer_name', ''),
-                'cnpj': '',
+                'organizador': '',
                 'valores': '',
-                'gratuito': 'SIM' if ev.get('free', False) else 'NÃO',
-                'link_compra': f"https://www.sympla.com.br/evento/{ev.get('id', '')}",
-                'cupom': '',
-                'fonte': f"sympla.com.br/{estado}",
+                'link_compra': link,
+                'fonte': f'sympla.com.br/eventos?state={estado}',
             })
 
+    except requests.Timeout:
+        log.warning(f'Sympla/{estado}: timeout — plataforma pode estar bloqueando IPs de datacenter.')
     except requests.RequestException as e:
         log.error(f'Sympla/{estado}: erro de rede — {e}')
     except Exception as e:
@@ -173,132 +237,41 @@ def coletar_sympla(estado):
     return shows
 
 
-# ── COLETA: EVENTIM ───────────────────────────────────────────────────────────
-def coletar_eventim(estado):
-    """
-    Coleta eventos do Eventim por estado via scraping da listagem.
-    Eventim não tem API pública; usamos BeautifulSoup.
-    """
-    shows = []
-    # Mapa UF → slug de cidade principal (ponto de entrada)
-    cidades_map = {
-        'SP': 'sao-paulo', 'RJ': 'rio-de-janeiro', 'MG': 'belo-horizonte',
-        'SC': 'florianopolis', 'RS': 'porto-alegre', 'PR': 'curitiba',
-        'BA': 'salvador', 'PE': 'recife', 'GO': 'goiania', 'CE': 'fortaleza',
-    }
-    cidade_slug = cidades_map.get(estado)
-    if not cidade_slug:
-        return shows
-
-    url = f'https://www.eventim.com.br/city/{cidade_slug}/?affiliate=EVD'
-
-    try:
-        resp = requests.get(url, headers=HEADERS, timeout=15)
-        if resp.status_code != 200:
-            log.warning(f'Eventim/{estado}: HTTP {resp.status_code}')
-            return shows
-
-        soup = BeautifulSoup(resp.text, 'html.parser')
-        # Eventim usa data-testid="event-item" nos cards
-        cards = soup.select('[data-testid="event-item"]')
-        log.info(f'Eventim/{estado}: {len(cards)} cards encontrados')
-
-        for card in cards[:20]:
-            nome_el = card.select_one('h2, h3, .event-name, [data-testid="event-name"]')
-            data_el = card.select_one('time, .event-date, [data-testid="event-date"]')
-            local_el = card.select_one('.event-location, [data-testid="event-location"]')
-            link_el = card.select_one('a[href]')
-
-            artista = nome_el.get_text(strip=True) if nome_el else ''
-            data_raw = data_el.get('datetime', data_el.get_text(strip=True)) if data_el else ''
-            local = local_el.get_text(strip=True) if local_el else ''
-            link = 'https://www.eventim.com.br' + link_el['href'] if link_el else ''
-
-            # Normalizar data para DD/MM/YYYY
-            data_str = ''
-            data_iso = ''
-            if data_raw:
-                for fmt in ('%Y-%m-%d', '%Y-%m-%dT%H:%M:%S', '%d/%m/%Y'):
-                    try:
-                        dt = datetime.strptime(data_raw[:10], fmt[:len(data_raw[:10])])
-                        data_str = dt.strftime('%d/%m/%Y')
-                        data_iso = dt.strftime('%Y-%m-%d')
-                        break
-                    except ValueError:
-                        continue
-
-            if not artista or not data_iso:
-                continue
-
-            shows.append({
-                'id': gerar_id(artista, data_iso, estado),
-                'artista': artista,
-                'genero': '',
-                'data': data_str,
-                'horario': '',
-                'local': local,
-                'endereco': '',
-                'cidade': cidade_slug.replace('-', ' ').title(),
-                'estado': estado,
-                'organizador': '',
-                'cnpj': '',
-                'valores': '',
-                'gratuito': 'NÃO',
-                'link_compra': link,
-                'cupom': '',
-                'fonte': f'eventim.com.br/{cidade_slug}',
-            })
-
-        time.sleep(1)  # Delay entre requisições
-
-    except requests.RequestException as e:
-        log.error(f'Eventim/{estado}: erro de rede — {e}')
-    except Exception as e:
-        log.error(f'Eventim/{estado}: erro inesperado — {e}')
-
-    return shows
-
-
-# ── MAIN ──────────────────────────────────────────────────────────────────────
 def main():
     log.info('=== ShowsBR Agente Coletor iniciado ===')
     log.info(f'Período: {DATA_INICIO} → {DATA_FIM}')
-    log.info(f'Estados ativos: {", ".join(ESTADOS_ATIVOS)}')
+    log.info(f'Estados: {", ".join(ESTADOS_ATIVOS)}')
 
-    # Conectar ao Sheets
     planilha = conectar_sheets()
     aba_pendentes = planilha.worksheet('Pendentes')
     aba_aprovados = planilha.worksheet('Aprovados')
-    aba_publicados = planilha.worksheet('Publicados')
 
-    ids_existentes = obter_ids_existentes(aba_pendentes, aba_aprovados, aba_publicados)
-    log.info(f'{len(ids_existentes)} IDs já existentes na planilha (deduplicação).')
+    ids_existentes = obter_ids_existentes(aba_pendentes, aba_aprovados)
+    log.info(f'{len(ids_existentes)} IDs já existentes (deduplicação).')
 
     todos_novos = []
 
     for estado in ESTADOS_ATIVOS:
         log.info(f'--- Coletando: {estado} ---')
-
-        # Sympla
-        shows_sympla = coletar_sympla(estado)
-        novos_sympla = [s for s in shows_sympla if s['id'] not in ids_existentes]
-        log.info(f'  Sympla: {len(shows_sympla)} coletados, {len(novos_sympla)} novos')
-
-        # Eventim
-        shows_eventim = coletar_eventim(estado)
-        novos_eventim = [s for s in shows_eventim if s['id'] not in ids_existentes]
-        log.info(f'  Eventim: {len(shows_eventim)} coletados, {len(novos_eventim)} novos')
-
-        novos = novos_sympla + novos_eventim
-        # Adicionar novos IDs ao set para evitar duplicatas entre estados
+        shows = coletar_sympla_busca(estado)
+        novos = [s for s in shows if s['id'] not in ids_existentes]
+        log.info(f'  {len(shows)} coletados, {len(novos)} novos')
         for s in novos:
             ids_existentes.add(s['id'])
-
         todos_novos.extend(novos)
-        time.sleep(2)  # Respeitar limite de rate
+        time.sleep(3)  # delay entre estados
 
     log.info(f'Total de shows novos: {len(todos_novos)}')
-    escrever_pendentes(aba_pendentes, todos_novos)
+
+    if todos_novos:
+        escrever_pendentes(aba_pendentes, todos_novos)
+    else:
+        log.info(
+            'Nenhum show coletado automaticamente desta vez. '
+            'Isso é esperado se as plataformas estiverem bloqueando IPs de datacenter. '
+            'Use o formulário de cadastro ou insira diretamente na aba Aprovados.'
+        )
+
     log.info('=== Agente Coletor finalizado ===')
 
 

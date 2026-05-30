@@ -1,6 +1,6 @@
 """
 ShowsBR — Agente Publicador de Shows
-Lê a aba Aprovados do Google Sheets e atualiza os arquivos JSON no repositório.
+Lê a aba Aprovados do Google Sheets e atualiza os JSONs em public/data/shows/.
 Roda via GitHub Actions a cada 2 horas.
 """
 
@@ -27,7 +27,32 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive',
 ]
 
-DATA_DIR = Path('data/shows')
+# data/ agora fica dentro de public/ para o Cloudflare Pages servir os JSONs
+DATA_DIR = Path('public/data/shows')
+
+# Mapeamento fixo de colunas por ÍNDICE (evita problema de cabeçalho duplicado)
+# Deve corresponder exatamente à ordem das colunas na planilha
+COL = {
+    'id': 0,           # A
+    'artista': 1,      # B
+    'evento': 2,       # C  (Artista/Evento)
+    'descricao': 3,    # D
+    'genero': 4,       # E
+    'data': 5,         # F  (Data do show — DD/MM/AAAA)
+    'horario': 6,      # G
+    'local': 7,        # H
+    'endereco': 8,     # I
+    'cidade': 9,       # J
+    'estado': 10,      # K
+    'organizador': 11, # L
+    'cnpj': 12,        # M
+    'valores': 13,     # N
+    'gratuito': 14,    # O
+    'link_compra': 15, # P
+    'cupom': 16,       # Q
+    'fonte': 17,       # R
+    'data_coleta': 18, # S  (Data Coleta)
+}
 
 
 def conectar_sheets():
@@ -42,56 +67,78 @@ def conectar_sheets():
 
 
 def ler_aprovados(aba):
-    """Lê todos os registros da aba Aprovados."""
-    registros = aba.get_all_records()
-    log.info(f'{len(registros)} registros encontrados na aba Aprovados.')
-    return registros
+    """
+    Usa get_all_values() (retorna lista de listas) em vez de get_all_records()
+    para evitar o erro de cabeçalho duplicado do gspread.
+    Pula a linha 1 (cabeçalhos).
+    """
+    todas = aba.get_all_values()
+    if len(todas) <= 1:
+        log.info('Aba Aprovados vazia ou só com cabeçalho.')
+        return []
+    linhas = todas[1:]  # remove cabeçalho
+    log.info(f'{len(linhas)} linhas encontradas na aba Aprovados.')
+    return linhas
 
 
-def converter_para_json(registro):
-    """Converte uma linha do Sheets no schema JSON do site."""
-    artista = registro.get('Artista', '') or registro.get('Artista/Evento', '')
-    data_raw = registro.get('Data', '')  # DD/MM/YYYY
-    cidade = registro.get('Cidade', '')
-    estado = registro.get('Estado', '')
+def cell(linha, col_name):
+    """Retorna o valor de uma célula pelo nome do campo, ou string vazia."""
+    idx = COL.get(col_name, -1)
+    if idx < 0 or idx >= len(linha):
+        return ''
+    return str(linha[idx]).strip()
+
+
+def converter_para_json(linha):
+    """Converte uma linha (lista) em dict JSON do site."""
+    artista = cell(linha, 'artista') or cell(linha, 'evento')
+    data_raw = cell(linha, 'data')   # DD/MM/AAAA
+    cidade = cell(linha, 'cidade')
+    estado = cell(linha, 'estado')
+
+    if not artista or not estado:
+        log.warning(f'Linha ignorada — artista ou estado vazio: {linha[:5]}')
+        return None
 
     # Converter data para ISO
     data_iso = ''
     try:
         if '/' in data_raw:
             dt = datetime.strptime(data_raw, '%d/%m/%Y')
-        else:
+        elif '-' in data_raw:
             dt = datetime.strptime(data_raw[:10], '%Y-%m-%d')
+        else:
+            raise ValueError(f'Formato de data não reconhecido: {data_raw}')
         data_iso = dt.strftime('%Y-%m-%d')
-    except ValueError:
-        log.warning(f'Data inválida para {artista}: "{data_raw}"')
+    except ValueError as e:
+        log.warning(f'Data inválida para "{artista}": "{data_raw}" — {e}')
         return None
 
-    gratuito_raw = str(registro.get('Gratuito', 'NÃO')).upper()
+    gratuito_raw = cell(linha, 'gratuito').upper()
     gratuito = gratuito_raw in ('SIM', 'TRUE', '1', 'S', 'YES')
 
-    show_id = registro.get('ID', '') or gerar_id(artista, data_iso, cidade)
+    show_id = cell(linha, 'id') or gerar_id(artista, data_iso, cidade)
 
     return {
         'id': show_id,
         'artista': artista,
-        'genero': registro.get('Gênero', '') or registro.get('Genero', ''),
+        'genero': cell(linha, 'genero'),
         'data_iso': data_iso,
-        'horario': registro.get('Horário', '') or registro.get('Horario', ''),
-        'local': registro.get('Local', ''),
-        'endereco': registro.get('Endereço', '') or registro.get('Endereco', ''),
+        'horario': cell(linha, 'horario'),
+        'local': cell(linha, 'local'),
+        'endereco': cell(linha, 'endereco'),
         'cidade': cidade,
         'estado': estado,
-        'descricao': registro.get('Descrição', '') or registro.get('Descricao', ''),
-        'organizador': registro.get('Organizador', ''),
-        'cnpj': registro.get('CNPJ', ''),
-        'valores': registro.get('Valores', ''),
+        'descricao': cell(linha, 'descricao'),
+        'organizador': cell(linha, 'organizador'),
+        'cnpj': cell(linha, 'cnpj'),
+        'valores': cell(linha, 'valores'),
         'gratuito': gratuito,
-        'link_compra': registro.get('Link Compra', '') or registro.get('Link_Compra', ''),
-        'cupom': registro.get('Cupom', ''),
-        'classificacao': registro.get('Classificação', '') or registro.get('Classificacao', ''),
-        'status': registro.get('Status', 'Confirmado'),
-        'fonte': registro.get('Fonte', ''),
+        'link_compra': cell(linha, 'link_compra'),
+        'cupom': cell(linha, 'cupom'),
+        'classificacao': '',
+        'status': 'Confirmado',
+        'fonte': cell(linha, 'fonte'),
     }
 
 
@@ -101,36 +148,23 @@ def gerar_id(artista, data, cidade):
 
 
 def carregar_json_estado(estado):
-    """Carrega o JSON atual de um estado (ou retorna lista vazia)."""
     caminho = DATA_DIR / f'{estado}.json'
     if caminho.exists():
         try:
             with open(caminho, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        except (json.JSONDecodeError, IOError) as e:
+        except Exception as e:
             log.error(f'Erro ao carregar {caminho}: {e}')
     return []
 
 
 def salvar_json_estado(estado, shows):
-    """Salva o JSON atualizado de um estado, ordenado por data."""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     caminho = DATA_DIR / f'{estado}.json'
-
-    # Ordenar por data
     shows_sorted = sorted(shows, key=lambda s: s.get('data_iso', ''))
-
     with open(caminho, 'w', encoding='utf-8') as f:
         json.dump(shows_sorted, f, ensure_ascii=False, indent=2)
     log.info(f'{caminho}: {len(shows_sorted)} shows salvos.')
-
-
-def marcar_como_publicados(aba_aprovados, aba_publicados, rows_indices):
-    """Move os registros publicados para a aba Publicados."""
-    agora = datetime.now().strftime('%d/%m/%Y %H:%M')
-    # Em produção: mover as linhas da aba Aprovados para Publicados
-    # Por simplicidade, apenas loga — implementar movimentação conforme necessidade
-    log.info(f'{len(rows_indices)} registros marcados para publicação em {agora}.')
 
 
 def main():
@@ -138,35 +172,27 @@ def main():
 
     planilha = conectar_sheets()
     aba_aprovados = planilha.worksheet('Aprovados')
-    aba_publicados = planilha.worksheet('Publicados')
 
-    registros = ler_aprovados(aba_aprovados)
-    if not registros:
+    linhas = ler_aprovados(aba_aprovados)
+    if not linhas:
         log.info('Nenhum show aprovado pendente. Encerrando.')
         return
 
-    # Agrupar por estado
     por_estado = {}
-    validos = []
-    for reg in registros:
-        show = converter_para_json(reg)
+    validos = 0
+    for linha in linhas:
+        show = converter_para_json(linha)
         if not show:
             continue
         estado = show['estado']
-        if not estado:
-            log.warning(f'Show sem estado: {show["artista"]} — ignorado.')
-            continue
         por_estado.setdefault(estado, []).append(show)
-        validos.append(show)
+        validos += 1
 
-    log.info(f'{len(validos)} shows válidos em {len(por_estado)} estados.')
+    log.info(f'{validos} shows válidos em {len(por_estado)} estados.')
 
-    # Atualizar JSONs por estado
     for estado, novos_shows in por_estado.items():
         existentes = carregar_json_estado(estado)
         ids_existentes = {s['id'] for s in existentes}
-
-        # Adicionar somente shows novos (evitar duplicatas)
         adicionados = 0
         for show in novos_shows:
             if show['id'] not in ids_existentes:
@@ -174,16 +200,13 @@ def main():
                 ids_existentes.add(show['id'])
                 adicionados += 1
             else:
-                # Atualizar show existente (pode ter sido editado)
                 for i, ex in enumerate(existentes):
                     if ex['id'] == show['id']:
                         existentes[i] = show
                         break
-
         salvar_json_estado(estado, existentes)
-        log.info(f'{estado}: {adicionados} novos shows adicionados.')
+        log.info(f'{estado}: {adicionados} shows novos adicionados.')
 
-    marcar_como_publicados(aba_aprovados, aba_publicados, list(range(len(validos))))
     log.info('=== Agente Publicador finalizado ===')
 
 

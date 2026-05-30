@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ms-sertanejo-campo-grande-20260705",
+    "artista": "Henrique & Juliano",
+    "genero": "Sertanejo",
+    "data_iso": "2026-07-05",
+    "horario": "22:00",
+    "local": "Ginásio Guanandizão",
+    "endereco": "R. Antônio Maria Coelho, 3400",
+    "cidade": "Campo Grande",
+    "estado": "MS",
+    "descricao": "Show da dupla em Campo Grande.",
+    "organizador": "MS Shows Produções Ltda",
+    "cnpj": "77.888.000/0001-22",
+    "valores": "Pista R$ 150\nMeia R$ 75\nCamarote R$ 380",
+    "gratuito": false,
+    "link_compra": "https://www.sympla.com.br",
+    "cupom": null,
+    "classificacao": "16+",
+    "status": "Confirmado",
+    "fonte": "sympla.com.br"
+  }
+]
