@@ -24,4 +24,6 @@ jobs:
         env:
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
           SHEETS_ID: ${{ secrets.SHEETS_ID }}
+          SYMPLA_API_KEY: ${{ secrets.SYMPLA_API_KEY }}
+          EVENTBRITE_TOKEN: ${{ secrets.EVENTBRITE_TOKEN }}
         run: python scripts/coletar.py
