@@ -1,11 +1,13 @@
 """
 ShowsBR — Agente Coletor de Shows
-Coleta shows via scraping do site Sympla e escreve na aba Pendentes do Google Sheets.
-Roda via GitHub Actions seg–sex 8h, 12h, 17h BRT.
+Coleta via API oficial da Sympla e API pública do Eventbrite.
+Escreve shows novos na aba Pendentes do Google Sheets para revisão.
 
-Nota: Sympla e Eventim bloqueiam IPs de datacenters (GitHub Actions).
-A estratégia aqui é scraping do site público com headers realistas.
-Se continuar com timeout, o fluxo manual (cadastro direto na aba Aprovados) supre.
+Chaves necessárias (GitHub Secrets):
+  SYMPLA_API_KEY    → developers.sympla.com.br (gratuito, aprovação em até 5 dias)
+  EVENTBRITE_TOKEN  → eventbrite.com/platform (gratuito, aprovação imediata)
+  GOOGLE_CREDENTIALS → Service Account JSON
+  SHEETS_ID          → ID da planilha Google Sheets
 """
 
 import os
@@ -13,11 +15,9 @@ import json
 import hashlib
 import logging
 import time
-import re
 from datetime import datetime, timedelta
 
 import requests
-from bs4 import BeautifulSoup
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -34,201 +34,146 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive',
 ]
 
-# Headers realistas para evitar bloqueio
-HEADERS = {
+DATA_INICIO = datetime.now().strftime('%Y-%m-%d')
+DATA_FIM = (datetime.now() + timedelta(days=90)).strftime('%Y-%m-%d')
+
+ESTADOS_ATIVOS = [
+    'SC','SP','RJ','MG','RS','PR','BA','PE','GO','CE',
+    'AM','PA','DF','ES','MT','MS','MA','PI','PB','RN',
+    'AL','SE','TO','RO','AC','AP','RR'
+]
+
+# Mapa UF → código de localização do Eventbrite (Brazil regions)
+EVENTBRITE_REGIOES = {
+    'SC': 'Florianópolis', 'SP': 'São Paulo', 'RJ': 'Rio de Janeiro',
+    'MG': 'Belo Horizonte', 'RS': 'Porto Alegre', 'PR': 'Curitiba',
+    'BA': 'Salvador', 'PE': 'Recife', 'GO': 'Goiânia', 'CE': 'Fortaleza',
+    'AM': 'Manaus', 'PA': 'Belém', 'DF': 'Brasília', 'ES': 'Vitória',
+    'MT': 'Cuiabá', 'MS': 'Campo Grande', 'MA': 'São Luís', 'PI': 'Teresina',
+    'PB': 'João Pessoa', 'RN': 'Natal', 'AL': 'Maceió', 'SE': 'Aracaju',
+    'TO': 'Palmas', 'RO': 'Porto Velho', 'AC': 'Rio Branco',
+    'AP': 'Macapá', 'RR': 'Boa Vista',
+}
+
+HEADERS_BROWSER = {
     'User-Agent': (
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
         'AppleWebKit/537.36 (KHTML, like Gecko) '
         'Chrome/124.0.0.0 Safari/537.36'
     ),
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Connection': 'keep-alive',
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Language': 'pt-BR,pt;q=0.9',
 }
 
-DATA_FIM = (datetime.now() + timedelta(days=90)).strftime('%Y-%m-%d')
-DATA_INICIO = datetime.now().strftime('%Y-%m-%d')
 
-# Estados ativos para coleta
-ESTADOS_ATIVOS = [
-    'SC', 'SP', 'RJ', 'MG', 'RS', 'PR',
-    'BA', 'PE', 'GO', 'CE', 'AM', 'PA',
-    'DF', 'ES', 'MT', 'MS', 'MA', 'PI',
-    'PB', 'RN', 'AL', 'SE', 'TO', 'RO', 'AC', 'AP', 'RR'
-]
-
-# Mapa UF → nome de cidade principal para Sympla
-SYMPLA_CIDADES = {
-    'AC': 'Rio+Branco', 'AL': 'Maceio', 'AM': 'Manaus', 'AP': 'Macapa',
-    'BA': 'Salvador', 'CE': 'Fortaleza', 'DF': 'Brasilia', 'ES': 'Vitoria',
-    'GO': 'Goiania', 'MA': 'Sao+Luis', 'MG': 'Belo+Horizonte', 'MS': 'Campo+Grande',
-    'MT': 'Cuiaba', 'PA': 'Belem', 'PB': 'Joao+Pessoa', 'PE': 'Recife',
-    'PI': 'Teresina', 'PR': 'Curitiba', 'RJ': 'Rio+de+Janeiro', 'RN': 'Natal',
-    'RO': 'Porto+Velho', 'RR': 'Boa+Vista', 'RS': 'Porto+Alegre', 'SC': 'Florianopolis',
-    'SE': 'Aracaju', 'SP': 'Sao+Paulo', 'TO': 'Palmas',
-}
-
-SESSION = requests.Session()
-SESSION.headers.update(HEADERS)
-
+# ── GOOGLE SHEETS ──────────────────────────────────────────────────────────
 
 def conectar_sheets():
     creds_json = os.environ.get('GOOGLE_CREDENTIALS')
-    sheets_id = os.environ.get('SHEETS_ID')
+    sheets_id  = os.environ.get('SHEETS_ID')
     if not creds_json or not sheets_id:
         raise ValueError('GOOGLE_CREDENTIALS e SHEETS_ID não configurados.')
-    creds_dict = json.loads(creds_json)
-    creds = Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
-    client = gspread.authorize(creds)
-    return client.open_by_key(sheets_id)
+    creds = Credentials.from_service_account_info(json.loads(creds_json), scopes=SCOPES)
+    return gspread.authorize(creds).open_by_key(sheets_id)
 
 
-def obter_ids_existentes(aba_pendentes, aba_aprovados):
-    """Lê IDs existentes das abas para evitar duplicatas. Usa get_all_values()."""
+def obter_ids_existentes(aba_pend, aba_aprov):
     ids = set()
-    for aba in [aba_pendentes, aba_aprovados]:
+    for aba in [aba_pend, aba_aprov]:
         try:
-            vals = aba.get_all_values()
-            for row in vals[1:]:   # pula cabeçalho
+            for row in aba.get_all_values()[1:]:
                 if row and row[0]:
                     ids.add(row[0])
-        except Exception as e:
-            log.warning(f'Erro ao ler IDs da aba: {e}')
+        except Exception:
+            pass
     return ids
-
-
-def gerar_id(artista, data_iso, cidade):
-    chave = f'{artista.lower().strip()}-{data_iso}-{cidade.lower().strip()}'
-    return hashlib.md5(chave.encode()).hexdigest()[:12]
 
 
 def escrever_pendentes(aba, shows):
     if not shows:
-        log.info('Nenhum show novo para escrever.')
+        log.info('Nenhum show novo.')
         return
     agora = datetime.now().strftime('%d/%m/%Y %H:%M')
-    linhas = []
-    for s in shows:
-        linhas.append([
-            s.get('id', ''),
-            s.get('artista', ''),
-            s.get('artista', ''),
-            s.get('descricao', ''),
-            s.get('genero', ''),
-            s.get('data', ''),
-            s.get('horario', ''),
-            s.get('local', ''),
-            s.get('endereco', ''),
-            s.get('cidade', ''),
-            s.get('estado', ''),
-            s.get('organizador', ''),
-            '',                          # CNPJ — preencher manualmente na revisão
-            s.get('valores', ''),
-            'NÃO',
-            s.get('link_compra', ''),
-            '',                          # cupom
-            s.get('fonte', ''),
-            agora,
-        ])
+    linhas = [[
+        s.get('id',''), s.get('artista',''), s.get('artista',''),
+        s.get('descricao',''), s.get('genero',''), s.get('data',''),
+        s.get('horario',''), s.get('local',''), s.get('endereco',''),
+        s.get('cidade',''), s.get('estado',''), s.get('organizador',''),
+        '', s.get('valores',''), 'NÃO', s.get('link_compra',''), '', s.get('fonte',''), agora,
+    ] for s in shows]
     aba.append_rows(linhas, value_input_option='RAW')
     log.info(f'{len(linhas)} shows escritos na aba Pendentes.')
 
 
-def coletar_sympla_busca(estado):
-    """
-    Scraping da página de busca pública do Sympla por estado.
-    Endpoint: https://www.sympla.com.br/eventos?s=&state=SC
-    """
+def gerar_id(artista, data_iso, estado):
+    chave = f'{artista.lower().strip()}-{data_iso}-{estado.lower()}'
+    return hashlib.md5(chave.encode()).hexdigest()[:12]
+
+
+# ── SYMPLA API ─────────────────────────────────────────────────────────────
+# Documentação: https://developers.sympla.com.br
+# Chave gratuita — cadastro em developers.sympla.com.br
+# Endpoint: GET https://api.sympla.com.br/public/v3/events
+# Parâmetros: page, page_size, start_date, end_date, state
+
+def coletar_sympla(estado, api_key):
     shows = []
-    cidade = SYMPLA_CIDADES.get(estado, '')
-    # Busca por estado na página pública
-    url = f'https://www.sympla.com.br/eventos?s=&state={estado}'
+    if not api_key:
+        log.warning('SYMPLA_API_KEY não configurada — pulando Sympla.')
+        return shows
+
+    url = 'https://api.sympla.com.br/public/v3/events'
+    headers = {**HEADERS_BROWSER, 'S_TOKEN': api_key}
+    params = {
+        'page': 1,
+        'page_size': 50,
+        'start_date': DATA_INICIO,
+        'end_date': DATA_FIM,
+        'state': estado,
+    }
 
     try:
-        resp = SESSION.get(url, timeout=20)
-        log.info(f'Sympla/{estado}: HTTP {resp.status_code} — {len(resp.text)} chars')
+        resp = requests.get(url, headers=headers, params=params, timeout=20)
+        log.info(f'Sympla/{estado}: HTTP {resp.status_code}')
 
+        if resp.status_code == 401:
+            log.error('Sympla: chave inválida ou não autorizada. Verifique SYMPLA_API_KEY.')
+            return shows
         if resp.status_code != 200:
-            log.warning(f'Sympla/{estado}: resposta não-200, pulando.')
+            log.warning(f'Sympla/{estado}: resposta {resp.status_code}')
             return shows
 
-        soup = BeautifulSoup(resp.text, 'html.parser')
+        eventos = resp.json().get('data', [])
+        log.info(f'Sympla/{estado}: {len(eventos)} eventos')
 
-        # Sympla renderiza os cards de evento com data-testid ou classes específicas
-        # Tentamos múltiplos seletores para robustez
-        cards = (
-            soup.select('[data-testid="event-card"]') or
-            soup.select('.EventCard') or
-            soup.select('article.event') or
-            soup.select('.sympla-event-card') or
-            []
-        )
-
-        # Fallback: buscar links com /evento/ na URL
-        if not cards:
-            links = soup.find_all('a', href=re.compile(r'/evento/'))
-            log.info(f'Sympla/{estado}: {len(links)} links /evento/ encontrados (fallback)')
-            for link in links[:20]:
-                href = link.get('href', '')
-                nome = link.get_text(strip=True)
-                if not nome or len(nome) < 3:
-                    continue
-                full_url = href if href.startswith('http') else f'https://www.sympla.com.br{href}'
-                show_id = gerar_id(nome, DATA_INICIO, estado)
-                shows.append({
-                    'id': show_id,
-                    'artista': nome,
-                    'genero': '',
-                    'data': '',
-                    'horario': '',
-                    'local': '',
-                    'endereco': '',
-                    'cidade': cidade.replace('+', ' '),
-                    'estado': estado,
-                    'organizador': '',
-                    'valores': '',
-                    'link_compra': full_url,
-                    'fonte': f'sympla.com.br/eventos?state={estado}',
-                })
-            return shows
-
-        log.info(f'Sympla/{estado}: {len(cards)} cards encontrados')
-        for card in cards[:20]:
-            nome_el = card.select_one('h2, h3, [class*="name"], [class*="title"]')
-            data_el = card.select_one('time, [class*="date"]')
-            local_el = card.select_one('[class*="location"], [class*="venue"]')
-            link_el = card.select_one('a[href]')
-
-            artista = nome_el.get_text(strip=True) if nome_el else ''
-            data_str = data_el.get_text(strip=True) if data_el else ''
-            local = local_el.get_text(strip=True) if local_el else ''
-            link = link_el['href'] if link_el else ''
-            if link and not link.startswith('http'):
-                link = 'https://www.sympla.com.br' + link
-
-            if not artista:
+        for ev in eventos:
+            artista = (ev.get('name') or '').strip()
+            addr    = ev.get('address') or {}
+            cidade  = (addr.get('city') or '').strip()
+            data_raw = (ev.get('start_date') or '')[:10]
+            if not artista or not cidade or not data_raw:
+                continue
+            try:
+                dt = datetime.strptime(data_raw, '%Y-%m-%d')
+                data_fmt = dt.strftime('%d/%m/%Y')
+            except ValueError:
                 continue
 
-            show_id = gerar_id(artista, DATA_INICIO, estado)
             shows.append({
-                'id': show_id,
+                'id': gerar_id(artista, data_raw, estado),
                 'artista': artista,
-                'genero': '',
-                'data': data_str,
-                'horario': '',
-                'local': local,
-                'endereco': '',
-                'cidade': cidade.replace('+', ' '),
+                'genero': (ev.get('category') or {}).get('name', '') if isinstance(ev.get('category'), dict) else '',
+                'data': data_fmt,
+                'horario': (ev.get('start_date') or '')[11:16],
+                'local': addr.get('name', ''),
+                'endereco': addr.get('formatted_address', ''),
+                'cidade': cidade,
                 'estado': estado,
-                'organizador': '',
+                'organizador': ev.get('organizer_name', ''),
                 'valores': '',
-                'link_compra': link,
-                'fonte': f'sympla.com.br/eventos?state={estado}',
+                'link_compra': f"https://www.sympla.com.br/evento/{ev.get('id','')}",
+                'fonte': f'api.sympla.com.br/{estado}',
             })
-
-    except requests.Timeout:
-        log.warning(f'Sympla/{estado}: timeout — plataforma pode estar bloqueando IPs de datacenter.')
     except requests.RequestException as e:
         log.error(f'Sympla/{estado}: erro de rede — {e}')
     except Exception as e:
@@ -237,41 +182,144 @@ def coletar_sympla_busca(estado):
     return shows
 
 
+# ── EVENTBRITE API ─────────────────────────────────────────────────────────
+# Documentação: https://www.eventbrite.com/platform/api
+# Token gratuito — criar conta em eventbrite.com/platform e gerar Private Token
+# Endpoint: GET https://www.eventbriteapi.com/v3/events/search/
+# Parâmetros: location.address, location.within, start_date.range_start, categories
+
+EVENTBRITE_CATEGORIAS_MUSICA = '103'  # Music category ID no Eventbrite
+
+def coletar_eventbrite(estado, token):
+    shows = []
+    if not token:
+        log.warning('EVENTBRITE_TOKEN não configurada — pulando Eventbrite.')
+        return shows
+
+    cidade = EVENTBRITE_REGIOES.get(estado, '')
+    if not cidade:
+        return shows
+
+    url = 'https://www.eventbriteapi.com/v3/events/search/'
+    headers = {'Authorization': f'Bearer {token}', **HEADERS_BROWSER}
+    params = {
+        'location.address': f'{cidade}, Brasil',
+        'location.within': '50km',
+        'start_date.range_start': DATA_INICIO + 'T00:00:00',
+        'start_date.range_end': DATA_FIM + 'T23:59:59',
+        'categories': EVENTBRITE_CATEGORIAS_MUSICA,
+        'expand': 'venue,organizer',
+        'page_size': 50,
+    }
+
+    try:
+        resp = requests.get(url, headers=headers, params=params, timeout=20)
+        log.info(f'Eventbrite/{estado}: HTTP {resp.status_code}')
+
+        if resp.status_code == 401:
+            log.error('Eventbrite: token inválido. Verifique EVENTBRITE_TOKEN.')
+            return shows
+        if resp.status_code != 200:
+            log.warning(f'Eventbrite/{estado}: resposta {resp.status_code}')
+            return shows
+
+        eventos = resp.json().get('events', [])
+        log.info(f'Eventbrite/{estado}: {len(eventos)} eventos')
+
+        for ev in eventos:
+            nome = (ev.get('name') or {}).get('text', '').strip()
+            if not nome:
+                continue
+
+            inicio = ev.get('start') or {}
+            data_raw = (inicio.get('local') or '')[:10]
+            horario  = (inicio.get('local') or '')[11:16]
+
+            venue = ev.get('venue') or {}
+            addr  = venue.get('address') or {}
+            local_nome = venue.get('name', '')
+            end_str    = addr.get('localized_address_display', '')
+            cidade_ev  = addr.get('city', cidade)
+
+            org = ev.get('organizer') or {}
+
+            try:
+                dt = datetime.strptime(data_raw, '%Y-%m-%d')
+                data_fmt = dt.strftime('%d/%m/%Y')
+            except ValueError:
+                continue
+
+            shows.append({
+                'id': gerar_id(nome, data_raw, estado),
+                'artista': nome,
+                'genero': '',
+                'data': data_fmt,
+                'horario': horario,
+                'local': local_nome,
+                'endereco': end_str,
+                'cidade': cidade_ev,
+                'estado': estado,
+                'organizador': org.get('name', ''),
+                'valores': 'Gratuito' if ev.get('is_free') else '',
+                'link_compra': ev.get('url', ''),
+                'fonte': f'eventbrite.com/{estado}',
+            })
+    except requests.RequestException as e:
+        log.error(f'Eventbrite/{estado}: erro de rede — {e}')
+    except Exception as e:
+        log.error(f'Eventbrite/{estado}: erro inesperado — {e}')
+
+    return shows
+
+
+# ── MAIN ───────────────────────────────────────────────────────────────────
+
 def main():
     log.info('=== ShowsBR Agente Coletor iniciado ===')
     log.info(f'Período: {DATA_INICIO} → {DATA_FIM}')
-    log.info(f'Estados: {", ".join(ESTADOS_ATIVOS)}')
 
-    planilha = conectar_sheets()
-    aba_pendentes = planilha.worksheet('Pendentes')
-    aba_aprovados = planilha.worksheet('Aprovados')
+    sympla_key  = os.environ.get('SYMPLA_API_KEY', '')
+    evbr_token  = os.environ.get('EVENTBRITE_TOKEN', '')
 
-    ids_existentes = obter_ids_existentes(aba_pendentes, aba_aprovados)
-    log.info(f'{len(ids_existentes)} IDs já existentes (deduplicação).')
+    if not sympla_key and not evbr_token:
+        log.warning(
+            'Nenhuma chave de API configurada.\n'
+            '  → Sympla:     cadastre-se em developers.sympla.com.br e adicione o secret SYMPLA_API_KEY\n'
+            '  → Eventbrite: cadastre-se em eventbrite.com/platform e adicione o secret EVENTBRITE_TOKEN\n'
+            'Encerrando sem coletar.'
+        )
+        return
+
+    planilha    = conectar_sheets()
+    aba_pend    = planilha.worksheet('Pendentes')
+    aba_aprov   = planilha.worksheet('Aprovados')
+    ids_exist   = obter_ids_existentes(aba_pend, aba_aprov)
+    log.info(f'{len(ids_exist)} IDs já existentes (deduplicação).')
 
     todos_novos = []
 
     for estado in ESTADOS_ATIVOS:
-        log.info(f'--- Coletando: {estado} ---')
-        shows = coletar_sympla_busca(estado)
-        novos = [s for s in shows if s['id'] not in ids_existentes]
-        log.info(f'  {len(shows)} coletados, {len(novos)} novos')
-        for s in novos:
-            ids_existentes.add(s['id'])
+        log.info(f'--- {estado} ---')
+        novos = []
+
+        # Sympla
+        for s in coletar_sympla(estado, sympla_key):
+            if s['id'] not in ids_exist:
+                ids_exist.add(s['id'])
+                novos.append(s)
+
+        # Eventbrite
+        for s in coletar_eventbrite(estado, evbr_token):
+            if s['id'] not in ids_exist:
+                ids_exist.add(s['id'])
+                novos.append(s)
+
+        log.info(f'  {len(novos)} shows novos em {estado}')
         todos_novos.extend(novos)
-        time.sleep(3)  # delay entre estados
+        time.sleep(1)
 
-    log.info(f'Total de shows novos: {len(todos_novos)}')
-
-    if todos_novos:
-        escrever_pendentes(aba_pendentes, todos_novos)
-    else:
-        log.info(
-            'Nenhum show coletado automaticamente desta vez. '
-            'Isso é esperado se as plataformas estiverem bloqueando IPs de datacenter. '
-            'Use o formulário de cadastro ou insira diretamente na aba Aprovados.'
-        )
-
+    log.info(f'Total geral: {len(todos_novos)} shows novos')
+    escrever_pendentes(aba_pend, todos_novos)
     log.info('=== Agente Coletor finalizado ===')
 
 

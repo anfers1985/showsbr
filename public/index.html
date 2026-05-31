@@ -4,73 +4,68 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ShowsBR — Do interior às capitais, shows por todo o Brasil</title>
-<meta name="description" content="Agenda completa de shows musicais no Brasil. Todos os estados, todos os estilos, todas as cidades. Do interior às capitais.">
+<meta name="description" content="Agenda completa de shows musicais no Brasil. Todos os estados, todos os estilos, todas as cidades.">
 <meta property="og:title" content="ShowsBR — Shows por todo o Brasil">
-<meta property="og:description" content="Agenda completa de shows musicais no Brasil. Todos os estados, todos os estilos.">
+<meta property="og:description" content="Do interior às capitais — shows por todo o Brasil.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://showsbr.com.br">
 <link rel="canonical" href="https://showsbr.com.br">
-<link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=IBM+Plex+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --ink:#1c2b3a;--ink2:#243447;--ink3:#555;--ink4:#888;--ink5:#bbb;
   --paper:#f6f7f9;--paper2:#eaecf0;--paper3:#d8dce4;
-  --white:#fff;--green:#009c3b;--green2:#1a6b3a;--gold:#b5890a;
+  --white:#fff;--green-acc:#009c3b;--green:#1a6b3a;--gold:#b5890a;
   --border:#cdd2da;
   --fhead:'Bebas Neue',sans-serif;
   --fbody:'IBM Plex Sans',sans-serif;
   --fmono:'IBM Plex Mono',monospace;
 }
 html{scroll-behavior:smooth}
-body{font-family:var(--fbody);background:var(--paper);color:var(--ink);font-size:15px;line-height:1.55;min-height:100vh}
-
-/* PAGE SYSTEM */
+body{font-family:var(--fbody);background:var(--paper);color:#1c2b3a;font-size:15px;line-height:1.55;min-height:100vh}
 .page{display:none}.page.active{display:block}
 
-/* ── HEADER ── */
-header{background:var(--ink);color:var(--white);position:sticky;top:0;z-index:200;border-bottom:3px solid var(--green)}
-.hbar{max-width:1140px;margin:0 auto;padding:0 24px;height:52px;display:flex;align-items:center}
-.logo{font-family:var(--fhead);font-size:30px;letter-spacing:1px;color:var(--white);cursor:pointer;text-decoration:none;line-height:1;flex-shrink:0;margin-right:28px}
+/* HEADER */
+header{background:#1c2b3a;color:var(--white);position:sticky;top:0;z-index:200;border-bottom:2px solid var(--green-acc)}
+.hbar{max-width:1140px;margin:0 auto;padding:0 24px;height:52px;display:flex;align-items:center;gap:0}
+.logo{font-family:var(--fhead);font-size:28px;letter-spacing:1px;color:var(--white);cursor:pointer;text-decoration:none;line-height:1;flex-shrink:0;margin-right:28px}
 .logo span{color:#FFDF00}
-.hsearch{flex:1;max-width:480px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.12);border-right:1px solid rgba(255,255,255,.12);height:100%}
+.hsearch{flex:1;max-width:500px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.12);border-right:1px solid rgba(255,255,255,.12);height:100%}
 .hsearch input{flex:1;background:transparent;border:none;outline:none;color:var(--white);font-family:var(--fbody);font-size:13px;padding:0 14px;height:100%}
-.hsearch input::placeholder{color:rgba(255,255,255,.35);font-style:italic}
-.hsearch button{background:var(--green);border:none;color:var(--white);padding:0 18px;height:100%;font-family:var(--fbody);font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.8px;text-transform:uppercase;transition:background .15s;flex-shrink:0}
-.hsearch button:hover{background:var(--green2)}
+.hsearch input::placeholder{color:rgba(255,255,255,.38);font-style:italic}
+.hsearch button{background:var(--green-acc);border:none;color:var(--white);padding:0 18px;height:100%;font-family:var(--fbody);font-size:12px;font-weight:600;cursor:pointer;letter-spacing:.8px;text-transform:uppercase;transition:background .15s;flex-shrink:0}
+.hsearch button:hover{background:#007a2f}
 .hnav{display:flex;align-items:center;margin-left:auto;height:100%}
 .hnav a{color:rgba(255,255,255,.65);text-decoration:none;font-size:12px;font-weight:500;padding:0 13px;height:100%;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.08);cursor:pointer;transition:color .15s,background .15s;white-space:nowrap;letter-spacing:.3px}
 .hnav a:hover,.hnav a.active{color:var(--white);background:rgba(255,255,255,.07)}
-.hnav a.cta{background:var(--green);color:var(--white);font-weight:600}
-.hnav a.cta:hover{background:var(--green2)}
+.hnav a.cta{background:var(--green-acc);color:var(--white);font-weight:600}
+.hnav a.cta:hover{background:#007a2f}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px;margin-left:auto;background:none;border:none}
 .hamburger span{display:block;width:22px;height:2px;background:var(--white);transition:all .25s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .hamburger.open span:nth-child(2){opacity:0}
 .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-/* MOBILE MENU */
-.mmenu{display:none;position:fixed;top:55px;left:0;right:0;bottom:0;background:var(--ink);z-index:190;flex-direction:column;overflow-y:auto}
+.mmenu{display:none;position:fixed;top:52px;left:0;right:0;bottom:0;background:#1c2b3a;z-index:190;flex-direction:column;overflow-y:auto}
 .mmenu.open{display:flex}
 .mmenu a{color:rgba(255,255,255,.78);text-decoration:none;font-size:15px;font-weight:500;padding:15px 28px;border-bottom:1px solid rgba(255,255,255,.07);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .1s}
 .mmenu a:hover{background:rgba(255,255,255,.05);color:var(--white)}
-.mmenu a.cta{color:var(--green)}
+.mmenu a.cta{color:var(--green-acc);font-weight:700}
 .mmenu .msec{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);padding:18px 28px 6px}
 
-/* ADVANCED SEARCH PANEL */
-.spanel{background:#243447;border-bottom:1px solid #1a2a38}
-.spanel-inner{max-width:1140px;margin:0 auto;padding:12px 24px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:1px;background:#1a2a38}
-.spanel select{background:#1e2e3e;border:none;color:rgba(255,255,255,.65);font-family:var(--fbody);font-size:13px;padding:9px 32px 9px 14px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;width:100%}
-.spanel select option{background:#1e2e3e}
-.spanel button{background:var(--green);border:none;color:var(--white);font-family:var(--fbody);font-size:12px;font-weight:600;padding:9px 24px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:background .15s}
-.spanel button:hover{background:var(--green2)}
+/* SEARCH PANEL */
+.spanel{background:#243447;border-bottom:1px solid #333}
+.spanel-inner{max-width:1140px;margin:0 auto;padding:12px 24px;display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:1px;background:#333}
+.spanel select{background:#1e1e1e;border:none;color:rgba(255,255,255,.65);font-family:var(--fbody);font-size:13px;padding:9px 32px 9px 14px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;width:100%}
+.spanel select option{background:#1e1e1e}
+.spanel button{background:var(--green-acc);border:none;color:var(--white);font-family:var(--fbody);font-size:12px;font-weight:600;padding:9px 24px;cursor:pointer;text-transform:uppercase;letter-spacing:1px;transition:background .15s;white-space:nowrap}
+.spanel button:hover{background:#007a2f}
 
 /* HERO */
-.hero{background:var(--ink);color:var(--white);padding:44px 24px 36px}
-.hero-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 300px;gap:40px;align-items:end}
-.hero-title{font-family:var(--fhead);font-size:clamp(50px,6.5vw,80px);line-height:.95;letter-spacing:1px}
-.hero-title .acc{color:var(--green)}
+.hero{background:#1c2b3a;color:var(--white);padding:44px 24px 36px;border-bottom:1px solid #222}
+.hero-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr 320px;gap:40px;align-items:end}
+.hero-title{font-family:var(--fhead);font-size:clamp(50px,6.5vw,84px);line-height:.95;letter-spacing:1px}
+.hero-title .acc{color:var(--green-acc)}
 .hero-sub{margin-top:14px;font-size:13px;color:rgba(255,255,255,.45);font-weight:300;font-style:italic;line-height:1.65;max-width:460px}
 .hero-stats{display:flex;gap:28px;margin-top:26px;border-top:1px solid rgba(255,255,255,.1);padding-top:18px}
 .hstat .n{font-family:var(--fhead);font-size:34px;color:var(--white);line-height:1}
@@ -86,172 +81,202 @@ header{background:var(--ink);color:var(--white);position:sticky;top:0;z-index:20
 .tbar-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;white-space:nowrap}
 .tab{padding:13px 18px;font-size:11px;font-weight:600;color:var(--ink4);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s;text-transform:uppercase;letter-spacing:.6px}
 .tab:hover{color:var(--ink)}
-.tab.active{color:var(--ink);border-bottom-color:var(--ink)}
+.tab.active{color:#1c2b3a;border-bottom-color:#1c2b3a}
 
 /* LAYOUT */
 .wrap{max-width:1140px;margin:0 auto;padding:0 24px}
 .mlayout{max-width:1140px;margin:0 auto;padding:28px 24px 60px;display:grid;grid-template-columns:1fr 268px;gap:28px}
 
 /* SECTION HEAD */
-.shead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;padding-bottom:9px;border-bottom:2px solid var(--ink)}
-.shead h2{font-family:var(--fhead);font-size:20px;letter-spacing:.5px}
+.shead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;padding-bottom:9px;border-bottom:2px solid #1c2b3a}
+.shead h2{font-family:var(--fhead);font-size:20px;letter-spacing:.5px;color:#1c2b3a}
 .shead a{font-size:11px;color:var(--ink3);cursor:pointer;text-decoration:none;text-transform:uppercase;letter-spacing:.5px;font-weight:500}
 .shead a:hover{color:var(--ink);text-decoration:underline}
 
 /* SHOW ROW */
-.srow{display:grid;grid-template-columns:58px 1fr;gap:14px;align-items:start;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s;text-decoration:none;color:inherit}
+.srow{display:grid;grid-template-columns:58px 1fr;gap:14px;align-items:start;padding:13px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s,padding .1s;text-decoration:none;color:inherit}
+.srow:first-of-type{border-top:1px solid var(--border)}
 .srow:hover{background:var(--paper2);margin:0 -10px;padding-left:10px;padding-right:10px}
-.srow-date{text-align:center;background:var(--ink);color:var(--white);padding:6px 4px}
-.srow-date .day{font-family:var(--fhead);font-size:26px;line-height:1;display:block}
-.srow-date .mon{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,.5);display:block;margin-top:2px}
-.srow-body{}
-.srow-title{font-size:15px;font-weight:600;color:var(--ink);line-height:1.3}
-.srow-meta{font-size:12px;color:var(--ink3);margin-top:3px}
-.srow-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.tag{font-family:var(--fmono);font-size:10px;padding:2px 6px;border:1px solid var(--border);color:var(--ink4);letter-spacing:.3px;text-transform:uppercase}
-.tag.green{border-color:var(--green);color:var(--green)}
-.tag.gold{border-color:var(--gold);color:var(--gold)}
+.sdate{text-align:center;padding-top:1px}
+.sdate .dd{font-family:var(--fhead);font-size:28px;line-height:1;color:var(--ink)}
+.sdate .mm{font-family:var(--fmono);font-size:9px;text-transform:uppercase;color:var(--ink4);letter-spacing:1px}
+.sdate .wd{font-size:9px;color:var(--ink5);margin-top:1px}
+.sbody h3{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:3px;line-height:1.3}
+.smeta{font-size:12px;color:var(--ink3);display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.smeta .dot{color:var(--ink5)}
+.stags{display:flex;gap:5px;margin-top:5px;flex-wrap:wrap}
+.sstate-inline{font-family:var(--fmono);font-size:9px;color:var(--ink4);background:var(--paper2);border:1px solid var(--border);padding:1px 5px;margin-left:8px;display:inline-block;vertical-align:middle}
+
+/* TAGS */
+.tag{font-family:var(--fmono);font-size:9px;font-weight:500;letter-spacing:.5px;padding:2px 6px;text-transform:uppercase;border:1px solid currentColor;display:inline-block;white-space:nowrap}
+.tg{color:var(--ink4);border-color:var(--border)}
+.tf{color:var(--green);border-color:var(--green)}
+.tc{color:var(--gold);border-color:var(--gold)}
+.tok{color:var(--green);border-color:var(--green)}
 
 /* MONTH DIVIDER */
-.mdiv{font-family:var(--fhead);font-size:14px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);padding:20px 0 8px;border-bottom:1px solid var(--border)}
-.mdiv:first-child{padding-top:0}
+.mdate{font-family:var(--fmono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);padding:18px 0 7px;border-bottom:1px solid var(--border)}
+.mdate:first-child{padding-top:0}
 
 /* SIDEBAR */
-.sidebar{}
-.sw{background:var(--white);border:1px solid var(--border);margin-bottom:20px}
-.sw-head{font-family:var(--fhead);font-size:14px;letter-spacing:.5px;padding:11px 14px;border-bottom:1px solid var(--border);background:var(--paper2)}
-.sw-body{padding:12px 14px}
-.sw-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--paper2);font-size:13px;cursor:pointer;transition:color .1s}
-.sw-row:last-child{border:none}
-.sw-row:hover{color:var(--green)}
-.sw-row .n{font-family:var(--fmono);font-size:11px;color:var(--ink4)}
+.sblock{background:var(--white);border:1px solid var(--border);margin-bottom:16px}
+.sblock-head{background:#1c2b3a;color:var(--white);padding:9px 14px;font-family:var(--fhead);font-size:15px;letter-spacing:.5px}
+.sblock-body{padding:10px 14px}
+.slink{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--paper2);cursor:pointer;text-decoration:none;color:var(--ink2);font-size:12px;transition:color .1s}
+.slink:last-child{border-bottom:none}
+.slink:hover{color:var(--green-acc)}
+.slink .n{font-family:var(--fmono);font-size:10px;color:var(--ink4)}
 
-/* ADSTERRA BANNER SLOTS */
-.ad-banner{background:var(--paper2);border:1px dashed var(--border);display:flex;align-items:center;justify-content:center;color:var(--ink5);font-size:11px;font-family:var(--fmono);letter-spacing:.5px;text-align:center}
-.ad-728{width:100%;height:90px;margin:16px 0}
-.ad-300{width:100%;height:250px;margin-bottom:20px}
-
-/* SHOW DETAIL PAGE */
-.show-detail{max-width:1140px;margin:0 auto;padding:32px 24px 60px;display:grid;grid-template-columns:1fr 300px;gap:32px}
-.show-main{}
-.show-header{border-bottom:2px solid var(--ink);padding-bottom:20px;margin-bottom:24px}
-.show-genre{font-family:var(--fmono);font-size:11px;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.show-title{font-family:var(--fhead);font-size:clamp(32px,4vw,52px);line-height:1;color:var(--ink)}
-.show-meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:24px;border:1px solid var(--border)}
-.smg-item{padding:14px 16px;border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
-.smg-item:nth-child(even){border-right:none}
-.smg-item:nth-last-child(-n+2){border-bottom:none}
-.smg-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);margin-bottom:4px}
-.smg-value{font-size:14px;color:var(--ink);font-weight:500}
-.show-desc{margin-top:24px;padding:18px;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--green)}
-.show-desc h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);font-weight:600;margin-bottom:10px}
-.show-desc p{font-size:14px;color:var(--ink3);line-height:1.65}
-.show-sidebar{}
-.buy-box{background:var(--ink);color:var(--white);padding:20px}
-.buy-box h3{font-family:var(--fhead);font-size:16px;letter-spacing:.5px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
-.buy-price{font-family:var(--fmono);font-size:12px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.07);color:rgba(255,255,255,.75)}
-.buy-price:last-of-type{border:none;margin-bottom:12px}
-.btn-buy{display:block;background:var(--green);color:var(--white);text-align:center;padding:13px;font-family:var(--fbody);font-size:13px;font-weight:600;letter-spacing:.5px;text-decoration:none;cursor:pointer;border:none;width:100%;transition:background .15s}
-.btn-buy:hover{background:var(--green2)}
-.coupon-box{background:var(--paper2);border:1px dashed var(--border);padding:14px;margin-top:14px;text-align:center}
-.coupon-code{font-family:var(--fhead);font-size:20px;letter-spacing:2px;color:var(--gold)}
-.coupon-desc{font-size:11px;color:var(--ink4);margin-top:4px}
-.travel-box{background:var(--white);border:1px solid var(--border);padding:16px;margin-top:16px}
-.travel-box h3{font-size:11px;text-transform:uppercase;letter-spacing:1px;font-weight:600;color:var(--ink4);margin-bottom:12px}
-.travel-link{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;text-decoration:none;color:var(--ink);cursor:pointer;transition:color .1s}
-.travel-link:last-child{border:none}
-.travel-link:hover{color:var(--green)}
-.travel-link .ticon{font-size:16px}
-.report-link{font-size:11px;color:var(--ink5);text-align:center;margin-top:16px;cursor:pointer;text-decoration:underline}
-.report-link:hover{color:var(--ink3)}
-
-/* STATES PAGE */
-.states-grid{max-width:1140px;margin:0 auto;padding:28px 24px 60px}
-.region-title{font-family:var(--fhead);font-size:18px;letter-spacing:1px;color:var(--ink4);margin:24px 0 12px;text-transform:uppercase}
-.region-title:first-child{margin-top:0}
-.states-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
-.state-card{background:var(--white);padding:16px 14px;cursor:pointer;transition:background .1s;text-decoration:none;color:inherit;display:flex;justify-content:space-between;align-items:center}
-.state-card:hover{background:var(--paper2)}
-.state-card .uf{font-family:var(--fhead);font-size:22px;color:var(--ink)}
-.state-card .nm{font-size:12px;color:var(--ink4);margin-top:2px}
-.state-card .cnt{font-family:var(--fmono);font-size:11px;color:var(--green)}
-
-/* CUPONS PAGE */
-.cupons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;padding:28px 0 60px}
-.coupon-card{background:var(--white);border:1px solid var(--border);padding:20px}
-.coupon-card .plat{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);margin-bottom:8px}
-.coupon-card .code{font-family:var(--fhead);font-size:28px;letter-spacing:2px;color:var(--ink)}
-.coupon-card .code span{color:var(--gold)}
-.coupon-card .desc{font-size:13px;color:var(--ink3);margin-top:8px}
-.coupon-card .valid{font-family:var(--fmono);font-size:10px;color:var(--ink5);margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
-
-/* FORM PAGE */
-.form-wrap{max-width:740px;margin:0 auto;padding:36px 24px 80px}
-.form-title{font-family:var(--fhead);font-size:36px;letter-spacing:.5px;margin-bottom:6px}
-.form-sub{font-size:13px;color:var(--ink3);margin-bottom:32px}
-.fgroup{margin-bottom:20px}
-.fgroup label{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--ink3);margin-bottom:6px}
-.fgroup input,.fgroup select,.fgroup textarea{width:100%;border:1px solid var(--border);background:var(--white);padding:10px 12px;font-family:var(--fbody);font-size:14px;color:var(--ink);outline:none;transition:border .15s}
-.fgroup input:focus,.fgroup select:focus,.fgroup textarea:focus{border-color:var(--ink)}
-.fgroup textarea{min-height:100px;resize:vertical}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.freq::after{content:' *';color:var(--green)}
-.form-note{background:var(--paper2);border-left:3px solid var(--ink);padding:14px 16px;font-size:13px;color:var(--ink3);margin-bottom:28px;line-height:1.6}
-.btn-submit{background:var(--ink);color:var(--white);border:none;padding:14px 36px;font-family:var(--fbody);font-size:14px;font-weight:600;letter-spacing:.5px;cursor:pointer;transition:background .15s}
-.btn-submit:hover{background:var(--green)}
-
-/* SOBRE PAGE */
-.sobre-wrap{max-width:840px;margin:0 auto;padding:36px 24px 80px}
-.sobre-title{font-family:var(--fhead);font-size:52px;line-height:1;margin-bottom:6px}
-.sobre-sub{font-size:15px;color:var(--ink3);font-style:italic;margin-bottom:36px}
-.sobre-body h2{font-family:var(--fhead);font-size:24px;margin:28px 0 12px;color:var(--ink)}
-.sobre-body p{font-size:14px;color:var(--ink3);line-height:1.75;margin-bottom:14px}
-.sobre-body ul{padding-left:20px;margin-bottom:14px}
-.sobre-body li{font-size:14px;color:var(--ink3);line-height:1.75;margin-bottom:4px}
-.sobre-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin:28px 0}
-.sobre-card{background:var(--white);padding:20px 16px;text-align:center}
-.sobre-card .n{font-family:var(--fhead);font-size:40px;color:var(--green)}
-.sobre-card .l{font-size:12px;color:var(--ink4);margin-top:4px}
-
-/* GRATUITOS */
-.free-filter{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}
-.free-filter-inner{max-width:1140px;margin:0 auto;padding:0 24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.free-filter select{border:1px solid var(--border);padding:7px 30px 7px 10px;font-family:var(--fbody);font-size:13px;color:var(--ink);background:var(--white);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center}
-
-/* BREADCRUMB */
-.breadcrumb{background:var(--white);border-bottom:1px solid var(--border);padding:0}
-.breadcrumb-inner{max-width:1140px;margin:0 auto;padding:10px 24px;font-size:12px;color:var(--ink4)}
-.breadcrumb-inner a{color:var(--ink4);text-decoration:none;cursor:pointer}
-.breadcrumb-inner a:hover{color:var(--ink);text-decoration:underline}
-.breadcrumb-inner span{margin:0 6px;color:var(--ink5)}
+/* ADSTERRA SLOTS */
+.ad-slot{border:1px dashed var(--paper3);background:var(--paper2);margin-bottom:16px}
+.ad-728{width:100%;min-height:90px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:10px}
+.ad-300{width:100%;min-height:250px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;padding:10px}
+.ad-label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--ink5);font-family:var(--fmono)}
 
 /* PAGE HEADER */
-.page-header{background:var(--white);border-bottom:2px solid var(--ink);padding:20px 0}
-.page-header-inner{max-width:1140px;margin:0 auto;padding:0 24px}
-.page-header h1{font-family:var(--fhead);font-size:36px;letter-spacing:.5px}
-.page-header p{font-size:13px;color:var(--ink4);margin-top:4px}
+.phead{background:var(--white);border-bottom:2px solid var(--border);padding:22px 24px 0}
+.phead-inner{max-width:1140px;margin:0 auto}
+.bc{font-size:11px;color:var(--ink4);display:flex;gap:5px;align-items:center;margin-bottom:7px}
+.bc a{color:var(--ink3);cursor:pointer;text-decoration:none}
+.bc a:hover{text-decoration:underline;color:var(--ink)}
+.bc .sep{color:var(--ink5)}
+.ptitle{color:#1c2b3a;font-family:var(--fhead);font-size:clamp(26px,3.5vw,42px);letter-spacing:.5px;line-height:1.05}
+.psub{font-size:12px;color:var(--ink4);margin-top:4px;font-style:italic}
+.ptabs{display:flex;gap:0;margin-top:16px}
+.ptab{padding:9px 18px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .15s}
+.ptab.active{color:#1c2b3a;border-bottom-color:#1c2b3a}
+.ptab:hover{color:var(--ink)}
+
+/* FILTER BAR */
+.fbar{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px}
+.fbar-inner{max-width:1140px;margin:0 auto;display:flex;gap:0;overflow-x:auto;scrollbar-width:none}
+.fbar-inner::-webkit-scrollbar{display:none}
+.flt{padding:10px 14px;font-size:11px;font-weight:500;color:var(--ink4);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all .15s;letter-spacing:.3px;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--fbody)}
+.flt:hover{color:var(--ink);border-bottom-color:var(--border)}
+.flt.active{color:var(--ink);border-bottom-color:var(--green-acc);font-weight:600}
+.fsep{width:1px;background:var(--border);margin:7px 0;flex-shrink:0}
+
+/* DETAIL */
+.dwrap{max-width:1140px;margin:0 auto;padding:28px 24px 60px;display:grid;grid-template-columns:1fr 288px;gap:28px}
+.dblock{border:1px solid var(--border);background:var(--white);margin-bottom:16px}
+.dblock-head{background:#1c2b3a;color:var(--white);padding:9px 18px;font-family:var(--fhead);font-size:15px;letter-spacing:.5px}
+.drow{display:grid;grid-template-columns:130px 1fr;gap:10px;padding:10px 18px;border-bottom:1px solid var(--paper);font-size:13px}
+.drow:last-child{border-bottom:none}
+.drow .lbl{font-size:11px;color:var(--ink4);font-weight:500;text-transform:uppercase;letter-spacing:.4px;padding-top:1px}
+.drow .val{color:var(--ink)}
+.corr{font-size:11px;color:var(--ink4);text-align:right;margin-top:6px}
+.corr a{color:var(--ink3);cursor:pointer}
+.corr a:hover{text-decoration:underline;color:var(--ink)}
+
+/* BUY BOX */
+.bbox{border:1px solid var(--border);background:var(--white);position:sticky;top:72px}
+.bbox-head{background:var(--green-acc);color:var(--white);padding:11px 18px;font-family:var(--fhead);font-size:17px;letter-spacing:.5px}
+.bbox-head.gh{background:var(--green)}
+.bbox-body{padding:18px}
+.prow{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--paper);font-size:13px}
+.prow:last-child{border-bottom:none}
+.prow .type{color:var(--ink3)}
+.prow .amt{font-family:var(--fmono);font-weight:500}
+.btn-buy{display:block;width:100%;padding:13px;background:#1c2b3a;color:var(--white);border:none;font-family:var(--fhead);font-size:17px;letter-spacing:1px;cursor:pointer;text-align:center;text-decoration:none;transition:background .15s;margin-top:14px}
+.btn-buy:hover{background:#243447}
+.btn-buy.gbtn{background:var(--green)}
+.pnote{font-size:10px;color:var(--ink4);text-align:center;margin-top:6px;font-style:italic}
+.coup-strip{background:var(--paper2);border:1px solid var(--gold);padding:12px 14px;margin-top:14px}
+.coup-strip .cl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:600;margin-bottom:3px}
+.coup-strip .cc{font-family:var(--fmono);font-size:20px;font-weight:500;color:var(--ink);letter-spacing:3px}
+.coup-strip .cd{font-size:11px;color:var(--ink3);margin-top:2px}
+.trav{margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+.trav .tl{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--ink4);font-weight:600;margin-bottom:8px}
+.travlink{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--paper);text-decoration:none;color:inherit;font-size:12px;cursor:pointer;transition:color .1s}
+.travlink:last-child{border-bottom:none}
+.travlink:hover{color:var(--ink2)}
+.travlink .tp{font-weight:600;color:var(--ink)}
+.travlink .td{font-size:10px;color:var(--ink4)}
+.travlink .ta{font-size:11px;color:var(--ink4)}
+
+/* STATES TABLE */
+.st-table{width:100%;border-collapse:collapse}
+.st-table tr{border-bottom:1px solid var(--border);cursor:pointer}
+.st-table tr:hover td{background:var(--paper2)}
+.st-table td{padding:8px 10px;font-size:12px}
+.st-table td:first-child{font-family:var(--fhead);font-size:16px;color:var(--ink);width:44px;padding-left:0}
+.st-table td:last-child{text-align:right;font-family:var(--fmono);font-size:10px;color:var(--ink4)}
+.ctable{width:100%;border-collapse:collapse}
+.ctable tr{border-bottom:1px solid var(--border);cursor:pointer}
+.ctable tr:hover td{background:var(--paper2)}
+.ctable td{padding:11px 8px;font-size:13px}
+.ctable td:first-child{font-weight:600;color:var(--ink);padding-left:0}
+.ctable td:last-child{text-align:right;font-family:var(--fmono);font-size:11px;color:var(--ink4)}
+
+/* COUPONS */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-bottom:40px}
+.ccard{border:1px solid var(--border);background:var(--white)}
+.ccard-top{background:var(--ink);color:var(--white);padding:9px 14px;display:flex;justify-content:space-between;align-items:center}
+.ccard-top .plat{font-family:var(--fhead);font-size:15px;letter-spacing:.5px}
+.ccard-top .disc{font-family:var(--fmono);font-size:12px;color:var(--gold)}
+.ccard-body{padding:14px}
+.ccodel{font-family:var(--fmono);font-size:24px;font-weight:500;letter-spacing:3px;color:var(--ink);margin-bottom:7px}
+.cdesc{font-size:12px;color:var(--ink3);line-height:1.5;margin-bottom:6px}
+.cmeta{font-size:10px;color:var(--ink4)}
+.cexp{font-size:10px;color:var(--green-acc);margin-top:2px;font-style:italic}
+
+/* FORM */
+.fwrap{max-width:700px;margin:28px auto 60px;padding:0 24px}
+.fnotice{background:var(--paper2);border-left:3px solid var(--ink);padding:11px 14px;font-size:13px;color:var(--ink3);margin-bottom:24px;line-height:1.6}
+.fsec{margin-bottom:26px}
+.fsec-title{font-family:var(--fhead);font-size:16px;letter-spacing:.5px;padding-bottom:7px;border-bottom:2px solid #1c2b3a;margin-bottom:14px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;border:1px solid var(--border);background:var(--white);font-family:var(--fbody);font-size:13px;color:var(--ink);outline:none;border-radius:0;transition:border-color .15s;-webkit-appearance:none;appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ink)}
+.fg textarea{resize:vertical;min-height:76px}
+.fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.fgrow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fopt{font-size:10px;color:var(--ink4);font-weight:400;margin-left:4px;text-transform:none;letter-spacing:0}
+.btn-sub{background:#1c2b3a;color:var(--white);border:none;padding:13px 32px;font-family:var(--fhead);font-size:18px;letter-spacing:1px;cursor:pointer;transition:background .15s}
+.btn-sub:hover{background:#243447}
+
+/* ABOUT */
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);margin-bottom:28px}
+.acard{background:var(--white);padding:22px}
+.acard h3{font-family:var(--fhead);font-size:17px;letter-spacing:.5px;margin-bottom:8px}
+.acard p{font-size:13px;color:var(--ink3);line-height:1.7}
+
+/* EMPTY STATE */
+.empty{padding:48px 0;text-align:center;color:var(--ink4)}
+.empty-icon{font-size:36px;margin-bottom:12px}
+.empty h3{font-family:var(--fhead);font-size:22px;letter-spacing:.5px;color:var(--ink3);margin-bottom:6px}
+.empty p{font-size:13px;line-height:1.65}
+.empty a{color:var(--green-acc);cursor:pointer;text-decoration:underline}
+
+/* FOOTER */
+footer{background:#1c2b3a;color:rgba(255,255,255,.5);font-size:12px}
+.fmain{max-width:1140px;margin:0 auto;padding:36px 24px 28px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px}
+.fbrand .flogo{font-family:var(--fhead);font-size:30px;color:var(--white);letter-spacing:1px;margin-bottom:9px;line-height:1}
+.fbrand .flogo span{color:var(--green-acc)}
+.fbrand p{font-size:12px;line-height:1.65}
+.fbrand .fdis{font-size:10px;color:rgba(255,255,255,.22);margin-top:10px;line-height:1.6}
+footer h4{font-family:var(--fhead);font-size:13px;color:var(--white);letter-spacing:1px;margin-bottom:10px}
+footer a{display:block;color:rgba(255,255,255,.48);text-decoration:none;margin-bottom:7px;cursor:pointer;font-size:12px;transition:color .15s}
+footer a:hover{color:var(--white)}
+.fbot{border-top:1px solid rgba(255,255,255,.1);max-width:1140px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;font-size:11px}
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;gap:24px}
-  .hero-aside{display:none}
-  .mlayout{grid-template-columns:1fr}
-  .sidebar{display:none}
-  .show-detail{grid-template-columns:1fr}
-  .show-sidebar{order:-1}
-  .sobre-cards{grid-template-columns:1fr 1fr}
-  .spanel-inner{grid-template-columns:1fr 1fr;gap:1px}
-  .spanel-inner button{grid-column:1/-1}
-  .frow{grid-template-columns:1fr}
+  .hero-inner{grid-template-columns:1fr}.hero-aside{display:none}
+  .mlayout{grid-template-columns:1fr}.sidebar{display:none}
+  .spanel-inner{grid-template-columns:1fr 1fr}
+  .fmain{grid-template-columns:1fr 1fr}
+  .dwrap{grid-template-columns:1fr}.bbox{position:static}
+  .agrid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
-  .hnav{display:none}
-  .hsearch{display:none}
-  .hamburger{display:flex}
-  .show-meta-grid{grid-template-columns:1fr}
-  .smg-item:nth-child(even){border-right:none}
-  .sobre-cards{grid-template-columns:1fr}
+  .hnav{display:none}.hamburger{display:flex}
+  .hero-title{font-size:50px}
   .spanel-inner{grid-template-columns:1fr}
+  .fmain{grid-template-columns:1fr}
+  .fgrow{grid-template-columns:1fr}
+  .cgrid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -260,763 +285,741 @@ header{background:var(--ink);color:var(--white);position:sticky;top:0;z-index:20
 <!-- HEADER -->
 <header>
   <div class="hbar">
-    <a class="logo" onclick="showPage('home')">Shows<span>BR</span></a>
+    <a class="logo" onclick="goTo('home')">SHOWS<span>BR</span></a>
     <div class="hsearch">
-      <input type="text" id="hsearchInput" placeholder="Buscar artista, cidade, estado...">
+      <input type="text" id="search-input" placeholder="Artista, cidade, estado, gênero…" onkeydown="if(event.key==='Enter')doSearch()">
       <button onclick="doSearch()">Buscar</button>
     </div>
     <nav class="hnav">
-      <a onclick="showPage('states')">Estados</a>
-      <a onclick="showPage('gratuitos')">Gratuitos</a>
-      <a onclick="showPage('cupons')">Cupons</a>
-      <a onclick="showPage('sobre')">Sobre</a>
-      <a class="cta" onclick="showPage('cadastrar')">+ Cadastrar Show</a>
+      <a onclick="goTo('home')" id="n-home">Início</a>
+      <a onclick="goTo('estados')" id="n-estados">Estados</a>
+      <a onclick="goTo('gratuitos')" id="n-gratuitos">Gratuitos</a>
+      <a onclick="goTo('cupons')" id="n-cupons">Cupons</a>
+      <a onclick="goTo('sobre')" id="n-sobre">Sobre</a>
+      <a onclick="goTo('cadastrar')" id="n-cadastrar" class="cta">+ Cadastrar Show</a>
     </nav>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="hamburger" id="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
 </header>
 
 <!-- MOBILE MENU -->
-<nav class="mmenu" id="mmenu">
-  <div class="msec">Navegar</div>
-  <a onclick="showPage('home');closeMenu()">Início</a>
-  <a onclick="showPage('states');closeMenu()">Todos os Estados</a>
-  <a onclick="showPage('gratuitos');closeMenu()">Shows Gratuitos</a>
-  <a onclick="showPage('cupons');closeMenu()">Cupons de Desconto</a>
-  <a onclick="showPage('sobre');closeMenu()">Sobre o ShowsBR</a>
-  <div class="msec">Estados em destaque</div>
-  <a onclick="showStatePage('SP');closeMenu()">São Paulo — SP <span>→</span></a>
-  <a onclick="showStatePage('SC');closeMenu()">Santa Catarina — SC <span>→</span></a>
-  <a onclick="showStatePage('RJ');closeMenu()">Rio de Janeiro — RJ <span>→</span></a>
-  <a onclick="showStatePage('MG');closeMenu()">Minas Gerais — MG <span>→</span></a>
-  <a onclick="showStatePage('RS');closeMenu()">Rio Grande do Sul — RS <span>→</span></a>
-  <a onclick="showPage('cadastrar');closeMenu()" class="cta">+ Cadastrar meu show</a>
-</nav>
+<div class="mmenu" id="mmenu">
+  <div class="msec">Navegação</div>
+  <a onclick="goTo('home');toggleMenu()">Início <span>›</span></a>
+  <a onclick="goTo('estados');toggleMenu()">Shows por Estado <span>›</span></a>
+  <a onclick="goTo('gratuitos');toggleMenu()">Shows Gratuitos <span>›</span></a>
+  <a onclick="goTo('cupons');toggleMenu()">Cupons de Desconto <span>›</span></a>
+  <div class="msec">Institucional</div>
+  <a onclick="goTo('sobre');toggleMenu()">Sobre o ShowsBR <span>›</span></a>
+  <a onclick="goTo('cadastrar');toggleMenu()" class="cta">+ Cadastrar Show <span>›</span></a>
+</div>
 
-<!-- ══════════════════════════════════════════ PAGE: HOME -->
-<div class="page active" id="page-home">
-
-  <!-- HERO -->
-  <section class="hero">
+<!-- ═══ HOME ═══ -->
+<div id="page-home" class="page active">
+  <div class="hero">
     <div class="hero-inner">
       <div>
-        <h1 class="hero-title">Do interior<br>às <span class="acc">capitais</span></h1>
-        <p class="hero-sub">Shows por todo o Brasil — todos os estilos, todos os estados, todas as cidades. Simples assim.</p>
+        <h1 class="hero-title">DO INTERIOR<br>ÀS<br><span class="acc">CAPITAIS</span></h1>
+        <p class="hero-sub">A agenda de shows que conecta o interior às capitais. Sem venda de ingresso — só informação direta, de qualquer cidade do Brasil.</p>
         <div class="hero-stats">
-          <div class="hstat"><span class="n" id="stat-shows">0</span><div class="l">Shows</div></div>
-          <div class="hstat"><span class="n" id="stat-cities">0</span><div class="l">Cidades</div></div>
-          <div class="hstat"><span class="n" id="stat-states">27</span><div class="l">Estados</div></div>
+          <div class="hstat"><div class="n" id="stat-total">0</div><div class="l">Shows cadastrados</div></div>
+          <div class="hstat"><div class="n">27</div><div class="l">Estados</div></div>
+          <div class="hstat"><div class="n" id="stat-cidades">0</div><div class="l">Municípios</div></div>
+          <div class="hstat"><div class="n" id="stat-generos">0</div><div class="l">Gêneros</div></div>
         </div>
       </div>
       <div class="hero-aside">
         <h3>Acesso rápido por estado</h3>
-        <a class="qlink" onclick="showStatePage('SP')"><span>São Paulo</span><span class="cnt">SP →</span></a>
-        <a class="qlink" onclick="showStatePage('RJ')"><span>Rio de Janeiro</span><span class="cnt">RJ →</span></a>
-        <a class="qlink" onclick="showStatePage('MG')"><span>Minas Gerais</span><span class="cnt">MG →</span></a>
-        <a class="qlink" onclick="showStatePage('SC')"><span>Santa Catarina</span><span class="cnt">SC →</span></a>
-        <a class="qlink" onclick="showStatePage('RS')"><span>Rio Grande do Sul</span><span class="cnt">RS →</span></a>
-        <a class="qlink" onclick="showStatePage('BA')"><span>Bahia</span><span class="cnt">BA →</span></a>
-        <a class="qlink" onclick="showPage('states')"><span>Ver todos os 27 estados</span><span class="cnt">→</span></a>
+        <div id="quicklinks-aside"><!-- preenchido por JS --></div>
+        <a class="qlink" onclick="goTo('estados')" style="color:rgba(255,255,255,.32);font-size:11px;margin-top:4px">Ver todos os 27 estados →</a>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- SEARCH PANEL -->
   <div class="spanel">
     <div class="spanel-inner">
       <select id="f-estado">
-        <option value="">Todos os estados</option>
-        <option>AC</option><option>AL</option><option>AM</option><option>AP</option>
-        <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-        <option>GO</option><option>MA</option><option>MG</option><option>MS</option>
-        <option>MT</option><option>PA</option><option>PB</option><option>PE</option>
-        <option>PI</option><option>PR</option><option>RJ</option><option>RN</option>
-        <option>RO</option><option>RR</option><option>RS</option><option selected>SC</option>
-        <option>SE</option><option>SP</option><option>TO</option>
+        <option value="">Estado</option>
+        <option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option>
       </select>
       <select id="f-genero">
-        <option value="">Todos os gêneros</option>
-        <option>Sertanejo</option><option>Forró</option><option>Rock</option>
-        <option>Pagode</option><option>MPB</option><option>Funk</option>
-        <option>Gospel</option><option>Eletrônico</option><option>Pop</option>
-        <option>Axé</option><option>Reggae</option><option>Blues</option>
-        <option>Jazz</option><option>Country</option><option>Metal</option>
+        <option value="">Gênero Musical</option>
+        <option>Sertanejo</option><option>Rock</option><option>Forró</option><option>Pagode</option><option>Samba</option><option>MPB</option><option>Axé</option><option>Gospel</option><option>Eletrônico</option><option>Rap / Hip-Hop</option><option>Metal</option><option>Funk</option><option>Piseiro</option><option>Blues</option><option>Jazz</option><option>Pop</option><option>Reggae</option><option>Outro</option>
       </select>
       <select id="f-periodo">
-        <option value="">Qualquer período</option>
-        <option>Esta semana</option>
-        <option>Este fim de semana</option>
-        <option>Este mês</option>
-        <option>Próximos 30 dias</option>
-        <option>Próximos 3 meses</option>
+        <option value="">Período</option>
+        <option value="hoje">Hoje</option>
+        <option value="semana">Esta semana</option>
+        <option value="fds">Este fim de semana</option>
+        <option value="mes">Este mês</option>
       </select>
-      <select id="f-preco">
-        <option value="">Qualquer preço</option>
-        <option>Gratuito</option>
-        <option>Até R$ 50</option>
-        <option>Até R$ 100</option>
-        <option>Até R$ 200</option>
-        <option>Acima de R$ 200</option>
+      <select id="f-entrada">
+        <option value="">Entrada</option>
+        <option value="gratuito">Gratuito</option>
+        <option value="ate50">Até R$ 50</option>
+        <option value="ate100">Até R$ 100</option>
+        <option value="acima100">Acima de R$ 100</option>
       </select>
       <button onclick="doSearch()">Filtrar</button>
     </div>
   </div>
 
-  <!-- TABS -->
   <div class="tbar">
     <div class="tbar-inner">
-      <div class="tab active" onclick="setTab(this,'proximos')">Próximos shows</div>
+      <div class="tab active" onclick="setTab(this,'todos')">Todos</div>
       <div class="tab" onclick="setTab(this,'semana')">Esta semana</div>
       <div class="tab" onclick="setTab(this,'fds')">Fim de semana</div>
-      <div class="tab" onclick="setTab(this,'gratuitos-tab')">Gratuitos</div>
+      <div class="tab" onclick="setTab(this,'gratuito')">Gratuitos</div>
+      <div class="tab" onclick="setTab(this,'Sertanejo')">Sertanejo</div>
+      <div class="tab" onclick="setTab(this,'Rock')">Rock</div>
+      <div class="tab" onclick="setTab(this,'Forró')">Forró</div>
+      <div class="tab" onclick="setTab(this,'Pagode')">Pagode</div>
+      <div class="tab" onclick="setTab(this,'Gospel')">Gospel</div>
+      <div class="tab" onclick="setTab(this,'Eletrônico')">Eletrônico</div>
+      <div class="tab" onclick="setTab(this,'MPB')">MPB</div>
+      <div class="tab" onclick="setTab(this,'Axé')">Axé</div>
     </div>
   </div>
 
-  <!-- BANNER ADSTERRA 728×90 -->
-  <div class="wrap">
-    <div class="ad-banner ad-728">
-      <!-- ADSTERRA BANNER 728×90 — inserir código após aprovação -->
-      Espaço publicitário 728×90
-    </div>
-  </div>
-
-  <!-- MAIN LAYOUT -->
   <div class="mlayout">
-    <main id="shows-list">
-      <!-- Shows loaded from data/shows/*.json via JS -->
-      <div class="shead"><h2>Próximos Shows</h2><a onclick="showPage('states')">Ver todos os estados</a></div>
-      <div id="shows-container">
-        <p style="color:var(--ink4);font-size:14px;padding:20px 0">Carregando shows...</p>
+    <div>
+      <div class="shead"><h2 id="list-title">Próximos Shows</h2><a onclick="goTo('estados')">Ver por estado →</a></div>
+
+      <!-- ADSTERRA 728×90 -->
+      <div class="ad-slot ad-728">
+        <span class="ad-label">Publicidade</span>
+        <!-- ADSTERRA BANNER 728×90 — colar código aqui após aprovação -->
       </div>
-    </main>
+
+      <div id="home-shows"><!-- preenchido por JS --></div>
+    </div>
 
     <aside class="sidebar">
+      <div class="sblock">
+        <div class="sblock-head">Estados</div>
+        <div class="sblock-body" style="padding:6px 0">
+          <table class="st-table" id="sidebar-estados"><!-- preenchido por JS --></table>
+        </div>
+      </div>
+
+      <div class="sblock">
+        <div class="sblock-head">Cupons Ativos</div>
+        <div class="sblock-body" id="sidebar-cupons"><!-- preenchido por JS --></div>
+      </div>
+
       <!-- ADSTERRA 300×250 -->
-      <div class="ad-banner ad-300">
-        <!-- ADSTERRA BANNER 300×250 — inserir código após aprovação -->
-        Espaço publicitário 300×250
+      <div class="ad-slot ad-300">
+        <span class="ad-label">Publicidade</span>
+        <!-- ADSTERRA BANNER 300×250 — colar código aqui após aprovação -->
       </div>
 
-      <div class="sw">
-        <div class="sw-head">Shows por Estado</div>
-        <div class="sw-body" id="states-sidebar">
-          <!-- populated by JS -->
-        </div>
-      </div>
-
-      <div class="sw">
-        <div class="sw-head">Cupons Ativos</div>
-        <div class="sw-body" id="cupons-sidebar">
-          <!-- populated by JS -->
-        </div>
+      <div class="sblock">
+        <div class="sblock-head">Gêneros</div>
+        <div class="sblock-body" id="sidebar-generos"><!-- preenchido por JS --></div>
       </div>
     </aside>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ PAGE: STATES -->
-<div class="page" id="page-states">
-  <div class="page-header">
-    <div class="page-header-inner">
-      <h1>Todos os Estados</h1>
-      <p>Selecione um estado para ver os shows disponíveis</p>
+<!-- ═══ ESTADOS ═══ -->
+<div id="page-estados" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc"><a onclick="goTo('home')">Início</a><span class="sep">›</span>Estados</div>
+    <h1 class="ptitle">Shows por Estado</h1>
+    <p class="psub">Selecione um estado para ver a agenda completa</p>
+    <div class="ptabs">
+      <div class="ptab active" onclick="activatePtab(this)">Todos</div>
+      <div class="ptab" onclick="activatePtab(this)">Sul</div>
+      <div class="ptab" onclick="activatePtab(this)">Sudeste</div>
+      <div class="ptab" onclick="activatePtab(this)">Nordeste</div>
+      <div class="ptab" onclick="activatePtab(this)">Centro-Oeste</div>
+      <div class="ptab" onclick="activatePtab(this)">Norte</div>
     </div>
-  </div>
-  <div class="states-grid" id="states-grid">
-    <!-- populated by JS -->
+  </div></div>
+  <div class="wrap" style="padding-top:28px;padding-bottom:60px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px" id="estados-grid"><!-- preenchido por JS --></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ PAGE: STATE DETAIL -->
-<div class="page" id="page-state">
-  <div class="breadcrumb">
-    <div class="breadcrumb-inner">
-      <a onclick="showPage('home')">Início</a><span>›</span>
-      <a onclick="showPage('states')">Estados</a><span>›</span>
-      <span id="state-breadcrumb">Estado</span>
+<!-- ═══ ESTADO DETALHE ═══ -->
+<div id="page-estado" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc"><a onclick="goTo('home')">Início</a><span class="sep">›</span><a onclick="goTo('estados')">Estados</a><span class="sep">›</span><span id="estado-bc"></span></div>
+    <h1 class="ptitle" id="estado-title"></h1>
+    <p class="psub" id="estado-sub"></p>
+    <div class="ptabs">
+      <div class="ptab active" onclick="activatePtab(this)">Todos</div>
+      <div class="ptab" onclick="activatePtab(this)">Gratuitos</div>
+      <div class="ptab" onclick="activatePtab(this)">Fim de semana</div>
     </div>
-  </div>
-  <div class="page-header">
-    <div class="page-header-inner">
-      <h1 id="state-page-title">Shows em SP</h1>
-      <p id="state-page-sub">Agenda completa</p>
-    </div>
-  </div>
-  <div class="tbar">
-    <div class="tbar-inner">
-      <div class="tab active">Todos</div>
-      <div class="tab">Esta semana</div>
-      <div class="tab">Este mês</div>
-      <div class="tab">Gratuitos</div>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="ad-banner ad-728">Espaço publicitário 728×90</div>
-  </div>
+  </div></div>
   <div class="mlayout">
-    <main>
-      <div id="state-shows-container"></div>
-    </main>
+    <div>
+      <div class="ad-slot ad-728"><span class="ad-label">Publicidade</span><!-- ADSTERRA 728×90 --></div>
+      <div id="estado-shows"><!-- preenchido por JS --></div>
+    </div>
     <aside class="sidebar">
-      <div class="ad-banner ad-300">Espaço publicitário 300×250</div>
-      <div class="sw">
-        <div class="sw-head">Cidades neste estado</div>
-        <div class="sw-body" id="state-cities-list"></div>
+      <div class="sblock">
+        <div class="sblock-head" id="estado-cidades-head">Cidades</div>
+        <div class="sblock-body" id="estado-cidades"><!-- preenchido por JS --></div>
       </div>
+      <div class="ad-slot ad-300"><span class="ad-label">Publicidade</span><!-- ADSTERRA 300×250 --></div>
     </aside>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ PAGE: SHOW DETAIL -->
-<div class="page" id="page-show">
-  <div class="breadcrumb">
-    <div class="breadcrumb-inner" id="show-breadcrumb-inner">
-      <a onclick="showPage('home')">Início</a><span>›</span>
-      <span>Show</span>
-    </div>
-  </div>
-  <div class="show-detail" id="show-detail-content">
-    <!-- populated by JS -->
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════ PAGE: GRATUITOS -->
-<div class="page" id="page-gratuitos">
-  <div class="page-header">
-    <div class="page-header-inner">
-      <h1>Shows Gratuitos</h1>
-      <p>Entrada franca em todo o Brasil</p>
-    </div>
-  </div>
-  <div class="free-filter">
-    <div class="free-filter-inner">
-      <label style="font-size:12px;color:var(--ink4);font-weight:600;text-transform:uppercase;letter-spacing:.5px">Filtrar por estado:</label>
-      <select id="free-estado-filter" onchange="filterFreeShows()">
-        <option value="">Todos</option>
-        <option>AC</option><option>AL</option><option>AM</option><option>AP</option>
-        <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-        <option>GO</option><option>MA</option><option>MG</option><option>MS</option>
-        <option>MT</option><option>PA</option><option>PB</option><option>PE</option>
-        <option>PI</option><option>PR</option><option>RJ</option><option>RN</option>
-        <option>RO</option><option>RR</option><option>RS</option><option>SC</option>
-        <option>SE</option><option>SP</option><option>TO</option>
-      </select>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="ad-banner ad-728">Espaço publicitário 728×90</div>
-    <div id="free-shows-container" style="padding-bottom:60px"></div>
+<!-- ═══ SHOW DETALHE ═══ -->
+<div id="page-show" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc" id="show-bc"></div>
+    <h1 class="ptitle" id="show-title"></h1>
+    <p class="psub" id="show-sub"></p>
+  </div></div>
+  <div class="dwrap">
+    <div id="show-main"><!-- preenchido por JS --></div>
+    <div id="show-sidebar"><!-- preenchido por JS --></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ PAGE: CUPONS -->
-<div class="page" id="page-cupons">
-  <div class="page-header">
-    <div class="page-header-inner">
-      <h1>Cupons de Desconto</h1>
-      <p>Códigos verificados para compra de ingressos</p>
-    </div>
-  </div>
-  <div class="wrap">
-    <div class="ad-banner ad-728">Espaço publicitário 728×90</div>
-    <div class="cupons-grid" id="cupons-grid">
-      <!-- populated by JS from data/cupons.json -->
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════ PAGE: CADASTRAR -->
-<div class="page" id="page-cadastrar">
-  <div class="form-wrap">
-    <h1 class="form-title">Cadastrar Show</h1>
-    <p class="form-sub">Envie um show para análise. Publicamos em até 72 horas após verificação.</p>
-    <div class="form-note">
-      <strong>Critério de publicação:</strong> exigimos o CNPJ do organizador do evento (produtora, casa de shows, município, clube ou igreja). Shows sem organizador verificável não são publicados — isso garante a qualidade e confiabilidade do conteúdo.
-    </div>
-    <div class="fgroup">
-      <label class="freq">Artista / Banda / Nome do Evento</label>
-      <input type="text" placeholder="Ex: Jorge & Mateus, Festival de Inverno de Garanhuns">
-    </div>
-    <div class="frow">
-      <div class="fgroup">
-        <label class="freq">Gênero Musical</label>
-        <select>
-          <option value="">Selecionar</option>
-          <option>Sertanejo</option><option>Forró</option><option>Rock</option>
-          <option>Pagode</option><option>MPB</option><option>Funk</option>
-          <option>Gospel</option><option>Eletrônico</option><option>Pop</option>
-          <option>Axé</option><option>Reggae</option><option>Blues / Jazz</option>
-          <option>Metal</option><option>Outro</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label class="freq">Data do Show</label>
-        <input type="date">
-      </div>
-    </div>
-    <div class="frow">
-      <div class="fgroup">
-        <label>Horário de Início</label>
-        <input type="time">
-      </div>
-      <div class="fgroup">
-        <label>Classificação Etária</label>
-        <select>
-          <option>Livre</option><option>14+</option><option>16+</option><option>18+</option>
-        </select>
-      </div>
-    </div>
-    <div class="fgroup">
-      <label class="freq">Local (nome do espaço)</label>
-      <input type="text" placeholder="Ex: Allianz Parque, Santuário de Aparecida, Ginásio Municipal">
-    </div>
-    <div class="fgroup">
-      <label>Endereço</label>
-      <input type="text" placeholder="Rua, número, bairro">
-    </div>
-    <div class="frow">
-      <div class="fgroup">
-        <label class="freq">Cidade</label>
-        <input type="text" placeholder="Ex: Florianópolis">
-      </div>
-      <div class="fgroup">
-        <label class="freq">Estado (UF)</label>
-        <select>
-          <option value="">Selecionar</option>
-          <option>AC</option><option>AL</option><option>AM</option><option>AP</option>
-          <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
-          <option>GO</option><option>MA</option><option>MG</option><option>MS</option>
-          <option>MT</option><option>PA</option><option>PB</option><option>PE</option>
-          <option>PI</option><option>PR</option><option>RJ</option><option>RN</option>
-          <option>RO</option><option>RR</option><option>RS</option><option>SC</option>
-          <option>SE</option><option>SP</option><option>TO</option>
-        </select>
-      </div>
-    </div>
-    <div class="fgroup">
-      <label>Descrição / Line-up / Atrações</label>
-      <textarea placeholder="Descreva o evento, line-up completo, informações adicionais..."></textarea>
-    </div>
-    <div class="fgroup">
-      <label>Valores dos Ingressos</label>
-      <textarea placeholder="Um valor por linha. Ex:&#10;Pista R$ 120&#10;Meia R$ 60&#10;VIP R$ 380" style="min-height:80px"></textarea>
-    </div>
-    <div class="frow">
-      <div class="fgroup">
-        <label>Show Gratuito?</label>
-        <select>
-          <option>Não</option><option>Sim — entrada franca</option>
-        </select>
-      </div>
-      <div class="fgroup">
-        <label>Link Oficial de Compra</label>
-        <input type="url" placeholder="https://sympla.com.br/...">
-      </div>
-    </div>
-    <div class="frow">
-      <div class="fgroup">
-        <label>Cupom de Desconto</label>
-        <input type="text" placeholder="Ex: SHOWS10 — 10% até 30/06">
-      </div>
-      <div class="fgroup">
-        <label class="freq">Organizador / Produtor</label>
-        <input type="text" placeholder="Nome da empresa ou entidade organizadora">
-      </div>
-    </div>
-    <div class="fgroup">
-      <label class="freq">CNPJ do Organizador</label>
-      <input type="text" placeholder="00.000.000/0000-00" maxlength="18">
-    </div>
-    <div class="fgroup">
-      <label>Seu e-mail (para atualizações)</label>
-      <input type="email" placeholder="seu@email.com.br">
-    </div>
-    <button class="btn-submit" onclick="submitForm()">Enviar para Análise</button>
-    <p style="font-size:12px;color:var(--ink5);margin-top:14px">Análise em até 72 horas. Não publicamos eventos sem CNPJ verificável do organizador.</p>
+<!-- ═══ GRATUITOS ═══ -->
+<div id="page-gratuitos" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc"><a onclick="goTo('home')">Início</a><span class="sep">›</span>Shows Gratuitos</div>
+    <h1 class="ptitle">Shows Gratuitos</h1>
+    <p class="psub">Eventos de entrada franca em todo o Brasil</p>
+  </div></div>
+  <div class="fbar"><div class="fbar-inner" id="gratuitos-filtros">
+    <button class="flt active" onclick="filtrarGratuitos('',this)">Todos os estados</button>
+    <div class="fsep"></div>
+  </div></div>
+  <div class="wrap" style="padding-top:20px;padding-bottom:60px">
+    <div class="ad-slot ad-728"><span class="ad-label">Publicidade</span><!-- ADSTERRA 728×90 --></div>
+    <div id="gratuitos-list"><!-- preenchido por JS --></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════ PAGE: SOBRE -->
-<div class="page" id="page-sobre">
-  <div class="sobre-wrap">
-    <h1 class="sobre-title">Sobre o<br><span style="color:var(--green)">ShowsBR</span></h1>
-    <p class="sobre-sub">Do interior às capitais — shows por todo o Brasil.</p>
-    <div class="sobre-cards">
-      <div class="sobre-card"><div class="n" id="sobre-n1">0</div><div class="l">Shows cadastrados</div></div>
-      <div class="sobre-card"><div class="n" id="sobre-n2">0</div><div class="l">Cidades cobertas</div></div>
-      <div class="sobre-card"><div class="n">27</div><div class="l">Estados ativos</div></div>
-    </div>
-    <div class="sobre-body">
-      <h2>Missão</h2>
-      <p>Ser a referência de consulta de shows musicais no Brasil, com cobertura que vai além das capitais e dos grandes artistas. O ShowsBR existe para que um morador de Chapecó, Caruaru ou Sinop encontre o show da sua cidade com a mesma facilidade que um morador de São Paulo.</p>
-      <h2>O que o ShowsBR é</h2>
-      <ul>
-        <li>Um repositório público de informações sobre shows musicais no Brasil</li>
-        <li>Uma plataforma de navegação por estado, cidade, gênero e período</li>
-        <li>Um canal de cadastro aberto para produtores, casas de shows e comunidade</li>
-        <li>Uma agenda 100% textual — sem imagens, leve e rápida</li>
-      </ul>
-      <h2>O que o ShowsBR NÃO é</h2>
-      <ul>
-        <li>Não vendemos ingressos — somente direcionamos para as plataformas oficiais</li>
-        <li>Não fazemos curadoria artística — todos os estilos e portes são iguais</li>
-        <li>Não dependemos de imagens — visual 100% textual para máxima velocidade</li>
-      </ul>
-      <h2>Critério de publicação</h2>
-      <p>Exigimos o CNPJ do organizador do evento como critério de aprovação. Esse critério não é do artista — é de quem organiza. Produtoras, casas de shows registradas, municípios, igrejas, clubes e universidades são todos bem-vindos. Isso mantém a cobertura do interior sem abrir para eventos sem estrutura mínima de produção.</p>
-      <h2>Contato</h2>
-      <p>Dúvidas, sugestões ou parcerias: <a href="mailto:contato@showsbr.com.br" style="color:var(--green)">contato@showsbr.com.br</a></p>
-      <p>Para cadastrar um show: <a onclick="showPage('cadastrar')" style="color:var(--green);cursor:pointer">use o formulário de cadastro</a>.</p>
-    </div>
+<!-- ═══ CUPONS ═══ -->
+<div id="page-cupons" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc"><a onclick="goTo('home')">Início</a><span class="sep">›</span>Cupons</div>
+    <h1 class="ptitle">Cupons de Desconto</h1>
+    <p class="psub">Economize na compra dos seus ingressos</p>
+  </div></div>
+  <div class="wrap" style="padding-top:24px;padding-bottom:60px">
+    <div class="ad-slot ad-728"><span class="ad-label">Publicidade</span><!-- ADSTERRA 728×90 --></div>
+    <div class="cgrid" id="cupons-grid"><!-- preenchido por JS --></div>
   </div>
 </div>
 
-<!-- ═══════════ SCRIPTS ═══════════ -->
+<!-- ═══ CADASTRAR ═══ -->
+<div id="page-cadastrar" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc"><a onclick="goTo('home')">Início</a><span class="sep">›</span>Cadastrar Show</div>
+    <h1 class="ptitle">Cadastrar Show</h1>
+    <p class="psub">Contribua com o maior diretório de shows do Brasil</p>
+  </div></div>
+  <div class="fwrap">
+    <div class="fnotice">O ShowsBR é um repositório informativo — não vendemos ingressos. Informe o link oficial da plataforma de venda. Todos os envios são revisados antes da publicação.</div>
+    <div class="fsec">
+      <div class="fsec-title">Artista / Banda / Evento</div>
+      <div class="fg"><label>Artista / Banda / Evento *</label><input type="text" placeholder="Ex: Gusttavo Lima · Festival de Inverno de Garanhuns"></div>
+      <div class="fg"><label>Descrição e Atrações <span class="fopt">opcional</span></label><textarea rows="4" placeholder="Line-up completo, informações adicionais…"></textarea></div>
+      <div class="fg"><label>Gênero Musical *</label><select><option value="">Selecione…</option><option>Sertanejo</option><option>Rock</option><option>Forró</option><option>Pagode</option><option>Samba</option><option>MPB</option><option>Axé</option><option>Gospel</option><option>Eletrônico</option><option>Rap / Hip-Hop</option><option>Metal</option><option>Funk</option><option>Piseiro</option><option>Blues</option><option>Jazz</option><option>Pop</option><option>Reggae</option><option>Festival / Múltiplos Estilos</option><option>Outro</option></select></div>
+    </div>
+    <div class="fsec">
+      <div class="fsec-title">Data e Local</div>
+      <div class="fgrow">
+        <div class="fg"><label>Data do Show *</label><input type="date"></div>
+        <div class="fg"><label>Horário de Início <span class="fopt">opcional</span></label><input type="time"></div>
+      </div>
+      <div class="fg"><label>Nome do Local *</label><input type="text" placeholder="Ex: Allianz Parque, Praça da Liberdade…"></div>
+      <div class="fg"><label>Endereço <span class="fopt">opcional</span></label><input type="text" placeholder="Rua, número, bairro"></div>
+      <div class="fgrow">
+        <div class="fg"><label>Cidade *</label><input type="text" placeholder="Ex: Florianópolis"></div>
+        <div class="fg"><label>Estado *</label><select><option value="">Selecione…</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select></div>
+      </div>
+      <div class="fg"><label>Classificação Etária <span class="fopt">opcional</span></label><select><option value="">Não informado</option><option>Livre</option><option>14 anos</option><option>16 anos</option><option>18 anos</option></select></div>
+    </div>
+    <div class="fsec">
+      <div class="fsec-title">Ingressos e Organização</div>
+      <div class="fg"><label>Valores dos Ingressos <span class="fopt">opcional — um valor por linha</span></label><textarea rows="5" placeholder="Pista — R$ 120,00&#10;Meia-entrada — R$ 60,00&#10;Camarote VIP — R$ 380,00"></textarea></div>
+      <div class="fg"><label>Link Oficial de Compra <span class="fopt">opcional</span></label><input type="url" placeholder="https://sympla.com.br/…"></div>
+      <div class="fg"><label>Cupom de Desconto <span class="fopt">opcional</span></label><input type="text" placeholder="Ex: SHOWS20 — 20% OFF pista, válido até 10/06"></div>
+      <div class="fgrow">
+        <div class="fg"><label>Organizador / Produtor *</label><input type="text" placeholder="Ex: T4F Entretenimento, Prefeitura de Campinas…"></div>
+        <div class="fg"><label>CNPJ do Organizador *<br><span class="fopt">Obrigatório para aprovação.</span></label><input type="text" placeholder="00.000.000/0000-00" maxlength="18"></div>
+      </div>
+    </div>
+    <div class="fsec">
+      <div class="fsec-title">Seus Dados</div>
+      <div class="fg"><label>E-mail <span class="fopt">opcional</span></label><input type="email" placeholder="seu@email.com"></div>
+    </div>
+    <button class="btn-sub" onclick="alert('Show enviado para revisão! Publicamos em até 72 horas após verificação do CNPJ. Obrigado!')">Enviar para Revisão</button>
+    <p style="font-size:11px;color:var(--ink4);margin-top:10px">Revisão em até 72 horas. Artista, data, cidade e local já são suficientes para criar um registro.</p>
+  </div>
+</div>
+
+<!-- ═══ SOBRE ═══ -->
+<div id="page-sobre" class="page">
+  <div class="phead"><div class="phead-inner">
+    <div class="bc"><a onclick="goTo('home')">Início</a><span class="sep">›</span>Sobre</div>
+    <h1 class="ptitle">Sobre o ShowsBR</h1>
+  </div></div>
+  <div class="wrap" style="padding-top:28px;padding-bottom:60px;max-width:840px">
+    <div class="agrid">
+      <div class="acard"><h3>Nossa Missão</h3><p>Democratizar o acesso à informação sobre shows musicais no Brasil — todos os estados, todos os estilos, dos grandes festivais às festas gratuitas no interior.</p></div>
+      <div class="acard"><h3>Como Funciona</h3><p>Repositório público de informação. Não vendemos ingressos nem intermediamos financeiramente eventos. Só organizamos e exibimos dados, com link direto para a fonte oficial.</p></div>
+      <div class="acard"><h3>De Onde Vêm os Dados</h3><p>Coleta automatizada de fontes públicas, envios da comunidade e revisão editorial. Cada evento é verificado antes de ser publicado — nada vai ao ar automaticamente.</p></div>
+      <div class="acard"><h3>Responsabilidade</h3><p>As informações podem conter imprecisões. Sempre confirme datas e locais no canal oficial do evento antes de comprar ingressos ou se deslocar.</p></div>
+    </div>
+    <div style="display:flex;gap:36px;padding:18px 0;border-top:2px solid var(--ink);border-bottom:1px solid var(--border);margin-bottom:28px;flex-wrap:wrap">
+      <div><div style="font-family:var(--fhead);font-size:38px;line-height:1" id="sobre-total">0</div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);margin-top:2px">Shows cadastrados</div></div>
+      <div><div style="font-family:var(--fhead);font-size:38px;line-height:1">27</div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);margin-top:2px">Estados</div></div>
+      <div><div style="font-family:var(--fhead);font-size:38px;line-height:1" id="sobre-cidades">0</div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);margin-top:2px">Municípios</div></div>
+      <div><div style="font-family:var(--fhead);font-size:38px;line-height:1" id="sobre-generos">0</div><div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--ink4);margin-top:2px">Gêneros musicais</div></div>
+    </div>
+    <p style="font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:14px">Para cadastrar um show, use o <a onclick="goTo('cadastrar')" style="color:var(--green-acc);cursor:pointer">formulário de cadastro</a>. Para dúvidas ou parcerias, entre em contato: <a href="mailto:contato@showsbr.com.br" style="color:var(--green-acc)">contato@showsbr.com.br</a>.</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fmain">
+    <div class="fbrand">
+      <div class="flogo">SHOWS<span>BR</span></div>
+      <p>Do interior às capitais — shows por todo o Brasil. Sem venda de ingresso, só informação.</p>
+      <div class="fdis">As informações são compiladas de fontes públicas e contribuições da comunidade, podendo conter imprecisões. Sempre verifique os dados no canal oficial do evento antes de comprar ingressos ou se deslocar.</div>
+    </div>
+    <div>
+      <h4>Navegar</h4>
+      <a onclick="goTo('home')">Página Inicial</a>
+      <a onclick="goTo('estados')">Shows por Estado</a>
+      <a onclick="goTo('gratuitos')">Shows Gratuitos</a>
+      <a onclick="goTo('cupons')">Cupons de Desconto</a>
+      <a onclick="goTo('cadastrar')">Cadastrar Show</a>
+    </div>
+    <div>
+      <h4>Regiões</h4>
+      <a onclick="goTo('estados')">Sul</a>
+      <a onclick="goTo('estados')">Sudeste</a>
+      <a onclick="goTo('estados')">Nordeste</a>
+      <a onclick="goTo('estados')">Centro-Oeste</a>
+      <a onclick="goTo('estados')">Norte</a>
+    </div>
+    <div>
+      <h4>Institucional</h4>
+      <a onclick="goTo('sobre')">Sobre o ShowsBR</a>
+      <a onclick="goTo('cadastrar')">Cadastrar Show</a>
+      <a href="mailto:contato@showsbr.com.br">Contato</a>
+    </div>
+  </div>
+  <div class="fbot">
+    <span>© 2026 ShowsBR · showsbr.com.br</span>
+    <span>Do interior às capitais — shows por todo o Brasil.</span>
+  </div>
+</footer>
+
 <script>
-// ── DATA STORE (loaded from JSON files) ──
-let allShows = [];
-let allCupons = [];
+// ═══ DADOS ═══
+let SHOWS = [];
+let CUPONS = [];
+let ESTADO_ATUAL = '';
+let TAB_ATUAL = 'todos';
 
-// ── LOAD DATA ──
-async function loadData() {
-  try {
-    // Load all state JSON files that exist
-    const states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
-    const promises = states.map(uf =>
-      fetch(`/data/shows/${uf}.json`)
-        .then(r => r.ok ? r.json() : [])
-        .catch(() => [])
-    );
-    const results = await Promise.all(promises);
-    allShows = results.flat().sort((a,b) => new Date(a.data_iso) - new Date(b.data_iso));
+const UFS = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA','MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR','RS','SC','SE','SP','TO'];
+const NOMES_ESTADOS = {AC:'Acre',AL:'Alagoas',AM:'Amazonas',AP:'Amapá',BA:'Bahia',CE:'Ceará',DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',MG:'Minas Gerais',MS:'Mato Grosso do Sul',MT:'Mato Grosso',PA:'Pará',PB:'Paraíba',PE:'Pernambuco',PI:'Piauí',PR:'Paraná',RJ:'Rio de Janeiro',RN:'Rio Grande do Norte',RO:'Rondônia',RR:'Roraima',RS:'Rio Grande do Sul',SC:'Santa Catarina',SE:'Sergipe',SP:'São Paulo',TO:'Tocantins'};
+const REGIOES = {Sul:['PR','RS','SC'],Sudeste:['ES','MG','RJ','SP'],Nordeste:['AL','BA','CE','MA','PB','PE','PI','RN','SE'],CentroOeste:['DF','GO','MS','MT'],Norte:['AC','AM','AP','PA','RO','RR','TO']};
+const DIAS_SEMANA = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
-    // Load cupons
-    allCupons = await fetch('/data/cupons.json').then(r => r.ok ? r.json() : []).catch(() => []);
+// ═══ CARREGAR DADOS ═══
+async function init() {
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const promises = UFS.map(uf =>
+    fetch(`/data/shows/${uf}.json`).then(r=>r.ok?r.json():[]).catch(()=>[])
+  );
+  const resultados = await Promise.all(promises);
+  SHOWS = resultados.flat().filter(s => {
+    if (!s.data_iso) return false;
+    return new Date(s.data_iso+'T12:00:00') >= hoje;
+  }).sort((a,b) => a.data_iso.localeCompare(b.data_iso));
 
-    renderHome();
-    updateStats();
-  } catch(e) {
-    console.error('Erro ao carregar dados:', e);
-    document.getElementById('shows-container').innerHTML = '<p style="color:var(--ink4);font-size:14px;padding:20px 0">Nenhum show cadastrado ainda. <a onclick="showPage(\'cadastrar\')" style="color:var(--green);cursor:pointer">Seja o primeiro a cadastrar!</a></p>';
+  CUPONS = await fetch('/data/cupons.json').then(r=>r.ok?r.json():[]).catch(()=>[]);
+
+  atualizarStats();
+  renderHome();
+  renderSidebarEstados();
+  renderSidebarCupons();
+  renderSidebarGeneros();
+  renderEstadosGrid();
+  renderCuponsPage();
+  renderGratuitosFiltros();
+}
+
+// ═══ STATS ═══
+function atualizarStats() {
+  const total = SHOWS.length;
+  const cidades = new Set(SHOWS.map(s=>`${s.cidade}-${s.estado}`)).size;
+  const generos = new Set(SHOWS.map(s=>s.genero).filter(Boolean)).size;
+  ['stat-total','sobre-total'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=total; });
+  ['stat-cidades','sobre-cidades'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=cidades; });
+  ['stat-generos','sobre-generos'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=generos; });
+  // Quick links aside
+  const counts = {};
+  SHOWS.forEach(s=>{ counts[s.estado]=(counts[s.estado]||0)+1; });
+  const top6 = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+  const aside = document.getElementById('quicklinks-aside');
+  if (aside) {
+    if (top6.length === 0) {
+      aside.innerHTML = '<a class="qlink" onclick="goTo(\'cadastrar\')"><span>Ainda sem shows — cadastre o primeiro!</span><span class="cnt">→</span></a>';
+    } else {
+      aside.innerHTML = top6.map(([uf,n])=>
+        `<a class="qlink" onclick="verEstado('${uf}')">${NOMES_ESTADOS[uf]} — ${uf} <span class="cnt">${n}</span></a>`
+      ).join('');
+    }
   }
 }
 
-// ── STATS ──
-function updateStats() {
-  const total = allShows.length;
-  const cities = new Set(allShows.map(s => s.cidade + s.estado)).size;
-  animateNumber('stat-shows', total);
-  animateNumber('stat-cities', cities);
-  animateNumber('sobre-n1', total);
-  animateNumber('sobre-n2', cities);
-}
-
-function animateNumber(id, target) {
-  const el = document.getElementById(id);
+// ═══ RENDER LISTA DE SHOWS ═══
+function renderListaShows(shows, containerId, titulo) {
+  const el = document.getElementById(containerId);
   if (!el) return;
-  let current = 0;
-  const step = Math.ceil(target / 30);
-  const timer = setInterval(() => {
-    current = Math.min(current + step, target);
-    el.textContent = current;
-    if (current >= target) clearInterval(timer);
-  }, 30);
-}
-
-// ── RENDER HOME ──
-function renderHome() {
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  const upcoming = allShows.filter(s => new Date(s.data_iso) >= today).slice(0, 30);
-  renderShowList('shows-container', upcoming);
-  renderStatesSidebar();
-  renderCuponsSidebar();
-}
-
-// ── RENDER SHOW LIST ──
-function renderShowList(containerId, shows) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  if (!shows.length) {
-    container.innerHTML = '<p style="color:var(--ink4);font-size:14px;padding:20px 0">Nenhum show encontrado.</p>';
+  if (titulo) {
+    const t = document.getElementById('list-title');
+    if (t) t.textContent = titulo;
+  }
+  if (shows.length === 0) {
+    el.innerHTML = `<div class="empty">
+      <div class="empty-icon">🎵</div>
+      <h3>Nenhum show cadastrado ainda</h3>
+      <p>Seja o primeiro a contribuir com o diretório!<br>
+      <a onclick="goTo('cadastrar')">Cadastre um show →</a></p>
+    </div>`;
     return;
   }
-
   let html = '';
-  let lastMonth = '';
+  let mesAtual = '';
   shows.forEach(show => {
-    const d = new Date(show.data_iso + 'T12:00:00');
-    const month = d.toLocaleDateString('pt-BR', {month:'long', year:'numeric'});
-    if (month !== lastMonth) {
-      html += `<div class="mdiv">${month.toUpperCase()}</div>`;
-      lastMonth = month;
+    const d = new Date(show.data_iso+'T12:00:00');
+    const mes = `${MESES_FULL[d.getMonth()]} ${d.getFullYear()}`;
+    if (mes !== mesAtual) {
+      html += `<div class="mdate">${mes.toUpperCase()}</div>`;
+      mesAtual = mes;
     }
-    const day = d.toLocaleDateString('pt-BR', {day:'2-digit'});
-    const mon = d.toLocaleDateString('pt-BR', {month:'short'}).replace('.','');
-    const gratuito = show.gratuito ? '<span class="tag green">Gratuito</span>' : '';
-    const cupom = show.cupom ? '<span class="tag gold">Cupom</span>' : '';
-    html += `<a class="srow" onclick="showDetail('${show.id}')">
-      <div class="srow-date"><span class="day">${day}</span><span class="mon">${mon}</span></div>
-      <div class="srow-body">
-        <div class="srow-title">${show.artista}</div>
-        <div class="srow-meta">${show.local} · ${show.cidade}/${show.estado} · ${show.genero}</div>
-        <div class="srow-tags"><span class="tag">${show.genero}</span>${gratuito}${cupom}</div>
+    const dd = String(d.getDate()).padStart(2,'0');
+    const mm = MESES[d.getMonth()];
+    const wd = DIAS_SEMANA[d.getDay()];
+    const tagGratuito = show.gratuito ? '<span class="tag tf">Gratuito</span>' : '';
+    const tagCupom = show.cupom ? '<span class="tag tc">Cupom</span>' : '';
+    const ufTag = `<span class="sstate-inline">${show.estado}</span>`;
+    html += `<a class="srow" onclick="verShow('${show.id}')">
+      <div class="sdate"><div class="dd">${dd}</div><div class="mm">${mm}</div><div class="wd">${wd}</div></div>
+      <div class="sbody">
+        <h3>${show.artista}</h3>
+        <div class="smeta">${show.local} <span class="dot">·</span> ${show.cidade}, ${show.estado}</div>
+        <div class="stags"><span class="tag tg">${show.genero||'Show'}</span>${tagGratuito}${tagCupom}${ufTag}</div>
       </div>
     </a>`;
   });
-  container.innerHTML = html;
+  el.innerHTML = html;
 }
 
-// ── STATES SIDEBAR ──
-function renderStatesSidebar() {
-  const counts = {};
-  allShows.forEach(s => { counts[s.estado] = (counts[s.estado]||0) + 1; });
-  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]).slice(0, 12);
-  const el = document.getElementById('states-sidebar');
-  if (!el) return;
-  el.innerHTML = sorted.map(([uf, n]) =>
-    `<div class="sw-row" onclick="showStatePage('${uf}')"><span>${uf}</span><span class="n">${n}</span></div>`
-  ).join('') + `<div class="sw-row" onclick="showPage('states')"><span style="color:var(--green)">Ver todos →</span></div>`;
-}
-
-// ── CUPONS SIDEBAR ──
-function renderCuponsSidebar() {
-  const el = document.getElementById('cupons-sidebar');
-  if (!el) return;
-  if (!allCupons.length) { el.innerHTML = '<div style="font-size:13px;color:var(--ink4);padding:4px 0">Nenhum cupom ativo no momento.</div>'; return; }
-  el.innerHTML = allCupons.slice(0,4).map(c =>
-    `<div class="sw-row" onclick="showPage('cupons')">
-      <span><strong style="font-family:var(--fmono)">${c.codigo}</strong><br><span style="font-size:11px;color:var(--ink4)">${c.descricao}</span></span>
-    </div>`
-  ).join('') + `<div class="sw-row" onclick="showPage('cupons')"><span style="color:var(--green)">Ver todos →</span></div>`;
-}
-
-// ── STATES GRID ──
-function renderStatesGrid() {
-  const regions = {
-    'Norte': ['AC','AP','AM','PA','RO','RR','TO'],
-    'Nordeste': ['AL','BA','CE','MA','PB','PE','PI','RN','SE'],
-    'Centro-Oeste': ['DF','GO','MT','MS'],
-    'Sudeste': ['ES','MG','RJ','SP'],
-    'Sul': ['PR','RS','SC']
-  };
-  const stateNames = {
-    AC:'Acre',AL:'Alagoas',AM:'Amazonas',AP:'Amapá',BA:'Bahia',CE:'Ceará',
-    DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',
-    MG:'Minas Gerais',MS:'Mato Grosso do Sul',MT:'Mato Grosso',PA:'Pará',
-    PB:'Paraíba',PE:'Pernambuco',PI:'Piauí',PR:'Paraná',RJ:'Rio de Janeiro',
-    RN:'Rio Grande do Norte',RO:'Rondônia',RR:'Roraima',RS:'Rio Grande do Sul',
-    SC:'Santa Catarina',SE:'Sergipe',SP:'São Paulo',TO:'Tocantins'
-  };
-  const counts = {};
-  allShows.forEach(s => { counts[s.estado] = (counts[s.estado]||0) + 1; });
-
-  let html = '';
-  Object.entries(regions).forEach(([region, states]) => {
-    html += `<div class="region-title">${region}</div><div class="states-row">`;
-    states.forEach(uf => {
-      html += `<a class="state-card" onclick="showStatePage('${uf}')">
-        <div><div class="uf">${uf}</div><div class="nm">${stateNames[uf]}</div></div>
-        <div class="cnt">${counts[uf]||0}</div>
-      </a>`;
-    });
-    html += '</div>';
-  });
-  document.getElementById('states-grid').innerHTML = html;
-}
-
-// ── STATE DETAIL PAGE ──
-function showStatePage(uf) {
-  const stateNames = {
-    AC:'Acre',AL:'Alagoas',AM:'Amazonas',AP:'Amapá',BA:'Bahia',CE:'Ceará',
-    DF:'Distrito Federal',ES:'Espírito Santo',GO:'Goiás',MA:'Maranhão',
-    MG:'Minas Gerais',MS:'Mato Grosso do Sul',MT:'Mato Grosso',PA:'Pará',
-    PB:'Paraíba',PE:'Pernambuco',PI:'Piauí',PR:'Paraná',RJ:'Rio de Janeiro',
-    RN:'Rio Grande do Norte',RO:'Rondônia',RR:'Roraima',RS:'Rio Grande do Sul',
-    SC:'Santa Catarina',SE:'Sergipe',SP:'São Paulo',TO:'Tocantins'
-  };
-  const stateShows = allShows.filter(s => s.estado === uf);
-  const today = new Date(); today.setHours(0,0,0,0);
-  const upcoming = stateShows.filter(s => new Date(s.data_iso) >= today);
-
-  document.getElementById('state-breadcrumb').textContent = uf;
-  document.getElementById('state-page-title').textContent = `Shows em ${stateNames[uf]||uf}`;
-  document.getElementById('state-page-sub').textContent = `${upcoming.length} shows próximos · ${uf}`;
-
-  renderShowList('state-shows-container', upcoming.length ? upcoming : stateShows);
-
-  const cities = [...new Set(stateShows.map(s => s.cidade))].sort();
-  const citiesCounts = {};
-  stateShows.forEach(s => { citiesCounts[s.cidade] = (citiesCounts[s.cidade]||0) + 1; });
-  document.getElementById('state-cities-list').innerHTML = cities.slice(0,12).map(c =>
-    `<div class="sw-row"><span>${c}</span><span class="n">${citiesCounts[c]}</span></div>`
-  ).join('');
-
-  showPage('state');
-  window.scrollTo(0,0);
-}
-
-// ── SHOW DETAIL ──
-function showDetail(id) {
-  const show = allShows.find(s => s.id === id);
-  if (!show) return;
-  const d = new Date(show.data_iso + 'T12:00:00');
-  const dateStr = d.toLocaleDateString('pt-BR', {weekday:'long',day:'2-digit',month:'long',year:'numeric'});
-
-  const pricesHtml = show.valores ? show.valores.split('\n').map(p =>
-    `<div class="buy-price">${p}</div>`
-  ).join('') : '<div class="buy-price" style="color:rgba(255,255,255,.4)">Consulte os valores no link oficial</div>';
-
-  const cupomHtml = show.cupom ? `<div class="coupon-box"><div class="coupon-code">${show.cupom}</div><div class="coupon-desc">Cupom de desconto — aplique na compra</div></div>` : '';
-  const descHtml = show.descricao ? `<div class="show-desc"><h3>Sobre o evento / Line-up</h3><p>${show.descricao}</p></div>` : '';
-  const travelHtml = `<div class="travel-box"><h3>Vindo de fora? Encontre hospedagem e passagens</h3>
-    <a class="travel-link" href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(show.cidade)}" target="_blank" rel="nofollow noopener"><span class="ticon">🏨</span>Hotéis em ${show.cidade} — Booking.com</a>
-    <a class="travel-link" href="https://www.decolar.com/hotels/${encodeURIComponent(show.cidade.toLowerCase())}" target="_blank" rel="nofollow noopener"><span class="ticon">✈️</span>Passagens para ${show.cidade} — Decolar</a>
-    <a class="travel-link" href="https://www.trivago.com.br/pt/lm/hotel-search?query=${encodeURIComponent(show.cidade)}" target="_blank" rel="nofollow noopener"><span class="ticon">🔍</span>Comparar hotéis — Trivago</a>
-  </div>`;
-
-  document.getElementById('show-breadcrumb-inner').innerHTML =
-    `<a onclick="showPage('home')">Início</a><span>›</span>
-     <a onclick="showStatePage('${show.estado}')">${show.estado}</a><span>›</span>
-     <span>${show.artista}</span>`;
-
-  document.getElementById('show-detail-content').innerHTML = `
-    <div class="show-main">
-      <div class="show-header">
-        <div class="show-genre">${show.genero}</div>
-        <h1 class="show-title">${show.artista}</h1>
-        <div class="show-meta-grid">
-          <div class="smg-item"><div class="smg-label">Data</div><div class="smg-value">${dateStr}</div></div>
-          <div class="smg-item"><div class="smg-label">Horário</div><div class="smg-value">${show.horario||'A confirmar'}</div></div>
-          <div class="smg-item"><div class="smg-label">Local</div><div class="smg-value">${show.local}</div></div>
-          <div class="smg-item"><div class="smg-label">Cidade</div><div class="smg-value">${show.cidade} — ${show.estado}</div></div>
-          ${show.endereco ? `<div class="smg-item"><div class="smg-label">Endereço</div><div class="smg-value">${show.endereco}</div></div>` : ''}
-          ${show.classificacao ? `<div class="smg-item"><div class="smg-label">Classificação</div><div class="smg-value">${show.classificacao}</div></div>` : ''}
-          <div class="smg-item"><div class="smg-label">Organizador</div><div class="smg-value">${show.organizador||'—'}</div></div>
-          <div class="smg-item"><div class="smg-label">Status</div><div class="smg-value">${show.status||'Confirmado'}</div></div>
-        </div>
-      </div>
-      ${descHtml}
-    </div>
-    <div class="show-sidebar">
-      <div class="buy-box">
-        <h3>Ingressos</h3>
-        ${pricesHtml}
-        ${show.gratuito ? '<div class="buy-price" style="color:var(--green)">✓ Entrada Franca</div>' : ''}
-        ${show.link_compra ? `<a class="btn-buy" href="${show.link_compra}" target="_blank" rel="nofollow noopener">Comprar Ingresso Oficial →</a>` : '<div style="color:rgba(255,255,255,.4);font-size:12px;text-align:center;padding:8px 0">Consulte o site oficial do evento</div>'}
-      </div>
-      ${cupomHtml}
-      ${travelHtml}
-      <div class="ad-banner ad-300" style="margin-top:16px">Espaço publicitário 300×250</div>
-      <div class="report-link" onclick="alert('Obrigado! Verificaremos em até 24h.')">Informação incorreta? Reportar</div>
-    </div>`;
-
-  showPage('show');
-  window.scrollTo(0,0);
-}
-
-// ── FREE SHOWS ──
-function renderFreeShows() {
-  const uf = document.getElementById('free-estado-filter').value;
-  const today = new Date(); today.setHours(0,0,0,0);
-  let shows = allShows.filter(s => s.gratuito && new Date(s.data_iso) >= today);
-  if (uf) shows = shows.filter(s => s.estado === uf);
-  renderShowList('free-shows-container', shows);
-}
-function filterFreeShows() { renderFreeShows(); }
-
-// ── CUPONS PAGE ──
-function renderCuponsPage() {
-  const el = document.getElementById('cupons-grid');
-  if (!allCupons.length) {
-    el.innerHTML = '<p style="color:var(--ink4);font-size:14px">Nenhum cupom ativo no momento. Volte em breve!</p>';
-    return;
+// ═══ HOME ═══
+function renderHome() {
+  let lista = [...SHOWS];
+  if (TAB_ATUAL !== 'todos') {
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    if (TAB_ATUAL === 'semana') {
+      const fim = new Date(hoje); fim.setDate(fim.getDate()+7);
+      lista = lista.filter(s=>{ const d=new Date(s.data_iso+'T12:00:00'); return d>=hoje&&d<=fim; });
+    } else if (TAB_ATUAL === 'fds') {
+      lista = lista.filter(s=>{ const d=new Date(s.data_iso+'T12:00:00'); return d.getDay()===0||d.getDay()===6; });
+    } else if (TAB_ATUAL === 'gratuito') {
+      lista = lista.filter(s=>s.gratuito);
+    } else {
+      lista = lista.filter(s=>s.genero===TAB_ATUAL);
+    }
   }
-  el.innerHTML = allCupons.map(c => `
-    <div class="coupon-card">
-      <div class="plat">${c.plataforma}</div>
-      <div class="code">Código: <span>${c.codigo}</span></div>
-      <div class="desc">${c.descricao}</div>
-      <div class="valid">Válido até: ${c.validade}</div>
-    </div>`).join('');
-}
-
-// ── NAVIGATION ──
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const el = document.getElementById('page-' + id);
-  if (el) el.classList.add('active');
-  if (id === 'states') renderStatesGrid();
-  if (id === 'gratuitos') renderFreeShows();
-  if (id === 'cupons') renderCuponsPage();
-  window.scrollTo(0,0);
+  renderListaShows(lista.slice(0,40), 'home-shows', `${lista.length} show${lista.length!==1?'s':''} encontrado${lista.length!==1?'s':''}`);
 }
 
 function setTab(el, tab) {
-  el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.closest('.tbar-inner').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
+  TAB_ATUAL = tab;
+  renderHome();
+}
+
+// ═══ BUSCA ═══
+function doSearch() {
+  const q = document.getElementById('search-input').value.toLowerCase().trim();
+  const estado = document.getElementById('f-estado').value;
+  const genero = document.getElementById('f-genero').value;
+  const entrada = document.getElementById('f-entrada').value;
+  let lista = [...SHOWS];
+  if (q) lista = lista.filter(s=>
+    s.artista.toLowerCase().includes(q)||
+    s.cidade.toLowerCase().includes(q)||
+    s.estado.toLowerCase().includes(q)||
+    (s.genero||'').toLowerCase().includes(q)||
+    (s.local||'').toLowerCase().includes(q)
+  );
+  if (estado) lista = lista.filter(s=>s.estado===estado);
+  if (genero) lista = lista.filter(s=>s.genero===genero);
+  if (entrada==='gratuito') lista = lista.filter(s=>s.gratuito);
+  TAB_ATUAL = 'todos';
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.tab')?.classList.add('active');
+  renderListaShows(lista, 'home-shows', `${lista.length} resultado${lista.length!==1?'s':''}`);
+  goTo('home');
+}
+
+// ═══ SIDEBAR ═══
+function renderSidebarEstados() {
+  const counts = {};
+  SHOWS.forEach(s=>{ counts[s.estado]=(counts[s.estado]||0)+1; });
+  const top8 = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const el = document.getElementById('sidebar-estados');
+  if (!el) return;
+  if (top8.length===0) {
+    el.innerHTML = `<tr><td colspan="3" style="color:var(--ink4);font-size:12px;padding:8px 0">Nenhum show cadastrado</td></tr>`;
+    return;
+  }
+  el.innerHTML = top8.map(([uf,n])=>
+    `<tr onclick="verEstado('${uf}')"><td>${uf}</td><td>${NOMES_ESTADOS[uf]}</td><td>${n}</td></tr>`
+  ).join('') + `<tr onclick="goTo('estados')"><td style="color:var(--ink4)">+</td><td style="color:var(--ink4)">mais estados</td><td></td></tr>`;
+}
+
+function renderSidebarCupons() {
+  const el = document.getElementById('sidebar-cupons');
+  if (!el) return;
+  if (CUPONS.length===0) {
+    el.innerHTML = `<div style="font-size:12px;color:var(--ink4);padding:4px 0">Nenhum cupom ativo no momento.</div>`;
+    return;
+  }
+  el.innerHTML = CUPONS.slice(0,4).map(c=>
+    `<a class="slink" onclick="goTo('cupons')"><span><strong style="font-family:var(--fmono)">${c.codigo}</strong> — ${c.descricao}</span></a>`
+  ).join('') + `<a class="slink" onclick="goTo('cupons')" style="color:var(--green-acc)">Ver todos →</a>`;
+}
+
+function renderSidebarGeneros() {
+  const el = document.getElementById('sidebar-generos');
+  if (!el) return;
+  const counts = {};
+  SHOWS.forEach(s=>{ if(s.genero) counts[s.genero]=(counts[s.genero]||0)+1; });
+  const top8 = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if (top8.length===0) {
+    el.innerHTML = `<div style="font-size:12px;color:var(--ink4);padding:4px 0">—</div>`;
+    return;
+  }
+  el.innerHTML = top8.map(([g,n])=>
+    `<a class="slink"><span>${g}</span><span class="n">${n}</span></a>`
+  ).join('');
+}
+
+// ═══ ESTADOS GRID ═══
+function renderEstadosGrid() {
+  const counts = {};
+  SHOWS.forEach(s=>{ counts[s.estado]=(counts[s.estado]||0)+1; });
+  const regioes = [
+    ['Sudeste',['SP','MG','RJ','ES']],
+    ['Nordeste',['BA','PE','CE','PB','MA','RN','AL','PI','SE']],
+    ['Sul',['SC','RS','PR']],
+    ['Centro-Oeste',['GO','DF','MT','MS']],
+    ['Norte',['PA','AM','TO','RO','AP','AC','RR']],
+  ];
+  let html = '';
+  // Coluna 1: Sudeste + Nordeste
+  html += '<div>';
+  [regioes[0], regioes[1]].forEach(([reg, ufs]) => {
+    html += `<div class="shead"><h2>${reg}</h2></div>`;
+    html += `<table class="ctable" style="margin-bottom:24px">`;
+    ufs.forEach(uf => {
+      html += `<tr onclick="verEstado('${uf}')"><td>${NOMES_ESTADOS[uf]}</td><td>${uf}</td><td>${counts[uf]||0} show${(counts[uf]||0)!==1?'s':''}</td></tr>`;
+    });
+    html += `</table>`;
+  });
+  html += '</div>';
+  // Coluna 2: Sul + CO + Norte
+  html += '<div>';
+  [regioes[2], regioes[3], regioes[4]].forEach(([reg, ufs]) => {
+    html += `<div class="shead"><h2>${reg}</h2></div>`;
+    html += `<table class="ctable" style="margin-bottom:24px">`;
+    ufs.forEach(uf => {
+      html += `<tr onclick="verEstado('${uf}')"><td>${NOMES_ESTADOS[uf]}</td><td>${uf}</td><td>${counts[uf]||0} show${(counts[uf]||0)!==1?'s':''}</td></tr>`;
+    });
+    html += `</table>`;
+  });
+  html += '</div>';
+  document.getElementById('estados-grid').innerHTML = html;
+}
+
+// ═══ VER ESTADO ═══
+function verEstado(uf) {
+  ESTADO_ATUAL = uf;
+  const shows = SHOWS.filter(s=>s.estado===uf);
+  document.getElementById('estado-bc').textContent = uf;
+  document.getElementById('estado-title').textContent = `${NOMES_ESTADOS[uf]} — ${uf}`;
+  document.getElementById('estado-sub').textContent = `${shows.length} show${shows.length!==1?'s':''} cadastrado${shows.length!==1?'s':''}`;
+  renderListaShows(shows, 'estado-shows');
+  // Cidades
+  const cities = {};
+  shows.forEach(s=>{ cities[s.cidade]=(cities[s.cidade]||0)+1; });
+  const top = Object.entries(cities).sort((a,b)=>b[1]-a[1]);
+  document.getElementById('estado-cidades-head').textContent = `Cidades em ${uf}`;
+  document.getElementById('estado-cidades').innerHTML = top.length===0
+    ? '<div style="font-size:12px;color:var(--ink4)">—</div>'
+    : top.slice(0,10).map(([c,n])=>`<a class="slink"><span>${c}</span><span class="n">${n}</span></a>`).join('');
+  goTo('estado');
+}
+
+// ═══ VER SHOW ═══
+function verShow(id) {
+  const show = SHOWS.find(s=>s.id===id);
+  if (!show) return;
+  const d = new Date(show.data_iso+'T12:00:00');
+  const dataFull = `${DIAS_SEMANA[d.getDay()]}, ${d.getDate()} de ${MESES_FULL[d.getMonth()]} de ${d.getFullYear()}`;
+
+  document.getElementById('show-bc').innerHTML =
+    `<a onclick="goTo('home')">Início</a><span class="sep">›</span><a onclick="verEstado('${show.estado}')">${show.estado}</a><span class="sep">›</span>${show.cidade}<span class="sep">›</span>Show`;
+  document.getElementById('show-title').textContent = show.artista;
+  document.getElementById('show-sub').textContent = `${show.local} · ${show.cidade}, ${show.estado} · ${dataFull}`;
+
+  // Valores
+  let valoresHtml = '';
+  if (show.gratuito) {
+    valoresHtml = `<div style="background:var(--paper2);border-left:3px solid var(--green);padding:10px 14px;font-size:12px;color:var(--ink3);margin-bottom:14px">Evento de entrada franca — nenhum ingresso necessário.</div>`;
+  }
+
+  // Main content
+  let mainHtml = `${valoresHtml}
+  <div class="dblock">
+    <div class="dblock-head">Informações do Show</div>
+    <div class="drow"><div class="lbl">Artista</div><div class="val"><strong>${show.artista}</strong></div></div>
+    ${show.genero?`<div class="drow"><div class="lbl">Gênero</div><div class="val"><span class="tag tg">${show.genero}</span></div></div>`:''}
+    <div class="drow"><div class="lbl">Data</div><div class="val"><strong>${dataFull}</strong></div></div>
+    ${show.horario?`<div class="drow"><div class="lbl">Horário</div><div class="val">${show.horario}</div></div>`:''}
+    <div class="drow"><div class="lbl">Local</div><div class="val"><strong>${show.local}</strong></div></div>
+    ${show.endereco?`<div class="drow"><div class="lbl">Endereço</div><div class="val">${show.endereco}</div></div>`:''}
+    <div class="drow"><div class="lbl">Cidade</div><div class="val">${show.cidade} — ${show.estado}</div></div>
+    ${show.classificacao?`<div class="drow"><div class="lbl">Classificação</div><div class="val">${show.classificacao}</div></div>`:''}
+    <div class="drow"><div class="lbl">Status</div><div class="val"><span class="tag tok">${show.status||'Confirmado'}</span></div></div>
+    ${show.organizador?`<div class="drow"><div class="lbl">Organizador</div><div class="val">${show.organizador}</div></div>`:''}
+  </div>
+  ${show.descricao?`<div class="dblock"><div class="dblock-head">Descrição e Atrações</div><div style="padding:14px 18px;font-size:13px;color:var(--ink2);line-height:1.7">${show.descricao}</div></div>`:''}
+  <div class="corr">Informação incorreta? <a onclick="goTo('cadastrar')">Sugira uma correção.</a></div>`;
+
+  // Valores ingressos
+  let precoHtml = '';
+  if (show.gratuito) {
+    precoHtml = `<p style="font-size:13px;color:var(--ink3);margin-bottom:14px;line-height:1.6">Não é necessário ingresso. Compareça ao local no dia e horário indicados.</p>`;
+  } else if (show.valores) {
+    precoHtml = show.valores.split('\n').filter(Boolean).map(v=>`<div class="prow"><span class="type">${v}</span></div>`).join('');
+  } else {
+    precoHtml = `<div class="prow"><span class="type" style="color:var(--ink4)">Consulte o site oficial para preços</span></div>`;
+  }
+
+  const cupomHtml = show.cupom ? `<div class="coup-strip"><div class="cl">Cupom de Desconto</div><div class="cc">${show.cupom}</div></div>` : '';
+  const btnLabel = show.gratuito ? 'Ver Site Oficial' : 'Comprar Ingresso Oficial';
+  const btnCls = show.gratuito ? 'btn-buy gbtn' : 'btn-buy';
+  const bboxHead = show.gratuito ? 'bbox-head gh' : 'bbox-head';
+  const bboxTitle = show.gratuito ? 'Entrada Gratuita' : 'Ingressos';
+
+  const sidebarHtml = `<div class="bbox">
+    <div class="${bboxHead}">${bboxTitle}</div>
+    <div class="bbox-body">
+      ${precoHtml}
+      ${cupomHtml}
+      ${show.link_compra?`<a class="${btnCls}" href="${show.link_compra}" target="_blank" rel="nofollow noopener">${btnLabel}</a>`:`<div class="${btnCls}" style="opacity:.5;cursor:default">${btnLabel}</div>`}
+      ${show.organizador?`<div class="pnote">Organização: ${show.organizador}</div>`:''}
+      <div class="trav">
+        <div class="tl">Vindo de fora? Encontre:</div>
+        <a class="travlink" href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(show.cidade)}" target="_blank" rel="nofollow noopener">
+          <div><div class="tp">Booking.com</div><div class="td">Hotéis em ${show.cidade}</div></div><span class="ta">→</span>
+        </a>
+        <a class="travlink" href="https://www.decolar.com/hotels/${encodeURIComponent(show.cidade.toLowerCase())}" target="_blank" rel="nofollow noopener">
+          <div><div class="tp">Decolar</div><div class="td">Passagens para ${show.cidade}</div></div><span class="ta">→</span>
+        </a>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('show-main').innerHTML = mainHtml;
+  document.getElementById('show-sidebar').innerHTML = sidebarHtml;
+  goTo('show');
+}
+
+// ═══ GRATUITOS ═══
+function renderGratuitosFiltros() {
+  const ufsComGratuitos = [...new Set(SHOWS.filter(s=>s.gratuito).map(s=>s.estado))].sort();
+  const el = document.getElementById('gratuitos-filtros');
+  if (!el) return;
+  const extras = ufsComGratuitos.map(uf=>
+    `<button class="flt" onclick="filtrarGratuitos('${uf}',this)">${uf}</button>`
+  ).join('');
+  el.innerHTML = `<button class="flt active" onclick="filtrarGratuitos('',this)">Todos os estados</button><div class="fsep"></div>${extras}`;
+  filtrarGratuitos('', el.querySelector('.flt'));
+}
+
+function filtrarGratuitos(uf, btn) {
+  document.querySelectorAll('#gratuitos-filtros .flt').forEach(b=>b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  let lista = SHOWS.filter(s=>s.gratuito);
+  if (uf) lista = lista.filter(s=>s.estado===uf);
+  renderListaShows(lista, 'gratuitos-list');
+}
+
+// ═══ CUPONS PAGE ═══
+function renderCuponsPage() {
+  const el = document.getElementById('cupons-grid');
+  if (!el) return;
+  if (CUPONS.length===0) {
+    el.innerHTML = `<div class="empty"><div class="empty-icon">🏷️</div><h3>Nenhum cupom ativo</h3><p>Novos cupons serão adicionados em breve.</p></div>`;
+    return;
+  }
+  el.innerHTML = CUPONS.map(c=>`
+    <div class="ccard">
+      <div class="ccard-top"><span class="plat">${c.plataforma}</span><span class="disc">${c.desconto||''}</span></div>
+      <div class="ccard-body">
+        <div class="ccodel">${c.codigo}</div>
+        <div class="cdesc">${c.descricao}</div>
+        <div class="cmeta">Plataforma: ${c.plataforma}</div>
+        ${c.validade?`<div class="cexp">Válido até: ${c.validade}</div>`:''}
+      </div>
+    </div>`).join('');
+}
+
+// ═══ NAVEGAÇÃO ═══
+const PAGINAS = ['home','estados','estado','show','gratuitos','cupons','cadastrar','sobre'];
+const NAV_MAP = {home:'n-home',estados:'n-estados',gratuitos:'n-gratuitos',cupons:'n-cupons',sobre:'n-sobre',cadastrar:'n-cadastrar'};
+
+function goTo(id) {
+  PAGINAS.forEach(p=>{ const el=document.getElementById('page-'+p); if(el) el.classList.remove('active'); });
+  const target = document.getElementById('page-'+id);
+  if (target) { target.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+  Object.values(NAV_MAP).forEach(n=>{ const el=document.getElementById(n); if(el) el.classList.remove('active'); });
+  if (NAV_MAP[id]) { const el=document.getElementById(NAV_MAP[id]); if(el) el.classList.add('active'); }
+  const mm = document.getElementById('mmenu');
+  if (mm && mm.classList.contains('open')) toggleMenu();
 }
 
 function toggleMenu() {
-  document.getElementById('hamburger').classList.toggle('open');
-  document.getElementById('mmenu').classList.toggle('open');
+  const btn=document.getElementById('hbg'), menu=document.getElementById('mmenu');
+  btn.classList.toggle('open'); menu.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open')?'hidden':'';
 }
-function closeMenu() {
-  document.getElementById('hamburger').classList.remove('open');
-  document.getElementById('mmenu').classList.remove('open');
-}
-
-// ── SEARCH ──
-function doSearch() {
-  const q = document.getElementById('hsearchInput').value.toLowerCase().trim();
-  const estado = document.getElementById('f-estado')?.value || '';
-  const genero = document.getElementById('f-genero')?.value || '';
-  const preco = document.getElementById('f-preco')?.value || '';
-  const today = new Date(); today.setHours(0,0,0,0);
-
-  let results = allShows.filter(s => new Date(s.data_iso) >= today);
-  if (q) results = results.filter(s =>
-    s.artista.toLowerCase().includes(q) ||
-    s.cidade.toLowerCase().includes(q) ||
-    s.estado.toLowerCase().includes(q) ||
-    s.genero.toLowerCase().includes(q) ||
-    (s.local||'').toLowerCase().includes(q)
-  );
-  if (estado) results = results.filter(s => s.estado === estado);
-  if (genero) results = results.filter(s => s.genero === genero);
-  if (preco === 'Gratuito') results = results.filter(s => s.gratuito);
-
-  document.querySelector('.shead h2').textContent = `${results.length} resultado${results.length !== 1 ? 's' : ''}`;
-  renderShowList('shows-container', results);
-  showPage('home');
+function activatePtab(el) {
+  el.closest('.ptabs').querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
 }
 
-// ── FORM SUBMIT ──
-function submitForm() {
-  alert('Show enviado para análise! Publicamos em até 72 horas após verificação do CNPJ do organizador. Obrigado!');
-}
-
-// ── INIT ──
-loadData();
+// ═══ START ═══
+init();
 </script>
 
-<!-- Schema.org structured data -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "ShowsBR",
-  "url": "https://showsbr.com.br",
-  "description": "Agenda completa de shows musicais no Brasil. Todos os estados, todos os estilos.",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https://showsbr.com.br/?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-}
+{"@context":"https://schema.org","@type":"WebSite","name":"ShowsBR","url":"https://showsbr.com.br","description":"Agenda completa de shows musicais no Brasil. Todos os estados, todos os estilos.","potentialAction":{"@type":"SearchAction","target":"https://showsbr.com.br/?q={search_term_string}","query-input":"required name=search_term_string"}}
 </script>
-
 </body>
 </html>
