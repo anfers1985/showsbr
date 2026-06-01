@@ -21,6 +21,27 @@
     "fonte": "sympla.com.br"
   },
   {
+    "id": "28767d8a59e1",
+    "artista": "Henrique e Juliano — Manifesto Musical",
+    "genero": "Sertanejo",
+    "data_iso": "2026-06-20",
+    "horario": "21:00",
+    "local": "Arena a confirmar",
+    "endereco": "Av. a confirmar",
+    "cidade": "Belo Horizonte",
+    "estado": "MG",
+    "descricao": "Turnê Manifesto Musical em BH.",
+    "organizador": "HJ Produções",
+    "cnpj": "A confirmar",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ingressoja.com.br",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ingressoja.com.br"
+  },
+  {
     "id": "mg-sertanejo-uberlandia-20260628",
     "artista": "Zé Neto & Cristiano",
     "genero": "Sertanejo",
@@ -40,5 +61,26 @@
     "classificacao": "18+",
     "status": "Confirmado",
     "fonte": "ticket360.com.br"
+  },
+  {
+    "id": "6259abc58603",
+    "artista": "Barão Vermelho — Encontro",
+    "genero": "Rock",
+    "data_iso": "2026-09-26",
+    "horario": "21:00",
+    "local": "Befly Hall",
+    "endereco": "Av. Nossa Sra. do Carmo, 230 — Savassi",
+    "cidade": "Belo Horizonte",
+    "estado": "MG",
+    "descricao": "Show da turnê Barão Vermelho Encontro em BH.",
+    "organizador": "30e",
+    "cnpj": "A confirmar",
+    "valores": "Consulte eventim.com.br",
+    "gratuito": false,
+    "link_compra": "https://www.eventim.com.br",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "eventim.com.br"
   }
 ]
