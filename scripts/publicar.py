@@ -27,7 +27,7 @@ SCOPES = [
     'https://www.googleapis.com/auth/drive',
 ]
 
-DATA_DIR = Path('data/shows')
+DATA_DIR = Path('public/data/shows')
 
 
 def conectar_sheets():
