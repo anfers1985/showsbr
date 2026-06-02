@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "12051e8b01e3",
+    "artista": "São João de Caruaru 2026",
+    "genero": "Forró",
+    "data_iso": "2026-06-13",
+    "horario": "18:00",
+    "local": "Parque 18 de Maio",
+    "endereco": "Av. Rio Branco, s/n",
+    "cidade": "Caruaru",
+    "estado": "PE",
+    "descricao": "O Maior São João do Mundo. 33 noites de shows gratuitos.",
+    "organizador": "Prefeitura de Caruaru",
+    "cnpj": "11.453.227/0001-90",
+    "valores": "Gratuito — camarotes sob consulta",
+    "gratuito": true,
+    "link_compra": "https://www.caruaru.pe.gov.br",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "saojoao2026.com.br"
+  }
+]

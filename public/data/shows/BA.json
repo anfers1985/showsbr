@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "702fefa2b7a8",
+    "artista": "Liniker — Bye Bye Caju",
+    "genero": "MPB",
+    "data_iso": "2026-11-07",
+    "horario": "21:00",
+    "local": "Casa de Apostas Arena Fonte Nova",
+    "endereco": "Ladeira da Fonte das Pedras, s/n — Nazaré",
+    "cidade": "Salvador",
+    "estado": "BA",
+    "descricao": "Última data da turnê Bye Bye Caju.",
+    "organizador": "30e",
+    "cnpj": "00.000.000/0000-00",
+    "valores": "Pista R$ 145\n Camarote R$ 785",
+    "gratuito": false,
+    "link_compra": "https://www.eventim.com.br/liniker",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "eventim.com.br"
+  }
+]
