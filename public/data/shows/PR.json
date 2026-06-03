@@ -1,5 +1,26 @@
 [
   {
+    "id": "f01ecb75a19c",
+    "artista": "Titãs — Cabeça Dinossauro Tour",
+    "genero": "Rock",
+    "data_iso": "2026-07-14",
+    "horario": "21:00",
+    "local": "Igloo Super Hall",
+    "endereco": "R. Dino Bertoldi, 740 — Tarumã",
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "descricao": "Turnê comemorativa do álbum Cabeça Dinossauro.",
+    "organizador": "30e",
+    "cnpj": "10.000.000/0001-00",
+    "valores": "Consulte eventim.com.br",
+    "gratuito": false,
+    "link_compra": "https://www.eventim.com.br",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "vagalume.com.br"
+  },
+  {
     "id": "e6632d6042fc",
     "artista": "Barão Vermelho — Encontro",
     "genero": "Rock",
@@ -61,5 +82,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "rollingstone.com.br"
+  },
+  {
+    "id": "afe9ed92df36",
+    "artista": "Rush — R40 Farewell Brasil Tour",
+    "genero": "Rock",
+    "data_iso": "2027-01-22",
+    "horario": "21:00",
+    "local": "Arena da Baixada",
+    "endereco": "R. Buenos Aires, 1350 — Água Verde",
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "descricao": "Retorno da lendária banda canadense. Outras cidades a confirmar.",
+    "organizador": "A confirmar",
+    "cnpj": "00.000.000/0001-00",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "seguroviagem.srv.br"
   }
 ]
