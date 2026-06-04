@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "5fc665d16532",
+    "artista": "Barão Vermelho — Encontro",
+    "genero": "Rock",
+    "data_iso": "2026-08-08",
+    "horario": "22:00",
+    "local": "Arena Opus",
+    "endereco": "SC-281, 4000 — Sertão do Maruim",
+    "cidade": "São José",
+    "estado": "SC",
+    "descricao": "Show da turnê em Santa Catarina.",
+    "organizador": "30e",
+    "cnpj": "00.000.000/0000-00",
+    "valores": "Consulte eventim.com.br",
+    "gratuito": false,
+    "link_compra": "https://www.eventim.com.br",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "eventim.com.br"
+  }
+]

@@ -31,6 +31,6 @@ jobs:
         run: |
           git config user.name 'ShowsBR Bot'
           git config user.email 'bot@showsbr.com.br'
-          git add data/shows/ data/cupons.json
-          git diff --staged --quiet || git commit -m 'chore: atualiza shows [skip ci]'
+          git add public/data/shows/ public/data/cupons.json
+          git diff --staged --quiet || git commit -m 'chore: atualiza shows'
           git push
