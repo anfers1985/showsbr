@@ -520,41 +520,47 @@ footer a:hover{color:var(--white)}
   </div></div>
   <div class="fwrap">
     <div class="fnotice">O ShowsBR é um repositório informativo — não vendemos ingressos. Informe o link oficial da plataforma de venda. Todos os envios são revisados antes da publicação.</div>
+    <div id="form-sucesso" style="display:none;background:#d4edda;border:1px solid #c3e6cb;border-left:4px solid var(--green-acc);padding:16px 18px;margin-bottom:20px;font-size:14px;color:#155724">
+      ✓ Show enviado com sucesso! Revisamos em até 72 horas após verificação do CNPJ. Obrigado pela contribuição.
+    </div>
+    <div id="form-erro" style="display:none;background:#f8d7da;border:1px solid #f5c6cb;border-left:4px solid #dc3545;padding:16px 18px;margin-bottom:20px;font-size:14px;color:#721c24">
+      ✗ Erro ao enviar. Verifique os campos obrigatórios e tente novamente.
+    </div>
     <div class="fsec">
       <div class="fsec-title">Artista / Banda / Evento</div>
-      <div class="fg"><label>Artista / Banda / Evento *</label><input type="text" placeholder="Ex: Gusttavo Lima · Festival de Inverno de Garanhuns"></div>
-      <div class="fg"><label>Descrição e Atrações <span class="fopt">opcional</span></label><textarea rows="4" placeholder="Line-up completo, informações adicionais…"></textarea></div>
-      <div class="fg"><label>Gênero Musical *</label><select><option value="">Selecione…</option><option>Sertanejo</option><option>Rock</option><option>Forró</option><option>Pagode</option><option>Samba</option><option>MPB</option><option>Axé</option><option>Gospel</option><option>Eletrônico</option><option>Rap / Hip-Hop</option><option>Metal</option><option>Funk</option><option>Piseiro</option><option>Blues</option><option>Jazz</option><option>Pop</option><option>Reggae</option><option>Festival / Múltiplos Estilos</option><option>Outro</option></select></div>
+      <div class="fg"><label>Artista / Banda / Evento *</label><input id="f-artista" type="text" placeholder="Ex: Gusttavo Lima · Festival de Inverno de Garanhuns"></div>
+      <div class="fg"><label>Descrição e Atrações <span class="fopt">opcional</span></label><textarea id="f-descricao" rows="4" placeholder="Line-up completo, informações adicionais…"></textarea></div>
+      <div class="fg"><label>Gênero Musical *</label><select id="f-gen"><option value="">Selecione…</option><option>Sertanejo</option><option>Rock</option><option>Forró</option><option>Pagode</option><option>Samba</option><option>MPB</option><option>Axé</option><option>Gospel</option><option>Eletrônico</option><option>Rap / Hip-Hop</option><option>Metal</option><option>Funk</option><option>Piseiro</option><option>Blues</option><option>Jazz</option><option>Pop</option><option>Reggae</option><option>Festival / Múltiplos Estilos</option><option>Outro</option></select></div>
     </div>
     <div class="fsec">
       <div class="fsec-title">Data e Local</div>
       <div class="fgrow">
-        <div class="fg"><label>Data do Show *</label><input type="date"></div>
-        <div class="fg"><label>Horário de Início <span class="fopt">opcional</span></label><input type="time"></div>
+        <div class="fg"><label>Data do Show *</label><input id="f-data" type="date"></div>
+        <div class="fg"><label>Horário de Início <span class="fopt">opcional</span></label><input id="f-horario" type="time"></div>
       </div>
-      <div class="fg"><label>Nome do Local *</label><input type="text" placeholder="Ex: Allianz Parque, Praça da Liberdade…"></div>
-      <div class="fg"><label>Endereço <span class="fopt">opcional</span></label><input type="text" placeholder="Rua, número, bairro"></div>
+      <div class="fg"><label>Nome do Local *</label><input id="f-local" type="text" placeholder="Ex: Allianz Parque, Praça da Liberdade…"></div>
+      <div class="fg"><label>Endereço <span class="fopt">opcional</span></label><input id="f-endereco" type="text" placeholder="Rua, número, bairro"></div>
       <div class="fgrow">
-        <div class="fg"><label>Cidade *</label><input type="text" placeholder="Ex: Florianópolis"></div>
-        <div class="fg"><label>Estado *</label><select><option value="">Selecione…</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select></div>
+        <div class="fg"><label>Cidade *</label><input id="f-cidade" type="text" placeholder="Ex: Florianópolis"></div>
+        <div class="fg"><label>Estado *</label><select id="f-uf"><option value="">Selecione…</option><option>AC</option><option>AL</option><option>AM</option><option>AP</option><option>BA</option><option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option><option>MG</option><option>MS</option><option>MT</option><option>PA</option><option>PB</option><option>PE</option><option>PI</option><option>PR</option><option>RJ</option><option>RN</option><option>RO</option><option>RR</option><option>RS</option><option>SC</option><option>SE</option><option>SP</option><option>TO</option></select></div>
       </div>
-      <div class="fg"><label>Classificação Etária <span class="fopt">opcional</span></label><select><option value="">Não informado</option><option>Livre</option><option>14 anos</option><option>16 anos</option><option>18 anos</option></select></div>
+      <div class="fg"><label>Classificação Etária <span class="fopt">opcional</span></label><select id="f-class"><option value="">Não informado</option><option>Livre</option><option>14 anos</option><option>16 anos</option><option>18 anos</option></select></div>
     </div>
     <div class="fsec">
       <div class="fsec-title">Ingressos e Organização</div>
-      <div class="fg"><label>Valores dos Ingressos <span class="fopt">opcional — um valor por linha</span></label><textarea rows="5" placeholder="Pista — R$ 120,00&#10;Meia-entrada — R$ 60,00&#10;Camarote VIP — R$ 380,00"></textarea></div>
-      <div class="fg"><label>Link Oficial de Compra <span class="fopt">opcional</span></label><input type="url" placeholder="https://sympla.com.br/…"></div>
-      <div class="fg"><label>Cupom de Desconto <span class="fopt">opcional</span></label><input type="text" placeholder="Ex: SHOWS20 — 20% OFF pista, válido até 10/06"></div>
+      <div class="fg"><label>Valores dos Ingressos <span class="fopt">opcional — um valor por linha</span></label><textarea id="f-valores" rows="5" placeholder="Pista — R$ 120,00&#10;Meia-entrada — R$ 60,00&#10;Camarote VIP — R$ 380,00"></textarea></div>
+      <div class="fg"><label>Link Oficial de Compra <span class="fopt">opcional</span></label><input id="f-link" type="url" placeholder="https://sympla.com.br/…"></div>
+      <div class="fg"><label>Cupom de Desconto <span class="fopt">opcional</span></label><input id="f-cupom" type="text" placeholder="Ex: SHOWS20 — 20% OFF pista, válido até 10/06"></div>
       <div class="fgrow">
-        <div class="fg"><label>Organizador / Produtor *</label><input type="text" placeholder="Ex: T4F Entretenimento, Prefeitura de Campinas…"></div>
-        <div class="fg"><label>CNPJ do Organizador *<br><span class="fopt">Obrigatório para aprovação.</span></label><input type="text" placeholder="00.000.000/0000-00" maxlength="18"></div>
+        <div class="fg"><label>Organizador / Produtor *</label><input id="f-org" type="text" placeholder="Ex: T4F Entretenimento, Prefeitura de Campinas…"></div>
+        <div class="fg"><label>CNPJ do Organizador *<br><span class="fopt">Obrigatório para aprovação.</span></label><input id="f-cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="18"></div>
       </div>
     </div>
     <div class="fsec">
       <div class="fsec-title">Seus Dados</div>
-      <div class="fg"><label>E-mail <span class="fopt">opcional</span></label><input type="email" placeholder="seu@email.com"></div>
+      <div class="fg"><label>E-mail <span class="fopt">opcional</span></label><input id="f-email" type="email" placeholder="seu@email.com"></div>
     </div>
-    <button class="btn-sub" onclick="alert('Show enviado para revisão! Publicamos em até 72 horas após verificação do CNPJ. Obrigado!')">Enviar para Revisão</button>
+    <button class="btn-sub" id="btn-enviar" onclick="submitForm()">Enviar para Revisão</button>
     <p style="font-size:11px;color:var(--ink4);margin-top:10px">Revisão em até 72 horas. Artista, data, cidade e local já são suficientes para criar um registro.</p>
   </div>
 </div>
@@ -1012,6 +1018,86 @@ function toggleMenu() {
 function activatePtab(el) {
   el.closest('.ptabs').querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
+}
+
+// ═══ FORMULÁRIO — APPS SCRIPT ═══
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw5nl82nm_CVH9e8X-DLUrrV9m96lGMAGYSnU7gXPAk4ylx5Y5duqMlx4w1w6r2JMAgDA/exec';
+
+async function submitForm() {
+  const artista  = document.getElementById('f-artista')?.value.trim();
+  const data     = document.getElementById('f-data')?.value;
+  const local    = document.getElementById('f-local')?.value.trim();
+  const cidade   = document.getElementById('f-cidade')?.value.trim();
+  const estado   = document.getElementById('f-uf')?.value;
+  const org      = document.getElementById('f-org')?.value.trim();
+  const cnpj     = document.getElementById('f-cnpj')?.value.trim();
+
+  // Validação dos campos obrigatórios
+  if (!artista || !data || !local || !cidade || !estado || !org || !cnpj) {
+    document.getElementById('form-erro').style.display = 'block';
+    document.getElementById('form-sucesso').style.display = 'none';
+    document.getElementById('form-erro').textContent = '✗ Preencha todos os campos obrigatórios (*) antes de enviar.';
+    return;
+  }
+
+  // Formatar data para DD/MM/AAAA
+  const [ano, mes, dia] = data.split('-');
+  const dataFormatada = `${dia}/${mes}/${ano}`;
+
+  const dados = {
+    artista,
+    descricao:   document.getElementById('f-descricao')?.value.trim() || '',
+    genero:      document.getElementById('f-gen')?.value || '',
+    data:        dataFormatada,
+    horario:     document.getElementById('f-horario')?.value || '',
+    local,
+    endereco:    document.getElementById('f-endereco')?.value.trim() || '',
+    cidade,
+    estado,
+    classificacao: document.getElementById('f-class')?.value || '',
+    valores:     document.getElementById('f-valores')?.value.trim() || '',
+    link_compra: document.getElementById('f-link')?.value.trim() || '',
+    cupom:       document.getElementById('f-cupom')?.value.trim() || '',
+    organizador: org,
+    cnpj,
+    email:       document.getElementById('f-email')?.value.trim() || '',
+    gratuito:    'NÃO',
+  };
+
+  const btn = document.getElementById('btn-enviar');
+  btn.textContent = 'Enviando…';
+  btn.disabled = true;
+
+  try {
+    await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados),
+    });
+
+    // no-cors não retorna body — mas chegando aqui significa que enviou
+    document.getElementById('form-sucesso').style.display = 'block';
+    document.getElementById('form-erro').style.display = 'none';
+    btn.textContent = 'Enviado ✓';
+
+    // Limpar campos
+    ['f-artista','f-descricao','f-data','f-horario','f-local','f-endereco',
+     'f-cidade','f-valores','f-link','f-cupom','f-org','f-cnpj','f-email'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    ['f-gen','f-uf','f-class'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.selectedIndex = 0;
+    });
+
+  } catch(err) {
+    document.getElementById('form-erro').style.display = 'block';
+    document.getElementById('form-erro').textContent = '✗ Erro ao enviar. Tente novamente em instantes.';
+    btn.textContent = 'Enviar para Revisão';
+    btn.disabled = false;
+  }
 }
 
 // ═══ START ═══
