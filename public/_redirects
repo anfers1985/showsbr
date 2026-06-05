@@ -1,12 +1,3 @@
-# ShowsBR — Cloudflare Pages _redirects
-# SPA: tudo redireciona para index.html (exceto arquivos estáticos)
-
 /ads.txt        /ads.txt        200
 /sitemap.xml    /sitemap.xml    200
 /robots.txt     /robots.txt     200
-
-# Redirecionar URLs amigáveis (futura implementação SSG)
-# /SP             /?estado=SP     200
-# /SC             /?estado=SC     200
-
-/*              /index.html     200
