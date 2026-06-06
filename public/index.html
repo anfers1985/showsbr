@@ -398,7 +398,7 @@ footer a:hover{color:var(--white)}
       <div class="sblock">
         <div class="sblock-head">Estados</div>
         <div class="sblock-body" style="padding:6px 0">
-          <table class="st-table" id="sidebar-estados"><!-- preenchido por JS --></table>
+          <div id="sidebar-estados"><!-- preenchido por JS --></div>
         </div>
       </div>
 
@@ -520,12 +520,7 @@ footer a:hover{color:var(--white)}
   </div></div>
   <div class="fwrap">
     <div class="fnotice">O ShowsBR é um repositório informativo — não vendemos ingressos. Informe o link oficial da plataforma de venda. Todos os envios são revisados antes da publicação.</div>
-    <div id="form-sucesso" style="display:none;background:#d4edda;border:1px solid #c3e6cb;border-left:4px solid var(--green-acc);padding:16px 18px;margin-bottom:20px;font-size:14px;color:#155724">
-      ✓ Show enviado com sucesso! Revisamos em até 72 horas após verificação do CNPJ. Obrigado pela contribuição.
-    </div>
-    <div id="form-erro" style="display:none;background:#f8d7da;border:1px solid #f5c6cb;border-left:4px solid #dc3545;padding:16px 18px;margin-bottom:20px;font-size:14px;color:#721c24">
-      ✗ Erro ao enviar. Verifique os campos obrigatórios e tente novamente.
-    </div>
+
     <div class="fsec">
       <div class="fsec-title">Artista / Banda / Evento</div>
       <div class="fg"><label>Artista / Banda / Evento *</label><input id="f-artista" type="text" placeholder="Ex: Gusttavo Lima · Festival de Inverno de Garanhuns"></div>
@@ -562,6 +557,12 @@ footer a:hover{color:var(--white)}
     </div>
     <button class="btn-sub" id="btn-enviar" onclick="submitForm()">Enviar para Revisão</button>
     <p style="font-size:11px;color:var(--ink4);margin-top:10px">Revisão em até 72 horas. Artista, data, cidade e local já são suficientes para criar um registro.</p>
+    <div id="form-sucesso" style="display:none;background:#d4edda;border:1px solid #c3e6cb;border-left:4px solid var(--green-acc);padding:14px 16px;margin-top:16px;font-size:13px;color:#155724;border-radius:2px">
+      ✓ Show enviado com sucesso! Revisamos em até 72 horas após verificação do CNPJ. Obrigado pela contribuição.
+    </div>
+    <div id="form-erro" style="display:none;background:#f8d7da;border:1px solid #f5c6cb;border-left:4px solid #dc3545;padding:14px 16px;margin-top:16px;font-size:13px;color:#721c24;border-radius:2px">
+      ✗ Erro ao enviar. Verifique os campos obrigatórios e tente novamente.
+    </div>
   </div>
 </div>
 
@@ -643,7 +644,12 @@ const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho
 async function init() {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
   const promises = UFS.map(uf =>
-    fetch(`/data/shows/${uf}.json?v=${Date.now()}`).then(r=>r.ok?r.json():[]).catch(()=>[])
+    fetch(`/data/shows/${uf}.json?v=${Date.now()}`).then(async r=>{
+        if(!r.ok){console.warn(`ShowsBR: ${uf}.json retornou ${r.status}`);return [];}
+        const txt=await r.text();
+        if(!txt.trim().startsWith('[')){console.warn(`ShowsBR: ${uf}.json não é JSON (${txt.substr(0,30)})`);return [];}
+        return JSON.parse(txt);
+      }).catch(e=>{console.warn(`ShowsBR: erro ao buscar ${uf}.json`,e);return [];})
   );
   const resultados = await Promise.all(promises);
   SHOWS = resultados.flat().filter(s => {
@@ -789,12 +795,15 @@ function renderSidebarEstados() {
   const el = document.getElementById('sidebar-estados');
   if (!el) return;
   if (top8.length===0) {
-    el.innerHTML = `<tr><td colspan="3" style="color:var(--ink4);font-size:12px;padding:8px 0">Nenhum show cadastrado</td></tr>`;
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink4);padding:4px 0">Nenhum show cadastrado</div>';
     return;
   }
   el.innerHTML = top8.map(([uf,n])=>
-    `<tr onclick="verEstado('${uf}')"><td>${uf}</td><td>${NOMES_ESTADOS[uf]}</td><td>${n}</td></tr>`
-  ).join('') + `<tr onclick="goTo('estados')"><td style="color:var(--ink4)">+</td><td style="color:var(--ink4)">mais estados</td><td></td></tr>`;
+    `<a class="slink" onclick="verEstado('${uf}')">
+      <span><strong style="font-family:var(--fmono);font-size:11px;color:var(--ink);margin-right:6px">${uf}</strong>${NOMES_ESTADOS[uf]}</span>
+      <span class="n">${n}</span>
+    </a>`
+  ).join('') + `<a class="slink" onclick="goTo('estados')" style="color:var(--green-acc);font-weight:600">+ mais estados</a>`;
 }
 
 function renderSidebarCupons() {
