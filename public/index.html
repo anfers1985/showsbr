@@ -643,21 +643,27 @@ const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho
 // ═══ CARREGAR DADOS ═══
 async function init() {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const promises = UFS.map(uf =>
-    fetch(`/data/shows/${uf}.json?v=${Date.now()}`).then(async r=>{
-        if(!r.ok){console.warn(`ShowsBR: ${uf}.json retornou ${r.status}`);return [];}
-        const txt=await r.text();
-        if(!txt.trim().startsWith('[')){console.warn(`ShowsBR: ${uf}.json não é JSON (${txt.substr(0,30)})`);return [];}
-        return JSON.parse(txt);
-      }).catch(e=>{console.warn(`ShowsBR: erro ao buscar ${uf}.json`,e);return [];})
-  );
-  const resultados = await Promise.all(promises);
-  SHOWS = resultados.flat().filter(s => {
-    if (!s.data_iso) return false;
-    return new Date(s.data_iso+'T12:00:00') >= hoje;
-  }).sort((a,b) => a.data_iso.localeCompare(b.data_iso));
+  const ts = Date.now();
 
-  CUPONS = await fetch('/data/cupons.json').then(r=>r.ok?r.json():[]).catch(()=>[]);
+  // Um único fetch para all.json — elimina problema de 27 requisições paralelas
+  try {
+    const r = await fetch(`/data/shows/all.json?v=${ts}`);
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const txt = await r.text();
+    if (!txt.trim().startsWith('[')) throw new Error('Não é JSON: ' + txt.substr(0,40));
+    const todos = JSON.parse(txt);
+    SHOWS = todos.filter(s => {
+      if (!s.data_iso) return false;
+      return new Date(s.data_iso + 'T12:00:00') >= hoje;
+    }).sort((a,b) => a.data_iso.localeCompare(b.data_iso));
+  } catch(e) {
+    console.error('ShowsBR: erro ao carregar all.json —', e.message);
+    SHOWS = [];
+  }
+
+  try {
+    CUPONS = await fetch(`/data/cupons.json?v=${ts}`).then(r=>r.ok?r.json():[]);
+  } catch(e) { CUPONS = []; }
 
   atualizarStats();
   renderHome();

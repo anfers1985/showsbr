@@ -184,7 +184,31 @@ def main():
         log.info(f'{estado}: {adicionados} novos shows adicionados.')
 
     marcar_como_publicados(aba_aprovados, aba_publicados, list(range(len(validos))))
+    # Gerar all.json combinando todos os estados
+    gerar_all_json()
     log.info('=== Agente Publicador finalizado ===')
+
+
+def gerar_all_json():
+    """Combina todos os JSONs de estado em um único public/data/shows/all.json."""
+    import glob
+    todos = []
+    pasta = Path('public/data/shows')
+    for caminho in sorted(pasta.glob('??.json')):  # só arquivos de 2 letras (UF)
+        try:
+            with open(caminho, 'r', encoding='utf-8') as f:
+                shows = json.load(f)
+                todos.extend(shows)
+        except Exception as e:
+            log.error(f'Erro ao ler {caminho}: {e}')
+
+    todos.sort(key=lambda s: s.get('data_iso', ''))
+
+    all_path = pasta / 'all.json'
+    with open(all_path, 'w', encoding='utf-8') as f:
+        json.dump(todos, f, ensure_ascii=False, separators=(',', ':'))
+
+    log.info(f'all.json gerado: {len(todos)} shows — {all_path.stat().st_size} bytes')
 
 
 if __name__ == '__main__':
