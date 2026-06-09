@@ -643,11 +643,9 @@ const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho
 // ═══ CARREGAR DADOS ═══
 async function init() {
   const hoje = new Date(); hoje.setHours(0,0,0,0);
-  const ts = Date.now();
-
   // Um único fetch para all.json — elimina problema de 27 requisições paralelas
   try {
-    const r = await fetch(`/data/shows/all.json?v=${ts}`);
+    const r = await fetch('/data/shows/all.json', { cache: 'no-store' });
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     const txt = await r.text();
     if (!txt.trim().startsWith('[')) throw new Error('Não é JSON: ' + txt.substr(0,40));
@@ -662,7 +660,7 @@ async function init() {
   }
 
   try {
-    CUPONS = await fetch(`/data/cupons.json?v=${ts}`).then(r=>r.ok?r.json():[]);
+    CUPONS = await fetch('/data/cupons.json', { cache: 'no-store' }).then(r=>r.ok?r.json():[]);
   } catch(e) { CUPONS = []; }
 
   atualizarStats();
