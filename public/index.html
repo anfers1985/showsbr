@@ -551,10 +551,8 @@ footer a:hover{color:var(--white)}
       <div class="fg"><label>Valores dos Ingressos <span class="fopt">opcional — um valor por linha</span></label><textarea id="f-valores" rows="5" placeholder="Pista — R$ 120,00&#10;Meia-entrada — R$ 60,00&#10;Camarote VIP — R$ 380,00"></textarea></div>
       <div class="fg"><label>Link Oficial de Compra <span class="fopt">opcional</span></label><input id="f-link" type="url" placeholder="https://sympla.com.br/…"></div>
       <div class="fg"><label>Cupom de Desconto <span class="fopt">opcional</span></label><input id="f-cupom" type="text" placeholder="Ex: SHOWS20 — 20% OFF pista, válido até 10/06"></div>
-      <div class="fgrow">
-        <div class="fg"><label>Organizador / Produtor *</label><input id="f-org" type="text" placeholder="Ex: T4F Entretenimento, Prefeitura de Campinas…"></div>
-        <div class="fg"><label>CNPJ do Organizador *<br><span class="fopt">Obrigatório para aprovação.</span></label><input id="f-cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="18"></div>
-      </div>
+      <div class="fg"><label>Organizador / Produtor *</label><input id="f-org" type="text" placeholder="Ex: T4F Entretenimento, Prefeitura de Campinas…"></div>
+      <div class="fg"><label>CNPJ do Organizador * <span class="fopt">— Obrigatório para aprovação</span></label><input id="f-cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="18"></div>
     </div>
     <div class="fsec">
       <div class="fsec-title">Seus Dados</div>
@@ -796,12 +794,15 @@ function renderSidebarEstados() {
   const el = document.getElementById('sidebar-estados');
   if (!el) return;
   if (top8.length===0) {
-    el.innerHTML = `<tr><td colspan="3" style="color:var(--ink4);font-size:12px;padding:8px 0">Nenhum show cadastrado</td></tr>`;
+    el.innerHTML = '<div style="font-size:12px;color:var(--ink4);padding:4px 0">Nenhum show cadastrado</div>';
     return;
   }
   el.innerHTML = top8.map(([uf,n])=>
-    `<tr onclick="verEstado('${uf}')"><td>${uf}</td><td>${NOMES_ESTADOS[uf]}</td><td>${n}</td></tr>`
-  ).join('') + `<tr onclick="goTo('estados')"><td style="color:var(--ink4)">+</td><td style="color:var(--ink4)">mais estados</td><td></td></tr>`;
+    `<a class="slink" onclick="verEstado('${uf}')">
+      <span><strong style="font-family:var(--fmono);font-size:11px;color:var(--ink);margin-right:6px">${uf}</strong>${NOMES_ESTADOS[uf]}</span>
+      <span class="n">${n}</span>
+    </a>`
+  ).join('') + `<a class="slink" onclick="goTo('estados')" style="color:var(--green-acc);font-weight:600;border-bottom:none">+ mais estados</a>`;
 }
 
 function renderSidebarCupons() {
