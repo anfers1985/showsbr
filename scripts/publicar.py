@@ -121,7 +121,7 @@ def salvar_json_estado(estado, shows):
     shows_sorted = sorted(shows, key=lambda s: s.get('data_iso', ''))
 
     with open(caminho, 'w', encoding='utf-8') as f:
-        json.dump(shows_sorted, f, ensure_ascii=False, indent=2)
+        json.dump(shows_sorted, f, ensure_ascii=False, indent=2, allow_nan=False)
     log.info(f'{caminho}: {len(shows_sorted)} shows salvos.')
 
 
@@ -206,7 +206,7 @@ def gerar_all_json():
 
     all_path = pasta / 'all.json'
     with open(all_path, 'w', encoding='utf-8') as f:
-        json.dump(todos, f, ensure_ascii=False, separators=(',', ':'))
+        json.dump(todos, f, ensure_ascii=False, separators=(',', ':'), allow_nan=False)
 
     log.info(f'all.json gerado: {len(todos)} shows — {all_path.stat().st_size} bytes')
 
