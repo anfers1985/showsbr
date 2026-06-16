@@ -8,6 +8,7 @@ import os
 import json
 import logging
 import smtplib
+import time
 from datetime import datetime, timedelta
 from email.mime.text import MIMEText
 from pathlib import Path
@@ -30,8 +31,22 @@ SCOPES = [
 ]
 
 DATA_DIR = Path('data/shows')
-HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; ShowsBR-Monitor/1.0; +https://showsbr.com.br)'}
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'pt-BR,pt;q=0.9,en;q=0.8',
+}
 JANELA_DIAS = 14  # Verificar shows nos próximos 14 dias
+
+# Domínios que bloqueiam bots/scrapers de forma agressiva (403, timeout, etc.)
+# mesmo quando o evento está ativo e a compra funciona normalmente para um
+# usuário real no navegador. Para esses, um 403/timeout NÃO é tratado como
+# problema — apenas registrado como "verificação indisponível".
+DOMINIOS_ANTIBOT = [
+    'ticket360.com.br',
+    'eventim.com.br',
+]
 
 
 def conectar_sheets():
@@ -75,17 +90,61 @@ def filtrar_proximos(shows, dias=JANELA_DIAS):
     return proximos
 
 
-def verificar_link(url, timeout=10):
-    """Verifica se um link está acessível. Retorna (ok, status_code)."""
+def eh_dominio_antibot(url):
+    """Verifica se a URL pertence a um domínio conhecido por bloquear bots."""
+    url_lower = (url or '').lower()
+    return any(dominio in url_lower for dominio in DOMINIOS_ANTIBOT)
+
+
+def verificar_link(url, timeout=10, tentativas=2):
+    """
+    Verifica se um link está acessível. Retorna (ok, status_code, indisponivel).
+
+    - ok: True/False/None — se a verificação não pôde confirmar nada, None.
+    - status_code: código HTTP recebido, ou None se não houve resposta.
+    - indisponivel: True quando o link é de um domínio anti-bot conhecido
+      E recebeu 403/timeout — sinaliza que a verificação não é confiável
+      para esse caso, sem indicar que o show tem problema real.
+
+    Usa GET em vez de HEAD (HEAD é mais frequentemente bloqueado por
+    sistemas anti-bot do que GET) e tenta novamente uma vez em caso de
+    timeout, já que picos de carga momentâneos são comuns nessas plataformas.
+    """
     if not url or not url.startswith('http'):
-        return None, None
-    try:
-        resp = requests.head(url, headers=HEADERS, timeout=timeout, allow_redirects=True)
-        ok = resp.status_code < 400
-        return ok, resp.status_code
-    except requests.RequestException as e:
-        log.warning(f'Erro ao verificar {url}: {e}')
-        return False, None
+        return None, None, False
+
+    antibot = eh_dominio_antibot(url)
+    ultimo_status = None
+
+    for tentativa in range(tentativas):
+        try:
+            resp = requests.get(
+                url, headers=HEADERS, timeout=timeout,
+                allow_redirects=True, stream=True
+            )
+            resp.close()
+            ultimo_status = resp.status_code
+            ok = resp.status_code < 400
+
+            if not ok and antibot and resp.status_code == 403:
+                # Bloqueio de bot conhecido — não é um problema real do show
+                return None, resp.status_code, True
+
+            return ok, resp.status_code, False
+
+        except requests.RequestException as e:
+            if tentativa < tentativas - 1:
+                time.sleep(2)
+                continue
+            log.warning(f'Erro ao verificar {url}: {e}')
+            if antibot:
+                # Timeout em domínio anti-bot conhecido — também não é
+                # tratado como problema real, apenas indisponível para
+                # verificação automática.
+                return None, None, True
+            return False, None, False
+
+    return False, ultimo_status, False
 
 
 def verificar_cancelamento_sympla(show):
@@ -135,8 +194,10 @@ def montar_relatorio(resultados):
     """Monta o texto do relatório de monitoramento."""
     hoje = datetime.now().strftime('%d/%m/%Y %H:%M')
     total = len(resultados)
-    ok = sum(1 for r in resultados if r['link_ok'] is not False)
-    problemas = [r for r in resultados if r['link_ok'] is False or r['cancelado']]
+    ok = sum(1 for r in resultados if r['link_ok'] is True)
+    indisponiveis = [r for r in resultados if r['indisponivel']]
+    problemas = [r for r in resultados if r['link_ok'] is False and not r['indisponivel']] \
+        + [r for r in resultados if r['cancelado']]
 
     linhas = [
         f'ShowsBR — Relatório de Monitoramento',
@@ -145,7 +206,8 @@ def montar_relatorio(resultados):
         f'RESUMO',
         f'Shows verificados (próximos {JANELA_DIAS} dias): {total}',
         f'Links OK: {ok}',
-        f'Problemas detectados: {len(problemas)}',
+        f'Verificação indisponível (sites com bloqueio anti-bot conhecido): {len(indisponiveis)}',
+        f'Problemas reais detectados: {len(problemas)}',
         f'',
     ]
 
@@ -162,7 +224,16 @@ def montar_relatorio(resultados):
                 linhas.append(f'⚠️ POSSÍVEL CANCELAMENTO DETECTADO')
             linhas.append(f'Ação: revisar no Sheets e atualizar status')
     else:
-        linhas.append('Todos os shows verificados estão com links ativos.')
+        linhas.append('Nenhum problema real detectado nos links verificados.')
+
+    if indisponiveis:
+        linhas.append('')
+        linhas.append('VERIFICAÇÃO INDISPONÍVEL (não é necessariamente um problema)')
+        linhas.append('=' * 40)
+        linhas.append('Os sites abaixo bloqueiam verificação automática (anti-bot).')
+        linhas.append('O link provavelmente está funcionando normalmente para o usuário final.')
+        for r in indisponiveis:
+            linhas.append(f'- {r["artista"]} — {r["cidade"]}/{r["estado"]} ({r["link"]})')
 
     linhas.append('')
     linhas.append('showsbr.com.br — Do interior às capitais.')
@@ -221,8 +292,8 @@ def main():
 
         log.info(f'Verificando: {artista} ({show.get("data_iso", "")}) — {link or "sem link"}')
 
-        link_ok, status_code = verificar_link(link)
-        cancelado = verificar_cancelamento_sympla(show) if link else False
+        link_ok, status_code, indisponivel = verificar_link(link)
+        cancelado = verificar_cancelamento_sympla(show) if (link and not indisponivel) else False
 
         resultado = {
             'artista': artista,
@@ -233,6 +304,7 @@ def main():
             'link_ok': link_ok,
             'status_code': status_code,
             'cancelado': cancelado,
+            'indisponivel': indisponivel,
         }
         resultados.append(resultado)
 
@@ -242,7 +314,9 @@ def main():
             atualizar_status_json(estado, show_id, 'Cancelado')
             atualizados.append(show_id)
 
-    log.info(f'Verificação concluída. {len(atualizados)} status atualizados.')
+    indisponiveis_count = sum(1 for r in resultados if r['indisponivel'])
+    log.info(f'Verificação concluída. {len(atualizados)} status atualizados. '
+             f'{indisponiveis_count} verificações indisponíveis (anti-bot).')
 
     relatorio = montar_relatorio(resultados)
     enviar_email(relatorio)

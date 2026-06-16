@@ -26,4 +26,5 @@ jobs:
           SHEETS_ID: ${{ secrets.SHEETS_ID }}
           SYMPLA_API_KEY: ${{ secrets.SYMPLA_API_KEY }}
           EVENTBRITE_TOKEN: ${{ secrets.EVENTBRITE_TOKEN }}
+          TICKETMASTER_KEY: ${{ secrets.TICKETMASTER_KEY }}
         run: python scripts/coletar.py

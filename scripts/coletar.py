@@ -74,10 +74,17 @@ def conectar_sheets():
     return gspread.authorize(creds).open_by_key(sheets_id)
 
 
-def obter_ids_existentes(aba_pend, aba_aprov):
+def obter_ids_existentes(planilha):
+    """
+    Verifica IDs em TODAS as abas do funil — Pendentes, Aprovados, Publicados
+    e Rejeitados — para nunca reinserir um show que já passou por qualquer
+    etapa do processo editorial (mesmo que já tenha sido publicado ou
+    descartado antes).
+    """
     ids = set()
-    for aba in [aba_pend, aba_aprov]:
+    for nome_aba in ['Pendentes', 'Aprovados', 'Publicados', 'Rejeitados']:
         try:
+            aba = planilha.worksheet(nome_aba)
             for row in aba.get_all_values()[1:]:
                 if row and row[0]:
                     ids.add(row[0])
@@ -269,6 +276,130 @@ def coletar_eventbrite(estado, token):
     return shows
 
 
+# ── TICKETMASTER (Discovery API) ────────────────────────────────────────────
+
+def coletar_ticketmaster(estado, api_key, assinaturas_vistas):
+    """
+    Ticketmaster Discovery API — fonte principal de coleta.
+    Busca eventos de música no Brasil filtrando por estado (stateCode).
+    Limite gratuito: 5.000 chamadas/dia. Paginação de 20 itens por página.
+
+    IMPORTANTE: a Ticketmaster frequentemente retorna o MESMO show várias
+    vezes (uma entrada por sessão de venda/lote). `assinaturas_vistas` é um
+    set compartilhado entre chamadas que deduplica por
+    (artista normalizado + data + estado), prevenindo duplicação mesmo
+    quando os IDs da Ticketmaster são diferentes para o mesmo show.
+    """
+    shows = []
+    if not api_key:
+        return shows
+
+    url = 'https://app.ticketmaster.com/discovery/v2/events.json'
+    pagina = 0
+    max_paginas = 5  # até 100 eventos por estado, suficiente para cobertura
+
+    while pagina < max_paginas:
+        params = {
+            'apikey': api_key,
+            'countryCode': 'BR',
+            'stateCode': estado,
+            'classificationName': 'music',
+            'startDateTime': DATA_INICIO + 'T00:00:00Z',
+            'endDateTime': DATA_FIM + 'T23:59:59Z',
+            'size': 20,
+            'page': pagina,
+        }
+        try:
+            resp = requests.get(url, headers=HEADERS, params=params, timeout=20)
+            if resp.status_code == 401:
+                log.error('Ticketmaster: API key inválida. Verifique TICKETMASTER_KEY.')
+                return shows
+            if resp.status_code == 404:
+                # 404 da Ticketmaster quando não há eventos para o filtro — não é erro
+                break
+            if resp.status_code != 200:
+                log.warning(f'Ticketmaster/{estado}: HTTP {resp.status_code} — {resp.text[:200]}')
+                break
+
+            data = resp.json()
+            eventos = (data.get('_embedded') or {}).get('events', [])
+            if not eventos:
+                break
+
+            log.info(f'Ticketmaster/{estado} pág.{pagina}: {len(eventos)} evento(s) brutos')
+
+            for ev in eventos:
+                nome = (ev.get('name') or '').strip()
+                if not nome:
+                    continue
+
+                datas = ev.get('dates') or {}
+                inicio = datas.get('start') or {}
+                data_raw = inicio.get('localDate', '')
+                horario = inicio.get('localTime', '')[:5]
+                if not data_raw:
+                    continue
+
+                embedded = ev.get('_embedded') or {}
+                venues = embedded.get('venues') or [{}]
+                venue = venues[0] if venues else {}
+                venue_state = (venue.get('state') or {}).get('stateCode', estado)
+                cidade = (venue.get('city') or {}).get('name', '')
+                local_nm = venue.get('name', '')
+                endereco = (venue.get('address') or {}).get('line1', '')
+
+                attractions = embedded.get('attractions') or []
+                organizador = attractions[0].get('name', '') if attractions else ''
+
+                classif = (ev.get('classifications') or [{}])[0]
+                genero = (classif.get('genre') or {}).get('name', '')
+                if genero == 'Undefined':
+                    genero = ''
+
+                try:
+                    dt = datetime.strptime(data_raw, '%Y-%m-%d')
+                    data_fmt = dt.strftime('%d/%m/%Y')
+                except ValueError:
+                    continue
+
+                # Assinatura para deduplicar shows repetidos pela própria API
+                # (mesmo show, IDs diferentes por lote/sessão de venda)
+                assinatura = f'{nome.lower().strip()}|{data_raw}|{venue_state}'
+                if assinatura in assinaturas_vistas:
+                    continue
+                assinaturas_vistas.add(assinatura)
+
+                shows.append({
+                    'id': gerar_id(nome, data_raw, venue_state),
+                    'artista': nome,
+                    'genero': genero,
+                    'data': data_fmt,
+                    'horario': horario,
+                    'local': local_nm,
+                    'endereco': endereco,
+                    'cidade': cidade,
+                    'estado': venue_state,
+                    'organizador': organizador,
+                    'valores': '',
+                    'gratuito': False,
+                    'link_compra': ev.get('url', ''),
+                    'fonte': f'ticketmaster.com/{estado}',
+                })
+
+            pagina_info = data.get('page') or {}
+            if pagina >= pagina_info.get('totalPages', 1) - 1:
+                break
+            pagina += 1
+            time.sleep(0.3)
+
+        except Exception as e:
+            log.error(f'Ticketmaster/{estado}: {e}')
+            break
+
+    log.info(f'Ticketmaster/{estado}: {len(shows)} evento(s) únicos após deduplicação')
+    return shows
+
+
 # ── MAIN ───────────────────────────────────────────────────────────────────
 
 def main():
@@ -277,11 +408,14 @@ def main():
 
     sympla_key = os.environ.get('SYMPLA_API_KEY', '')
     evbr_token = os.environ.get('EVENTBRITE_TOKEN', '')
+    tm_key     = os.environ.get('TICKETMASTER_KEY', '')
 
-    if not sympla_key and not evbr_token:
+    if not sympla_key and not evbr_token and not tm_key:
         log.warning('Nenhuma chave configurada. Encerrando.')
         return
 
+    if tm_key:
+        log.info('Ticketmaster: chave presente — fonte principal de coleta')
     if sympla_key:
         log.info('Sympla: chave de organizador presente (HTTP 200 esperado, aguardando chave developer para todos os eventos)')
     if evbr_token:
@@ -289,15 +423,30 @@ def main():
 
     planilha  = conectar_sheets()
     aba_pend  = planilha.worksheet('Pendentes')
-    aba_aprov = planilha.worksheet('Aprovados')
-    ids_exist = obter_ids_existentes(aba_pend, aba_aprov)
-    log.info(f'{len(ids_exist)} IDs já existentes.')
 
+    # Deduplicação em duas camadas:
+    # 1) ids_exist — IDs já presentes em QUALQUER aba do funil editorial
+    #    (Pendentes, Aprovados, Publicados, Rejeitados). Evita reinserir um
+    #    show que já foi tratado antes, mesmo que tenha sido publicado há
+    #    meses ou rejeitado.
+    # 2) assinaturas_vistas — específico da Ticketmaster, deduplica DENTRO
+    #    da própria coleta atual, já que a API costuma listar o mesmo show
+    #    várias vezes (uma entrada por lote/sessão de venda) com IDs
+    #    diferentes entre si.
+    ids_exist = obter_ids_existentes(planilha)
+    log.info(f'{len(ids_exist)} IDs já existentes em todo o funil (Pend./Aprov./Public./Rejeit.).')
+
+    assinaturas_vistas = set()
     todos_novos = []
 
     for estado in ESTADOS_ATIVOS:
         log.info(f'--- {estado} ---')
         novos = []
+
+        for s in coletar_ticketmaster(estado, tm_key, assinaturas_vistas):
+            if s['id'] not in ids_exist:
+                ids_exist.add(s['id'])
+                novos.append(s)
 
         for s in coletar_sympla(estado, sympla_key):
             if s['id'] not in ids_exist:
