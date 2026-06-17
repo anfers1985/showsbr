@@ -9,6 +9,7 @@ import json
 import hashlib
 import logging
 import time
+import re
 from datetime import datetime, timedelta
 
 import requests
@@ -103,7 +104,7 @@ def escrever_pendentes(aba, shows):
         s.get('descricao',''), s.get('genero',''), s.get('data',''),
         s.get('horario',''), s.get('local',''), s.get('endereco',''),
         s.get('cidade',''), s.get('estado',''), s.get('organizador',''),
-        '', s.get('valores',''), 'NÃO' if not s.get('gratuito') else 'SIM',
+        s.get('cnpj',''), s.get('valores',''), 'NÃO' if not s.get('gratuito') else 'SIM',
         s.get('link_compra',''), '', s.get('fonte',''), agora,
     ] for s in shows]
     aba.append_rows(linhas, value_input_option='RAW')
@@ -278,6 +279,43 @@ def coletar_eventbrite(estado, token):
 
 # ── TICKETMASTER (Discovery API) ────────────────────────────────────────────
 
+# Cache simples em memória — evita consultar o mesmo CEP repetidas vezes
+# dentro de uma mesma execução do coletor (ex: vários shows no mesmo local).
+_cache_cep = {}
+
+
+def cidade_por_cep(cep):
+    """
+    Resolve cidade a partir do CEP usando a API ViaCEP (gratuita, sem chave,
+    sem limite de uso documentado para volumes baixos como este).
+
+    Usado como fallback quando a Ticketmaster não preenche venue.city.name
+    mas fornece postalCode — caso comum para venues fora dos grandes centros
+    ou recém-cadastrados no sistema da Ticketmaster.
+    """
+    if not cep:
+        return ''
+    cep_limpo = re.sub(r'\D', '', cep)
+    if len(cep_limpo) != 8:
+        return ''
+    if cep_limpo in _cache_cep:
+        return _cache_cep[cep_limpo]
+
+    try:
+        resp = requests.get(f'https://viacep.com.br/ws/{cep_limpo}/json/', timeout=8)
+        if resp.status_code == 200:
+            data = resp.json()
+            if not data.get('erro'):
+                cidade = data.get('localidade', '')
+                _cache_cep[cep_limpo] = cidade
+                return cidade
+    except Exception:
+        pass
+
+    _cache_cep[cep_limpo] = ''
+    return ''
+
+
 def coletar_ticketmaster(estado, api_key, assinaturas_vistas):
     """
     Ticketmaster Discovery API — fonte principal de coleta.
@@ -344,9 +382,22 @@ def coletar_ticketmaster(estado, api_key, assinaturas_vistas):
                 venues = embedded.get('venues') or [{}]
                 venue = venues[0] if venues else {}
                 venue_state = (venue.get('state') or {}).get('stateCode', estado)
-                cidade = (venue.get('city') or {}).get('name', '')
                 local_nm = venue.get('name', '')
+                cep = venue.get('postalCode', '')
+
+                cidade = (venue.get('city') or {}).get('name', '')
+                if not cidade and cep:
+                    # Fallback: a Ticketmaster às vezes omite city.name mas
+                    # sempre fornece postalCode. Resolve via ViaCEP.
+                    cidade = cidade_por_cep(cep)
+
                 endereco = (venue.get('address') or {}).get('line1', '')
+                if not endereco:
+                    # Sem endereço estruturado disponível na API — em vez de
+                    # deixar em branco (o que pode passar despercebido na
+                    # revisão), sinaliza explicitamente que o local precisa
+                    # ser confirmado no site oficial antes da publicação.
+                    endereco = f'Consulte o endereço completo em: {local_nm}' if local_nm else 'Consulte o site oficial'
 
                 attractions = embedded.get('attractions') or []
                 organizador = attractions[0].get('name', '') if attractions else ''
@@ -380,7 +431,10 @@ def coletar_ticketmaster(estado, api_key, assinaturas_vistas):
                     'cidade': cidade,
                     'estado': venue_state,
                     'organizador': organizador,
-                    'valores': '',
+                    'cnpj': 'VERIFICAR',  # Ticketmaster não fornece CNPJ;
+                                          # sinaliza pendência explícita para
+                                          # revisão manual antes de aprovar.
+                    'valores': 'Consulte o site oficial',
                     'gratuito': False,
                     'link_compra': ev.get('url', ''),
                     'fonte': f'ticketmaster.com/{estado}',
