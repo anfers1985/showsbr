@@ -271,8 +271,15 @@ def gerar_pagina_show(show):
             oferta_dict['priceCurrency'] = 'BRL'
         oferta_json = ',\n      "offers": ' + json.dumps(oferta_dict, ensure_ascii=False)
 
+    # Data formatada para exibição: "15/09/2026 às 21h"
+    try:
+        from datetime import datetime as _dt
+        data_exib = _dt.strptime(data_iso, '%Y-%m-%d').strftime('%d/%m/%Y')
+    except Exception:
+        data_exib = data_iso
+    horario_exib = f'às {horario[:5].replace(":","h")}' if horario else ''
+
     schema = {
-        '@context': 'https://schema.org',
         '@type': 'Event',
         'name': artista,
         'startDate': data_hora_iso,
@@ -325,7 +332,7 @@ def gerar_pagina_show(show):
 <body>
 <a class="voltar" href="/">&larr; Voltar para ShowsBR</a>
 <h1>{escapar_html(artista)}</h1>
-<p class="meta">{escapar_html(data_iso)} {escapar_html(horario)} &middot; {escapar_html(local)} &middot; {escapar_html(cidade)}/{escapar_html(estado)}</p>
+<p class="meta">{escapar_html(data_exib)} {escapar_html(horario_exib)} &middot; {escapar_html(local)} &middot; {escapar_html(cidade)}/{escapar_html(estado)}</p>
 <p>{escapar_html(descricao)}</p>
 <p>
   {f'<span class="tag">{escapar_html(genero)}</span>' if genero else ''}
