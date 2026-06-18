@@ -1344,6 +1344,27 @@
     "fonte": "portalpopline.com.br"
   },
   {
+    "id": "1665bb1aae46",
+    "artista": "Demi Lovato: It's Not That Deep",
+    "genero": "Pop",
+    "data_iso": "2026-09-15",
+    "horario": "21:00",
+    "local": "Suhai Music Hall",
+    "endereco": "Consulte o endereço completo em: Suhai Music Hall",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "descricao": "",
+    "organizador": "Demi Lovato",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/demi-lovato-venda-geral",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/SP"
+  },
+  {
     "id": "54e779d38d88",
     "artista": "5 Seconds of Summer — Everyone's a Star World Tour",
     "genero": "Pop",
