@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "a3dbe63a70ef",
+    "artista": "Kid Abelha - Fortaleza",
+    "genero": "World",
+    "data_iso": "2026-08-22",
+    "horario": "21:00",
+    "local": "Centro de Formação Olímpica",
+    "endereco": "Consulte o endereço completo em: Centro de Formação Olímpica",
+    "cidade": "Fortaleza",
+    "estado": "CE",
+    "descricao": "",
+    "organizador": "",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-kid-abelha-fortaleza",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/CE"
+  }
+]

@@ -42,6 +42,27 @@
     "fonte": "bilheteriadigital.com"
   },
   {
+    "id": "0365a69e1cd4",
+    "artista": "Tiago Iorc - Belém",
+    "genero": "Pop",
+    "data_iso": "2026-08-15",
+    "horario": "22:30",
+    "local": "Assembleia Paraense",
+    "endereco": "Consulte o endereço completo em: Assembleia Paraense",
+    "cidade": "Belém",
+    "estado": "PA",
+    "descricao": "",
+    "organizador": "Tiago Iorc",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/tiago-iorc-belem",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/PA"
+  },
+  {
     "id": "61bbf5e16dae",
     "artista": "Liniker — Bye Bye Caju",
     "genero": "MPB",
