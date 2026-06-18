@@ -145,7 +145,9 @@ def main():
 
     registros = ler_aprovados(aba_aprovados)
     if not registros:
-        log.info('Nenhum show aprovado pendente. Encerrando.')
+        log.info('Nenhum show aprovado pendente — regenerando páginas e sitemap com shows existentes.')
+        gerar_all_json()
+        log.info('=== Agente Publicador finalizado ===')
         return
 
     # Agrupar por estado
