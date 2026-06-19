@@ -336,6 +336,27 @@
     "fonte": "ticketmaster.com/RJ"
   },
   {
+    "id": "3bdc6bb66b26",
+    "artista": "Jorge Aragão no Qualistage - RJ",
+    "genero": "World",
+    "data_iso": "2026-08-29",
+    "horario": "21:30",
+    "local": "Qualistage",
+    "endereco": "Av. Ayrton Senna, 3000 - Barra da Tijuca, Rio de Janeiro",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "descricao": "",
+    "organizador": "Jorge Aragao",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/jorge-aragao-no-qualistage-rj-2026",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/RJ"
+  },
+  {
     "id": "633391e9dec0",
     "artista": "Rock in Rio 2026",
     "genero": "Rock",
