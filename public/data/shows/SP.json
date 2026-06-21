@@ -1470,6 +1470,27 @@
     "fonte": "portalpopline.com.br"
   },
   {
+    "id": "79902eeec02d",
+    "artista": "5 Seconds Of Summer: Everyone's A Star World Tour - São Paulo",
+    "genero": "Pop",
+    "data_iso": "2026-09-18",
+    "horario": "21:00",
+    "local": "Suhai Music Hall",
+    "endereco": "Consulte o endereço completo em: Suhai Music Hall",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "descricao": "",
+    "organizador": "5 Seconds of Summer",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/5-seconds-of-summer-sao-paulo-venda-geral",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/SP"
+  },
+  {
     "id": "e8293535aa4e",
     "artista": "Zayn — KONNAKOL Tour",
     "genero": "Pop",
