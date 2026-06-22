@@ -1491,6 +1491,27 @@
     "fonte": "ticketmaster.com/SP"
   },
   {
+    "id": "2d1c7f580939",
+    "artista": "José Augusto - Tokio Marine Hall",
+    "genero": "World",
+    "data_iso": "2026-09-19",
+    "horario": "21:00",
+    "local": "Tokio Marine Hall",
+    "endereco": "Consulte o endereço completo em: Tokio Marine Hall",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "descricao": "",
+    "organizador": "",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/jose-augusto-tokio-marine-hall",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/SP"
+  },
+  {
     "id": "e8293535aa4e",
     "artista": "Zayn — KONNAKOL Tour",
     "genero": "Pop",
