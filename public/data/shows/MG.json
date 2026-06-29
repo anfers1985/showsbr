@@ -189,6 +189,27 @@
     "fonte": "livenation.com.br / soubh.uai.com.br"
   },
   {
+    "id": "d2e64b9d750a",
+    "artista": "5 Seconds Of Summer: Everyone's A Star World Tour - Belo Horizonte",
+    "genero": "Pop",
+    "data_iso": "2026-09-20",
+    "horario": "21:00",
+    "local": "BeFly Hall",
+    "endereco": "Consulte o endereço completo em: BeFly Hall",
+    "cidade": "Belo Horizonte",
+    "estado": "MG",
+    "descricao": "",
+    "organizador": "5 Seconds of Summer",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/5-seconds-of-summer-belo-horizonte-venda-geral",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/MG"
+  },
+  {
     "id": "6259abc58603",
     "artista": "Barão Vermelho — Encontro",
     "genero": "Rock",
