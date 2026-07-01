@@ -61,5 +61,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "ticketmaster.com/PE"
+  },
+  {
+    "id": "b4ed07f49b08",
+    "artista": "Tiago Iorc - Recife",
+    "genero": "Pop",
+    "data_iso": "2026-09-26",
+    "horario": "21:00",
+    "local": "Teatro Guararapes - Pernambuco Centro de Convenções",
+    "endereco": "Consulte o endereço completo em: Teatro Guararapes - Pernambuco Centro de Convenções",
+    "cidade": "Olinda",
+    "estado": "PE",
+    "descricao": "",
+    "organizador": "Tiago Iorc",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/tiago-iorc-recife",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/PE"
   }
 ]

@@ -84,6 +84,27 @@
     "fonte": "ticketmaster.com/RS"
   },
   {
+    "id": "27896856df44",
+    "artista": "Kid Abelha - Porto Alegre",
+    "genero": "World",
+    "data_iso": "2026-09-26",
+    "horario": "21:00",
+    "local": "Estádio Beira-Rio",
+    "endereco": "Consulte o endereço completo em: Estádio Beira-Rio",
+    "cidade": "Porto Alegre",
+    "estado": "RS",
+    "descricao": "",
+    "organizador": "",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-kid-abelha-porto-alegre",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/RS"
+  },
+  {
     "id": "c2638ccb6dea",
     "artista": "ZZ Top — The Big One!",
     "genero": "Rock",

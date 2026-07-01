@@ -42,6 +42,27 @@
     "fonte": "ticketmaster.com/BA"
   },
   {
+    "id": "0d0545949ec7",
+    "artista": "Revelação & Xande de Pilares - Salvador",
+    "genero": "Other",
+    "data_iso": "2026-09-26",
+    "horario": "20:00",
+    "local": "Casa de Apostas Arena Fonte Nova",
+    "endereco": "Consulte o endereço completo em: Casa de Apostas Arena Fonte Nova",
+    "cidade": "Salvador",
+    "estado": "BA",
+    "descricao": "",
+    "organizador": "Xande De Pilares",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/revelacao-xande-de-pilares-salvador",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/BA"
+  },
+  {
     "id": "702fefa2b7a8",
     "artista": "Liniker — Bye Bye Caju",
     "genero": "MPB",
