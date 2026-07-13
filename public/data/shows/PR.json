@@ -210,6 +210,27 @@
     "fonte": "ticketmaster.com/PR"
   },
   {
+    "id": "7ec644ff5cfe",
+    "artista": "Kid Abelha - Curitiba",
+    "genero": "World",
+    "data_iso": "2026-10-10",
+    "horario": "21:00",
+    "local": "Pedreira Paulo Leminski",
+    "endereco": "Consulte o endereço completo em: Pedreira Paulo Leminski",
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "descricao": "",
+    "organizador": "",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-kid-abelha-curitiba",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/PR"
+  },
+  {
     "id": "516a40d36a5b",
     "artista": "Iron Maiden — Run For Your Lives Tour",
     "genero": "Metal",

@@ -19,5 +19,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "ticketmaster.com/CE"
+  },
+  {
+    "id": "99f917e3767e",
+    "artista": "Revelação & Xande de Pilares - Fortaleza",
+    "genero": "Other",
+    "data_iso": "2026-10-10",
+    "horario": "20:00",
+    "local": "Marina Park",
+    "endereco": "Consulte o endereço completo em: Marina Park",
+    "cidade": "Fortaleza",
+    "estado": "CE",
+    "descricao": "",
+    "organizador": "Xande De Pilares",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/revelacao-xande-de-pilares-fortaleza",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/CE"
   }
 ]
