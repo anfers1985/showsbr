@@ -315,6 +315,27 @@
     "fonte": "ticketmaster.com/PR"
   },
   {
+    "id": "3d69a17036bc",
+    "artista": "Maiara & Maraisa - Cine Lido",
+    "genero": "Latin",
+    "data_iso": "2026-10-23",
+    "horario": "22:00",
+    "local": "Cine Lido",
+    "endereco": "Consulte o endereço completo em: Cine Lido",
+    "cidade": "Curitiba",
+    "estado": "PR",
+    "descricao": "",
+    "organizador": "Maiara & Maraisa",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/maiara-e-maraisa-cine-lido",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/PR"
+  },
+  {
     "id": "516a40d36a5b",
     "artista": "Iron Maiden — Run For Your Lives Tour",
     "genero": "Metal",

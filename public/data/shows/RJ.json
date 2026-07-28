@@ -798,6 +798,27 @@
     "fonte": "ticketmaster.com/RJ"
   },
   {
+    "id": "c2d322915dff",
+    "artista": "Oswaldo Montenegro no Qualistage - RJ",
+    "genero": "World",
+    "data_iso": "2026-10-24",
+    "horario": "21:30",
+    "local": "Qualistage",
+    "endereco": "Av. Ayrton Senna, 3000 - Barra da Tijuca, Rio de Janeiro",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "descricao": "",
+    "organizador": "Oswaldo Montenegro",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/oswaldo-montenegro-no-qualistage-rj",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/RJ"
+  },
+  {
     "id": "1a214e35225b",
     "artista": "Festival de Itaipava — Jorja Smith + M.I.A. + Ivete Sangalo + Jorge Ben Jor",
     "genero": "MPB",
