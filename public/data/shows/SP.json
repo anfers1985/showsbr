@@ -2184,6 +2184,27 @@
     "fonte": "exame.com"
   },
   {
+    "id": "95cc8c25e246",
+    "artista": "BTS WORLD TOUR ARIRANG",
+    "genero": "Pop",
+    "data_iso": "2026-10-28",
+    "horario": "20:00",
+    "local": "MorumBis",
+    "endereco": "Consulte o endereço completo em: MorumBis",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "descricao": "",
+    "organizador": "BTS",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-bts-world-tour-arirang-28-10",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/SP"
+  },
+  {
     "id": "5ea2241c7b93",
     "artista": "BTS — WORLD TOUR ARIRANG",
     "genero": "K-pop",
