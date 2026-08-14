@@ -229,5 +229,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "eventim.com.br"
+  },
+  {
+    "id": "29adf0056ec0",
+    "artista": "Lagum | Belo Horizonte",
+    "genero": "Pop",
+    "data_iso": "2026-10-17",
+    "horario": "21:00",
+    "local": "Arena Hall BH",
+    "endereco": "Consulte o endereço completo em: Arena Hall BH",
+    "cidade": "Belo Horizonte",
+    "estado": "MG",
+    "descricao": "",
+    "organizador": "Lagum",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-lagum-belo-horizonte",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/MG"
   }
 ]

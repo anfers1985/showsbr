@@ -798,6 +798,27 @@
     "fonte": "ticketmaster.com/RJ"
   },
   {
+    "id": "2f0b512d8521",
+    "artista": "Ana Carolina | Qualistage",
+    "genero": "World",
+    "data_iso": "2026-10-17",
+    "horario": "21:30",
+    "local": "Qualistage",
+    "endereco": "Av. Ayrton Senna, 3000 - Barra da Tijuca, Rio de Janeiro",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "descricao": "",
+    "organizador": "Ana Carolina",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/ana-carolina-qualistage",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/RJ"
+  },
+  {
     "id": "c2d322915dff",
     "artista": "Oswaldo Montenegro no Qualistage - RJ",
     "genero": "World",
@@ -880,5 +901,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "seguroviagem.srv.br"
+  },
+  {
+    "id": "34f97d493d84",
+    "artista": "Lagum | Rio de Janeiro",
+    "genero": "Pop",
+    "data_iso": "2026-11-07",
+    "horario": "21:30",
+    "local": "Qualistage",
+    "endereco": "Av. Ayrton Senna, 3000 - Barra da Tijuca, Rio de Janeiro",
+    "cidade": "Rio de Janeiro",
+    "estado": "RJ",
+    "descricao": "",
+    "organizador": "Lagum",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-lagum-rio-de-janeiro",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/RJ"
   }
 ]
