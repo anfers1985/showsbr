@@ -82,5 +82,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "portallineup.com.br"
+  },
+  {
+    "id": "a244335becd9",
+    "artista": "Djavan - Belém",
+    "genero": "R&B",
+    "data_iso": "2026-10-24",
+    "horario": "21:00",
+    "local": "Hangar",
+    "endereco": "Consulte o endereço completo em: Hangar",
+    "cidade": "Belém",
+    "estado": "PA",
+    "descricao": "",
+    "organizador": "Djavan",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/djavan-venda-geral-belem",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/PA"
   }
 ]

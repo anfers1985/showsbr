@@ -2,7 +2,9 @@ name: Agente Publicador de Shows
 
 on:
   schedule:
-    - cron: '0 */2 * * *'
+    - cron: '0 11 * * *'   # 08h BRT (UTC-3)
+    - cron: '0 15 * * *'   # 12h BRT
+    - cron: '0 23 * * *'   # 20h BRT
   workflow_dispatch:
 
 env:

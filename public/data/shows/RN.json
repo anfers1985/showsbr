@@ -1,1 +1,23 @@
-[]
+[
+  {
+    "id": "1987f2fe51a9",
+    "artista": "Tiago Iorc - Natal",
+    "genero": "Pop",
+    "data_iso": "2026-09-25",
+    "horario": "22:00",
+    "local": "Teatro Riachuelo",
+    "endereco": "Consulte o endereço completo em: Teatro Riachuelo",
+    "cidade": "Natal",
+    "estado": "RN",
+    "descricao": "",
+    "organizador": "Tiago Iorc",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/tiago-iorc-natal",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/RN"
+  }
+]

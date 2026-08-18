@@ -61,5 +61,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "ticketmaster.com/SC"
+  },
+  {
+    "id": "8fdd55f7491e",
+    "artista": "Kid Abelha - Florianópolis",
+    "genero": "World",
+    "data_iso": "2026-10-17",
+    "horario": "21:00",
+    "local": "Arena Opus",
+    "endereco": "Consulte o endereço completo em: Arena Opus",
+    "cidade": "São José",
+    "estado": "SC",
+    "descricao": "",
+    "organizador": "",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/venda-geral-kid-abelha-florianopolis",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/SC"
   }
 ]

@@ -61,5 +61,26 @@
     "classificacao": "",
     "status": "Confirmado",
     "fonte": "ticketmaster.com/DF"
+  },
+  {
+    "id": "d41d9718ce09",
+    "artista": "Tiago Iorc - Brasília",
+    "genero": "Pop",
+    "data_iso": "2026-09-19",
+    "horario": "21:00",
+    "local": "Centro de Convenções Ulysses Guimarães",
+    "endereco": "Consulte o endereço completo em: Centro de Convenções Ulysses Guimarães",
+    "cidade": "Brasília",
+    "estado": "DF",
+    "descricao": "",
+    "organizador": "Tiago Iorc",
+    "cnpj": "VERIFICAR",
+    "valores": "Consulte o site oficial",
+    "gratuito": false,
+    "link_compra": "https://www.ticketmaster.com.br/event/tiago-iorc-brasilia",
+    "cupom": "",
+    "classificacao": "",
+    "status": "Confirmado",
+    "fonte": "ticketmaster.com/DF"
   }
 ]
